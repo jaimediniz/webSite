@@ -77,7 +77,8 @@ function login(jsonData) {
 
   return postTextOutput(200, false, 'Success!', {
     token: token,
-    tokenRow: row + 2
+    tokenRow: row + 2,
+    isAdmin: isAdmin({ tokenRow: row + 2 })
   });
 }
 
