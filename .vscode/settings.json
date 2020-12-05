@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.gs": "javascript"
+  },
+  "editor.formatOnSave": true,
+  "prettier.singleQuote": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
