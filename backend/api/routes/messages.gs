@@ -35,11 +35,13 @@ function createMessage(jsonData) {
   messagesSS.getRange('B' + newLastRow).setValue(username);
   messagesSS.getRange('C' + newLastRow).setValue(jsonData['message']);
   messagesSS.getRange('D' + newLastRow).setValue(timestamp);
+  messagesSS.getRange('E' + newLastRow).setValue(jsonData['isPublic']);
 
   return postTextOutput(201, false, 'Created!', {
     id: newLastRow - 2,
     message: jsonData['message'],
-    createdAt: timestamp
+    createdAt: timestamp,
+    isPublic: jsonData['isPublic']
   });
 }
 
@@ -59,7 +61,7 @@ function deleteMessage(jsonData) {
     });
   }
 
-  messagesSS.getRange(deleteRow, 1, 1, 4).setValues([['', '', '', '']]);
+  messagesSS.getRange(deleteRow, 1, 1, 5).setValues([['', '', '', '', '']]);
 
   return postTextOutput(200, false, 'Deleted!', { row: deleteRow });
 }
@@ -74,12 +76,12 @@ function getMessages(jsonData) {
 
   if (isAdmin(jsonData)) {
     // Get all values from C2:C-1
-    var allMessages = messagesSS.getRange(2, 1, lastRow - 1, 4).getValues();
+    var allMessages = messagesSS.getRange(2, 1, lastRow - 1, 5).getValues();
     return postTextOutput(200, false, 'Messages!', { messages: allMessages });
   }
 
   // Get all values from B2:C-1
-  var values = messagesSS.getRange(2, 1, lastRow - 1, 4).getValues();
+  var values = messagesSS.getRange(2, 1, lastRow - 1, 5).getValues();
 
   // Search for username
   var messages = [];

@@ -8,7 +8,8 @@ Content-Type: application/json
   "publicKey": "{{$dotenv publicKey}}",
   "token": "{{$dotenv adminToken}}",
   "tokenRow": "{{$dotenv adminTokenRow}}",
-  "message": "Hello World"
+  "message": "New Message",
+  "isPublic": "FALSE"
 }
 
 ### GET Answer
