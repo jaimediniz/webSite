@@ -1,0 +1,16 @@
+# @name createMessage
+POST {{ $dotenv baseUrl }}
+Content-Type: application/json
+
+{
+  "route": "messages",
+  "endPoint": "createMessage",
+  "publicKey": "{{$dotenv publicKey}}",
+  "token": "{{$dotenv adminToken}}",
+  "tokenRow": "{{$dotenv adminTokenRow}}",
+  "message": "Hello World"
+}
+
+### GET Answer
+@answerURL = {{ createMessage.response.headers.Location }}
+GET {{ answerURL }}

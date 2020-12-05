@@ -1,0 +1,15 @@
+# @name getMessages
+POST {{ $dotenv baseUrl }}
+Content-Type: application/json
+
+{
+  "route": "messages",
+  "endPoint": "getMessages",
+  "publicKey": "{{$dotenv publicKey}}",
+  "token": "{{$dotenv token}}",
+  "tokenRow": "{{$dotenv tokenRow}}"
+}
+
+### GET Answer
+@answerURL = {{ getMessages.response.headers.Location }}
+GET {{ answerURL }}

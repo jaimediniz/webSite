@@ -1,0 +1,14 @@
+# @name login
+POST {{ $dotenv baseUrl }}
+Content-Type: application/json
+
+{
+  "route": "login",
+  "publicKey": "{{$dotenv publicKey}}",
+  "username": "jaime",
+  "password": "123"
+}
+
+### GET Answer
+@answerURL = {{ login.response.headers.Location }}
+GET {{ answerURL }}
