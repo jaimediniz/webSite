@@ -41,7 +41,14 @@ function createMessage(jsonData) {
     id: newLastRow - 2,
     message: jsonData['message'],
     createdAt: timestamp,
-    isPublic: jsonData['isPublic']
+    isPublic: jsonData['isPublic'],
+    messageArray: [
+      newLastRow - 2,
+      username,
+      jsonData['message'],
+      timestamp,
+      jsonData['isPublic']
+    ]
   });
 }
 
@@ -84,6 +91,7 @@ function getMessages(jsonData) {
   var values = messagesSS.getRange(2, 1, lastRow - 1, 5).getValues();
 
   // Search for username
+  //TODO: Change from array to object
   var messages = [];
   for (row = 0; row < values.length; ++row) {
     if (values[row][1] === username) {

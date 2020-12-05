@@ -1,11 +1,60 @@
-<div *ngFor="let message of messages" class="messageDisplay">
-  <div class="author">
-    {{ message[1] }}
+<div class="credentials">
+  <div *ngIf="!isUserLoggedIn" class="buttons">
+    <div (click)="this.fakeLogin()">
+      <button mat-raised-button color="primary">Login</button>
+    </div>
+    <div>
+      <button mat-raised-button color="warm" disabled class="register">
+        Register
+      </button>
+    </div>
   </div>
-  <div class="message">
-    {{ message[2] }}
+
+  <div *ngIf="isUserLoggedIn" (click)="logoff()">
+    <button mat-raised-button color="warm">Logoff</button>
   </div>
-  <div class="createAt">
-    {{ message[3] }}
+</div>
+
+<div class="content">
+  <div class="displayContainer">
+    <div *ngFor="let message of messages" class="message">
+      <div class="id">
+        {{ message[0] }}
+      </div>
+      <div class="author">
+        {{ message[1] }}
+      </div>
+      <div class="message">
+        {{ message[2] }}
+      </div>
+      <div class="createAt">
+        {{ message[3] }}
+      </div>
+      <div class="public" [ngClass]="{ not: !message[4] }">
+        Public:{{ message[4] }}
+      </div>
+      <div
+        *ngIf="message[1] === isUserLoggedIn || isAdmin"
+        class="delete"
+        (click)="deleteMessage(message[0])"
+      >
+        ❌
+      </div>
+    </div>
+  </div>
+
+  <div class="createContainer">
+    <textarea cols="30" rows="5" #message></textarea>
+    <input type="checkbox" #isPublic /> Public?
+    <button
+      (click)="
+        postMessage({
+          message: message.value,
+          isPublic: isPublic.checked
+        })
+      "
+    >
+      Post
+    </button>
   </div>
 </div>

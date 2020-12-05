@@ -1,12 +1,46 @@
-.messageDisplay {
+.credentials {
   display: flex;
-  .author {
-    color: aqua;
+  justify-content: flex-end;
+  .buttons {
+    display: flex;
+    .register {
+      background-color: #424242;
+    }
   }
-  .message {
-    color: blue;
-  }
-  .createAt {
-    color: green;
+}
+
+.content {
+  display: flex;
+  .displayContainer {
+    display: flex;
+    flex-direction: column;
+    &.reverse {
+      flex-direction: row-reverse !important;
+    }
+    .message {
+      display: flex;
+      white-space: pre-wrap;
+      .id {
+        color: red;
+      }
+      .author {
+        color: aqua;
+      }
+      .message {
+        color: blue;
+      }
+      .createAt {
+        color: goldenrod;
+      }
+      .public {
+        color: green;
+        &.not {
+          color: darkmagenta;
+        }
+      }
+      .delete {
+        cursor: pointer;
+      }
+    }
   }
 }
