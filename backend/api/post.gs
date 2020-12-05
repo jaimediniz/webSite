@@ -9,11 +9,13 @@ function postTextOutput(code, error, message, data) {
       ',"error":' +
       error +
       ',"message":' +
+      '"' +
       message +
+      '"' +
       ',"data":' +
       JSON.stringify(data) +
       '}'
-  ).setMimeType(ContentService.MimeType.JSON);
+  );
 }
 
 function isValidRequest(jsonData) {

@@ -1,0 +1,12 @@
+.messageDisplay {
+  display: flex;
+  .author {
+    color: aqua;
+  }
+  .message {
+    color: blue;
+  }
+  .createAt {
+    color: green;
+  }
+}
