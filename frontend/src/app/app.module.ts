@@ -15,9 +15,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { AppComponent } from './app.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
-  declarations: [HomeComponent, AboutComponent, NavbarComponent],
+  declarations: [HomeComponent, AboutComponent, NavbarComponent, AppComponent],
   imports: [
     BrowserModule,
     CommonModule,
@@ -29,7 +32,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     MatMenuModule,
     MatToolbarModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   exports: [
     MatButtonModule,
@@ -39,6 +43,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     MatCardModule
   ],
   providers: [],
-  bootstrap: []
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
