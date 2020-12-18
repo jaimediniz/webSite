@@ -18,9 +18,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
-  declarations: [HomeComponent, AboutComponent, NavbarComponent, AppComponent],
+  declarations: [HomeComponent, AboutComponent, NavbarComponent, AppComponent, FooterComponent],
   imports: [
     BrowserModule,
     CommonModule,
