@@ -28,6 +28,15 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Format files",
+      "type": "shell",
+      "command": "prettier --write .",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
     }
   ]
 }
