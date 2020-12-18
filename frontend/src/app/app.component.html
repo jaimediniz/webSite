@@ -1,11 +1,8 @@
 <app-navbar class="w-100"></app-navbar>
+<app-app-install></app-app-install>
 
-<div class="h-100 w-100 px-0 container-fluid">
-  <div
-    style="background-color: blue"
-    class="w-100 h-100"
-    [ngClass]="{ 'col-6': showOutlet }"
-  >
+<main id="main" class="h-100 w-100 px-0 container-fluid">
+  <div class="w-100 h-100 testBackground" [ngClass]="{ 'col-6': showOutlet }">
     <router-outlet></router-outlet>
   </div>
 
@@ -18,4 +15,4 @@
   </div>
 
   <app-footer></app-footer>
-</div>
+</main>

@@ -6,6 +6,7 @@ import {
   ViewRef
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { WindowService } from './services/window.service';
 
 @Component({
   selector: 'app-app',
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
 
   public showOutlet: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private winRef: WindowService) {}
 
   ngOnInit(): void {}
 

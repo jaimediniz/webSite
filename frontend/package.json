@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "tandem_nice",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,6 +7,7 @@
     "https": "ng serve --ssl --ssl-key .\\src\\certificates\\localhost.key  --ssl-cert .\\src\\certificates\\localhost.crt",
     "build": "ng build",
     "test": "ng test",
+    "test-prod": "ng build --prod --build-optimizer && http-server ./dist/frontend",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
