@@ -1,16 +1,10 @@
 <nav class="navbar navbar-fixed-top bg-light d-flex justify-content-between">
   <div class="navbar-brand"></div>
   <div class="d-flex">
-    <a
-      class="nav-link"
-      [routerLink]="[{ outlets: { main: ['home'], sidebar: null } }]"
-      routerLinkActive="active"
+    <a class="nav-link" [routerLink]="['home']" routerLinkActive="active"
       >Home</a
     >
-    <a
-      class="nav-link"
-      [routerLink]="[{ outlets: { main: null, sidebar: ['about'] } }]"
-      routerLinkActive="active"
+    <a class="nav-link" [routerLink]="['about']" routerLinkActive="active"
       >About</a
     >
     <a
