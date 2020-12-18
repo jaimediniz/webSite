@@ -1,0 +1,17 @@
+<app-navbar class="w-100"></app-navbar>
+
+<div class="h-100 w-100 container-fluid">
+  <div class="row">
+    <div style="background-color: blue" class="col-6">
+      <router-outlet name="main"></router-outlet>
+    </div>
+
+    <div [hidden]="!showOutlet" class="col-6" style="background-color: yellow">
+      <router-outlet
+        name="sidebar"
+        (activate)="openSideRoute($event)"
+        (deactivate)="closeSideRoute($event)"
+      ></router-outlet>
+    </div>
+  </div>
+</div>

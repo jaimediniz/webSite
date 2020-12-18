@@ -1,26 +1,29 @@
-<nav class="navbar navbar-fixed-top">
+<nav class="navbar navbar-fixed-top bg-light d-flex justify-content-between">
   <div class="navbar-brand"></div>
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/about" routerLinkActive="active"
-        >About</a
-      >
-    </li>
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        routerLink="currentActivities"
-        routerLinkActive="active"
-        >Current Activities</a
-      >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="registration" routerLinkActive="active"
-        >Registration</a
-      >
-    </li>
-  </ul>
+  <div class="d-flex">
+    <a
+      class="nav-link"
+      [routerLink]="[{ outlets: { main: ['home'], sidebar: null } }]"
+      routerLinkActive="active"
+      >Home</a
+    >
+    <a
+      class="nav-link"
+      [routerLink]="[{ outlets: { main: null, sidebar: ['about'] } }]"
+      routerLinkActive="active"
+      >About</a
+    >
+    <a
+      class="nav-link disabled"
+      routerLink="/currentActivities"
+      routerLinkActive="active"
+      >Current Activities</a
+    >
+    <a
+      class="nav-link disabled"
+      routerLink="/registration"
+      routerLinkActive="active"
+      >Registration</a
+    >
+  </div>
 </nav>
