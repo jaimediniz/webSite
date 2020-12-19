@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { API } from 'src/app/services/backend.service';
 
 @Component({
   selector: 'app-navbar',
@@ -6,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  constructor() {}
+  constructor(private api: API) {}
 
   ngOnInit(): void {}
+
+  test() {
+    this.api.login({ username: 'jaime', password: '123' });
+  }
 }
