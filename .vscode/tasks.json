@@ -28,6 +28,54 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Format files",
+      "type": "shell",
+      "command": "prettier --write .",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "makePushNotification",
+      "type": "shell",
+      "command": "echo ${input:messageTitle}: ${input:messageBody} && echo SEND MESSAGE?",
+      "options": {
+        "cwd": "${workspaceFolder}/push-notification"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Send Push Notification",
+      "type": "shell",
+      "command": "npm run start --prod --password=${input:messagePassword} --title=${input:messageTitle} --body=${input:messageBody}",
+      "options": {
+        "cwd": "${workspaceFolder}/push-notification"
+      },
+      "problemMatcher": [],
+      "dependsOn": ["makePushNotification"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "messagePassword",
+      "description": "Message Password:",
+      "default": "",
+      "type": "promptString"
+    },
+    {
+      "id": "messageTitle",
+      "description": "Message Title:",
+      "default": "",
+      "type": "promptString"
+    },
+    {
+      "id": "messageBody",
+      "description": "Message Body:",
+      "default": "",
+      "type": "promptString"
     }
   ]
 }
