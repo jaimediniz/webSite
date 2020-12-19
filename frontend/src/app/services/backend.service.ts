@@ -112,6 +112,25 @@ export class API {
     return true;
   }
 
+  async addSubscription(sub: PushSubscription): Promise<boolean> {
+    const JSONSub = sub.toJSON();
+    const payLoad = {
+      route: 'subscriptions',
+      endPoint: 'addSubscription',
+      publicKey: environment.publicKey,
+      name: 'Jaime',
+      endpointURL: JSONSub.endpoint,
+      p256dh: JSONSub.keys?.p256dh,
+      auth: JSONSub.keys?.auth
+    };
+    const apiResponse = await this.post(payLoad);
+    if (apiResponse.code != 200) {
+      return false;
+    }
+
+    return true;
+  }
+
   async post(payLoad: any): Promise<ApiResponse> {
     console.log(payLoad);
     try {
@@ -121,7 +140,7 @@ export class API {
       console.log(apiResponse);
       return apiResponse;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return {
         code: 500,
         data: {},

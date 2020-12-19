@@ -1,0 +1,15 @@
+# @name getSubscriptions
+POST {{ $dotenv baseUrl }}
+Content-Type: application/json
+
+{
+  "route": "subscriptions",
+  "endPoint": "getSubscriptions",
+  "password": "{{$dotenv password}}",
+  "publicKey": "{{$dotenv publicKey}}"
+}
+
+
+### GET Answer
+@answerURL = {{ getSubscriptions.response.headers.Location }}
+GET {{ answerURL }}

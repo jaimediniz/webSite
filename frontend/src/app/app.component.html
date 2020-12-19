@@ -6,7 +6,7 @@
     <router-outlet></router-outlet>
   </div>
 
-  <div [hidden]="!showOutlet" class="col-6" style="background-color: yellow">
+  <div [hidden]="!showOutlet" class="col-6">
     <router-outlet
       name="sidebar"
       (activate)="openSideRoute($event)"
