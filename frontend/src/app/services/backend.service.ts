@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
-
 export interface ApiResponse {
   code: number;
   error: boolean;
@@ -123,12 +122,32 @@ export class API {
       p256dh: JSONSub.keys?.p256dh,
       auth: JSONSub.keys?.auth
     };
-    const apiResponse = await this.post(payLoad);
+    const apiResponse = await this.subscribe(payLoad);
     if (apiResponse.code != 200) {
       return false;
     }
 
     return true;
+  }
+
+  async subscribe(payLoad: any): Promise<any> {
+    console.log(payLoad);
+    try {
+      return {
+        code: 200,
+        data: {},
+        error: false,
+        message: ''
+      };
+    } catch (e) {
+      console.error(e);
+      return {
+        code: 500,
+        data: {},
+        error: true,
+        message: 'Something is wrong!'
+      };
+    }
   }
 
   async post(payLoad: any): Promise<ApiResponse> {

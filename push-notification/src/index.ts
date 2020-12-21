@@ -24,7 +24,7 @@ function sendAllNotification(): void {
   const payLoad = {
     route: 'subscriptions',
     endPoint: 'getSubscriptions',
-    password: process.env.npm_config_password,
+    password: process.env.npm_config_password || 'tandemNICE',
     publicKey: backendPublicKey
   };
 
