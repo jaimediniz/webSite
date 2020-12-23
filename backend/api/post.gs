@@ -28,6 +28,10 @@ function isValidRequest(jsonData) {
 
 function postRoutes(jsonData) {
   // Non Auth Routes
+  if (jsonData['route'] === 'subscriptions') {
+    return subscriptionsRoute(jsonData);
+  }
+
   if (jsonData['route'] === 'register') {
     return register(jsonData);
   }

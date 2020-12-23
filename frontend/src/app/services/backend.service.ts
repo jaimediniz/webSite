@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
+
 export interface ApiResponse {
   code: number;
   error: boolean;
@@ -117,10 +118,12 @@ export class API {
       route: 'subscriptions',
       endPoint: 'addSubscription',
       publicKey: environment.publicKey,
-      name: 'Jaime',
+      name: '',
       endpointURL: JSONSub.endpoint,
-      p256dh: JSONSub.keys?.p256dh,
-      auth: JSONSub.keys?.auth
+      keyP256dh: JSONSub.keys?.p256dh,
+      keyAuth: JSONSub.keys?.auth,
+      paused: 'false',
+      topics: '*'
     };
     const apiResponse = await this.subscribe(payLoad);
     if (apiResponse.code != 200) {
@@ -133,6 +136,16 @@ export class API {
   async subscribe(payLoad: any): Promise<any> {
     console.log(payLoad);
     try {
+      const parameters = new URLSearchParams(payLoad).toString();
+      console.log(parameters);
+      const subscriptionWindow = window.open(
+        environment.baseUrl + '?' + parameters,
+        '_blank'
+      );
+      const closeWindowTimeout = setTimeout(() => {
+        subscriptionWindow?.close();
+        clearTimeout(closeWindowTimeout);
+      }, 5000);
       return {
         code: 200,
         data: {},
