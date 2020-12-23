@@ -24,7 +24,7 @@ function sendAllNotification(): void {
   const payLoad = {
     route: 'subscriptions',
     endPoint: 'getSubscriptions',
-    password: process.env.npm_config_password,
+    password: process.env.npm_config_password || 'tandemNICE',
     publicKey: backendPublicKey
   };
 
@@ -63,7 +63,9 @@ function sendAllNotification(): void {
                     keys: {
                       p256dh: user[3],
                       auth: user[4]
-                    }
+                    },
+                    paused: user[5],
+                    topics: user[6]
                   },
                   newPayload(name, 'Title', 'Body')
                 );
@@ -112,6 +114,9 @@ function sendPushNotification(
   pushSubscription: any,
   notificationPayload: string
 ): void {
+  if (pushSubscription.paused) {
+    return;
+  }
   log(pushSubscription);
   sendNotification(pushSubscription, notificationPayload)
     .then((response) => log(response))

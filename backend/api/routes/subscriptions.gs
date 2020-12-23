@@ -9,7 +9,7 @@ function subscriptionsRoute(jsonData) {
   }
 
   if (jsonData['endPoint'] === 'addSubscription') {
-    return addSubscription(jsonData);
+    return addSubscriptions(jsonData);
   }
 
   return postTextOutput(404, true, 'Route not found!', {
@@ -29,7 +29,7 @@ function getSubscriptions(jsonData) {
   }
 
   const lastRow = subsSS.getLastRow();
-  const allSubscriptions = subsSS.getRange(2, 1, lastRow - 1, 5).getValues();
+  const allSubscriptions = subsSS.getRange(2, 1, lastRow - 1, 7).getValues();
   return postTextOutput(200, false, 'Subscriptions!', {
     subscriptions: allSubscriptions
   });
@@ -41,15 +41,19 @@ function addSubscriptions(jsonData) {
 
   subsSS.getRange('A' + newLastRow).setValue(jsonData['name']);
   subsSS.getRange('B' + newLastRow).setValue(jsonData['endpointURL']);
-  subsSS.getRange('C' + newLastRow).setValue(jsonData['expirationTime']);
-  subsSS.getRange('D' + newLastRow).setValue(jsonData['p256dh']);
-  subsSS.getRange('E' + newLastRow).setValue(jsonData['auth']);
+  subsSS.getRange('C' + newLastRow).setValue('null');
+  subsSS.getRange('D' + newLastRow).setValue(jsonData['keyP256dh']);
+  subsSS.getRange('E' + newLastRow).setValue(jsonData['keyAuth']);
+  subsSS.getRange('F' + newLastRow).setValue(jsonData['paused']);
+  subsSS.getRange('G' + newLastRow).setValue(jsonData['topics']);
 
   return postTextOutput(201, false, 'Created!', {
     name: jsonData['name'],
     endpoint: jsonData['endpointURL'],
-    expirationTime: jsonData['expirationTime'],
-    p256dh: jsonData['p256dh'],
-    auth: jsonData['auth']
+    expirationTime: 'null',
+    keyP256dh: jsonData['keyP256dh'],
+    keyAuth: jsonData['keyAuth'],
+    paused: jsonData['paused'],
+    topics: jsonData['topics']
   });
 }
