@@ -26,8 +26,12 @@ function isValidRequest(jsonData) {
   return true;
 }
 
-const postRoutes = (jsonData) => {
+function postRoutes(jsonData) {
   // Non Auth Routes
+  if (jsonData['route'] === 'subscriptions') {
+    return subscriptionsRoute(jsonData);
+  }
+
   if (jsonData['route'] === 'register') {
     return register(jsonData);
   }
@@ -64,4 +68,4 @@ const postRoutes = (jsonData) => {
   }
 
   return adminRoute(jsonData);
-};
+}

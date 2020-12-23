@@ -1,0 +1,17 @@
+# Configuration
+configuration:
+  - any: ['github/**/*', './*']
+
+documentation: ./README.md
+
+# Backend
+backend: backend/**/*
+
+# Frontend
+frontend: frontend/**/*
+
+assets: frontend/src/assets/*
+
+environment: frontend/src/environments/*
+
+dependencies: frontend/package.json
