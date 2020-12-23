@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d7b6c16e-4860-4e4b-9d83-9a7290008c2c/deploy-status)](https://thinice.netlify.app)
+
 # Backend
 
 # Frontend
