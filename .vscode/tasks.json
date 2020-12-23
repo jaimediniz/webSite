@@ -41,7 +41,7 @@
     {
       "label": "makePushNotification",
       "type": "shell",
-      "command": "echo ${input:messageTitle}: ${input:messageBody} && echo SEND MESSAGE?",
+      "command": "echo ${input:messageTitle}: ${input:messageBody}: ${input:messageURL} && echo SEND MESSAGE?",
       "options": {
         "cwd": "${workspaceFolder}/push-notification"
       },
@@ -50,7 +50,7 @@
     {
       "label": "Send Push Notification",
       "type": "shell",
-      "command": "npm run start --prod --password=${input:messagePassword} --title=${input:messageTitle} --body=${input:messageBody}",
+      "command": "npm run start --prod --password=\"${input:messagePassword}\" --title=\"${input:messageTitle}\" --body=\"${input:messageBody}\" --url=\"${input:messageURL}\"",
       "options": {
         "cwd": "${workspaceFolder}/push-notification"
       },
@@ -74,6 +74,12 @@
     {
       "id": "messageBody",
       "description": "Message Body:",
+      "default": "",
+      "type": "promptString"
+    },
+    {
+      "id": "messageURL",
+      "description": "URL:",
       "default": "",
       "type": "promptString"
     }
