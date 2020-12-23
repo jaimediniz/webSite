@@ -1,5 +1,7 @@
 import { sendNotification, setVapidDetails, setGCMAPIKey } from 'web-push';
 import request from 'request';
+import fs from 'fs';
+import path from 'path';
 
 const email = 'jaimedinizn@gmail.com';
 const GCMAPIKey =
@@ -67,7 +69,7 @@ function sendAllNotification(): void {
                     paused: user[5],
                     topics: user[6]
                   },
-                  newPayload(name, 'Title', 'Body')
+                  newPayload(name, 'Title 1', 'Body 1')
                 );
               });
             } else {
@@ -87,26 +89,49 @@ function log(content: any) {
   console.dir(content);
 }
 
+var globalPayload: any;
 function newPayload(name: string, title?: string, body?: string) {
+  if (globalPayload) {
+    return globalPayload;
+  }
+
+  let actions: Array<any> = [];
+  if (process.env.npm_config_url) {
+    if ((process.env.npm_config_url as string).includes('skype')) {
+      actions = [
+        {
+          action: 'skype',
+          title: 'Skype session',
+          icon: '/assets/skype-icon.png'
+        }
+      ];
+    } else {
+      actions = [
+        {
+          action: 'website',
+          title: 'Go to link'
+        }
+      ];
+    }
+  }
+
   const payload = {
     notification: {
       title: process.env.npm_config_title || title,
       body: process.env.npm_config_body || body,
-      icon: '',
+      icon: '/assets/icons/icon-192x192.png',
+      badge: '/assets/icons/icon-128x128.png',
       vibrate: [100, 50, 100],
       data: {
         dateOfArrival: Date.now(),
-        primaryKey: 1
+        primaryKey: 1,
+        url: process.env.npm_config_url
       },
-      actions: [
-        {
-          action: 'explore',
-          title: 'Go to the site'
-        }
-      ]
+      actions: actions
     }
   };
   log(payload);
+  globalPayload = payload;
   return JSON.stringify(payload);
 }
 

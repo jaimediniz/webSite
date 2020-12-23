@@ -42,7 +42,7 @@ import { AppInstallComponent } from './components/app-install/app-install.compon
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
+    ServiceWorkerModule.register('custom-service-worker.js', {
       enabled: environment.production
     })
   ],
