@@ -11,7 +11,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  test() {
+  test(): void {
     this.api.subscribe({ username: 'jaime', password: '123' });
   }
 }

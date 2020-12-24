@@ -1,37 +1,29 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-function _getWindow(): any {
-  // return the native window obj
-  return window;
-}
+const getBaseWindow = (): Window => window;
 
 @Injectable({
   providedIn: 'root'
 })
 export class WindowService {
-  private _window: any;
   public deferredPromptSubject = new BehaviorSubject<any>(undefined);
   public isInStandaloneMode = false;
 
+  private windowEl: any;
+
   constructor() {
-    this._window = _getWindow();
+    this.windowEl = getBaseWindow();
     this.installPrompt();
   }
 
-  getWindow() {
-    return this._window;
+  getWindow(): Window {
+    return this.windowEl;
   }
 
-  installPrompt() {
-    this.getWindow().addEventListener('beforeinstallprompt', (event: any) => {
-      event.preventDefault();
-      console.log(event);
-      this.deferredPromptSubject.next(event);
-    });
-  }
+  installPrompt(): void {}
 
-  getDisplayMode() {
+  getDisplayMode(): void {
     this.getWindow().addEventListener('DOMContentLoaded', () => {
       let displayMode = 'browser tab';
       if ((navigator as any).standalone) {

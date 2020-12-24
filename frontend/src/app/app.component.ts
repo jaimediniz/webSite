@@ -19,17 +19,17 @@ export class AppComponent implements OnInit {
   @ViewChild('popupContainer', { read: ViewContainerRef })
   private popupContainer: ViewContainerRef;
 
-  public showOutlet: boolean = false;
+  public showOutlet = false;
 
   constructor(private router: Router, private winRef: WindowService) {}
 
   ngOnInit(): void {}
 
-  openSideRoute(event: any) {
+  openSideRoute(event: any): void {
     this.showOutlet = true;
   }
 
-  closeSideRoute(event: any) {
+  closeSideRoute(event: any): void {
     this.showOutlet = false;
   }
 }
