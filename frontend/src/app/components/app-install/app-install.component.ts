@@ -10,6 +10,7 @@ import { WindowService } from 'src/app/services/window.service';
 })
 export class AppInstallComponent implements OnInit {
   public installButton = false;
+  public subscribeButton = false;
 
   readonly vapidPublicKey =
     'BI-kZID4MzH86nyjsVHcE9CMwqSPrNtzga1weuQy_9-x68Kee5sxmbhmTUKy-QfhfofXomXZKxkNik5jZPEowOk';
@@ -17,11 +18,18 @@ export class AppInstallComponent implements OnInit {
   private windowEl: any;
 
   constructor(
-    public winRef: WindowService,
+    private winRef: WindowService,
     private swPush: SwPush,
     private api: API
   ) {
     this.windowEl = this.winRef.getWindow();
+    if (
+      Notification.permission === 'denied' ||
+      Notification.permission === 'default'
+    ) {
+      this.subscribeButton = true;
+    }
+
     if (!this.winRef.isInStandaloneMode) {
       this.installButton = this.winRef.deferredPromptSubject.value
         ? true
