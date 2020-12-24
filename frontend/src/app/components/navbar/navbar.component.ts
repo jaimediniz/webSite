@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { API } from 'src/app/services/backend.service';
-import { SweetAlertService } from 'src/app/services/sweetalert.service';
+import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 
 import { environment } from '../../../environments/environment';
 
