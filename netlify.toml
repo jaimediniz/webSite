@@ -1,0 +1,11 @@
+[build]
+  base = "frontend/"
+  publish = "dist/frontend"
+  command = "npm run build"
+  functions = "dist/functions"
+
+[[headers]]
+  for = "/*"
+
+  [headers.values]
+    X-Frame-Options = "DENY"

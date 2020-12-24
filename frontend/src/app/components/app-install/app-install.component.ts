@@ -9,18 +9,19 @@ import { WindowService } from 'src/app/services/window.service';
   styleUrls: ['./app-install.component.scss']
 })
 export class AppInstallComponent implements OnInit {
-  private _window: any;
-  public installButton: boolean = false;
+  public installButton = false;
 
-  readonly VAPID_PUBLIC_KEY =
+  readonly vapidPublicKey =
     'BI-kZID4MzH86nyjsVHcE9CMwqSPrNtzga1weuQy_9-x68Kee5sxmbhmTUKy-QfhfofXomXZKxkNik5jZPEowOk';
+
+  private windowEl: any;
 
   constructor(
     public winRef: WindowService,
     private swPush: SwPush,
     private api: API
   ) {
-    this._window = this.winRef.getWindow();
+    this.windowEl = this.winRef.getWindow();
     if (!this.winRef.isInStandaloneMode) {
       this.installButton = this.winRef.deferredPromptSubject.value
         ? true
@@ -35,7 +36,7 @@ export class AppInstallComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  installApp(event: any) {
+  installApp(event: any): void {
     console.log(this.winRef.deferredPromptSubject.value);
     // Show the install prompt
     this.winRef.deferredPromptSubject.value.prompt();
@@ -51,10 +52,10 @@ export class AppInstallComponent implements OnInit {
     );
   }
 
-  subscribeToNotifications(event: any) {
+  subscribeToNotifications(event: any): void {
     this.swPush
       .requestSubscription({
-        serverPublicKey: this.VAPID_PUBLIC_KEY
+        serverPublicKey: this.vapidPublicKey
       })
       .then((sub: PushSubscription) => {
         console.log(sub);
