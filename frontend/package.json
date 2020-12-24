@@ -4,8 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "https": "ng serve --ssl --ssl-key .\\src\\certificates\\localhost.key  --ssl-cert .\\src\\certificates\\localhost.crt",
-    "build": "ng build",
+    "dev": "run-p dev:*",
+    "dev:netlify": "netlify dev",
+    "dev:functions": "tsc -p tsconfig.functions.json -w",
+    "build": "ng build --prod && npm run build:functions",
+    "build:functions": "tsc -p tsconfig.functions.json",
     "test": "ng test",
     "test-prod": "ng build --prod --build-optimizer && http-server ./dist/frontend",
     "lint": "ng lint",
@@ -33,10 +36,12 @@
     "@angular-devkit/build-angular": "~0.1100.3",
     "@angular/cli": "~11.0.5",
     "@angular/compiler-cli": "~11.0.3",
+    "@types/aws-lambda": "^8.10.68",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^14.14.10",
     "bootstrap": "^4.5.3",
     "codelyzer": "^6.0.0",
+    "encoding": "^0.1.13",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~6.0.0",
     "karma": "~5.2.3",
@@ -44,10 +49,12 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "node-fetch": "^2.6.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
     "protractor": "~7.0.0",
     "ts-node": "~9.1.1",
     "tslint": "~6.1.0",
-    "typescript": "~4.0.2",
-    "prettier": "^2.2.1"
+    "typescript": "~4.0.2"
   }
 }

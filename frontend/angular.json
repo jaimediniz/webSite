@@ -112,6 +112,7 @@
           "options": {
             "tsConfig": [
               "tsconfig.app.json",
+              "tsconfig.functions.json",
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],

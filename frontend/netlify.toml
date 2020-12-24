@@ -1,8 +1,12 @@
 [build]
-  base = "frontend/"
   publish = "dist/frontend"
-  command = "npm run build"
   functions = "dist/functions"
+
+[dev]
+  framework = "#custom"
+  command = "npm run start"
+  autoLaunch = true
+  targetPort = 4200
 
 [[headers]]
   for = "/*"

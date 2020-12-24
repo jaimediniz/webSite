@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export interface ApiResponse {
   code: number;
@@ -134,6 +134,32 @@ export class API {
   }
 
   async subscribe(payLoad: any): Promise<any> {
+    console.log(payLoad);
+    try {
+      const response = await this.http
+        .get<Observable<Promise<any>>>(
+          '/.netlify/functions/subscribe?test=true'
+        )
+        .toPromise();
+      console.log(response);
+      return {
+        code: 200,
+        data: {},
+        error: false,
+        message: ''
+      };
+    } catch (e) {
+      console.error(e);
+      return {
+        code: 500,
+        data: {},
+        error: true,
+        message: 'Something is wrong!'
+      };
+    }
+  }
+
+  async subscribe2(payLoad: any): Promise<any> {
     console.log(payLoad);
     try {
       const parameters = new URLSearchParams(payLoad).toString();
