@@ -22,7 +22,7 @@ export async function handler(
 ): Promise<APIGatewayProxyResult> {
   const query: querySubscription = JSON.parse(event.body as string);
 
-  fetch(query.url, {
+  await fetch(query.url, {
     method: 'post',
     body: JSON.stringify(query.body),
     headers: { 'Content-Type': 'application/json' }
