@@ -138,41 +138,15 @@ export class API {
     console.log(payLoad);
     try {
       const response = await this.http
-        .get<Observable<Promise<any>>>(
-          '/.netlify/functions/subscribe?test=true'
+        .post<Observable<Promise<any>>>(
+          '/.netlify/functions/subscribe',
+          JSON.stringify({
+            url: environment.baseUrl,
+            body: payLoad
+          })
         )
         .toPromise();
       console.log(response);
-      return {
-        code: 200,
-        data: {},
-        error: false,
-        message: ''
-      };
-    } catch (e) {
-      console.error(e);
-      return {
-        code: 500,
-        data: {},
-        error: true,
-        message: 'Something is wrong!'
-      };
-    }
-  }
-
-  async subscribe2(payLoad: any): Promise<any> {
-    console.log(payLoad);
-    try {
-      const parameters = new URLSearchParams(payLoad).toString();
-      console.log(parameters);
-      const subscriptionWindow = window.open(
-        environment.baseUrl + '?' + parameters,
-        '_blank'
-      );
-      const closeWindowTimeout = setTimeout(() => {
-        subscriptionWindow?.close();
-        clearTimeout(closeWindowTimeout);
-      }, 5000);
       return {
         code: 200,
         data: {},
