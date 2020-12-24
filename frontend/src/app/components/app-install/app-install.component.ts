@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { API } from 'src/app/services/backend.service';
-import { SweetAlertService } from 'src/app/services/sweetalert.service';
+import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 import { WindowService } from 'src/app/services/window.service';
 
 @Component({
