@@ -89,8 +89,8 @@ function log(content: any) {
   console.dir(content);
 }
 
-var globalPayload: any;
-function newPayload(name: string, title?: string, body?: string) {
+var globalPayload: string;
+function newPayload(name: string, title?: string, body?: string): string {
   if (globalPayload) {
     return globalPayload;
   }
@@ -131,8 +131,8 @@ function newPayload(name: string, title?: string, body?: string) {
     }
   };
   log(payload);
-  globalPayload = payload;
-  return JSON.stringify(payload);
+  globalPayload = JSON.stringify(payload);
+  return globalPayload;
 }
 
 function sendPushNotification(
@@ -145,5 +145,5 @@ function sendPushNotification(
   log(pushSubscription);
   sendNotification(pushSubscription, notificationPayload)
     .then((response) => log(response))
-    .catch((err) => console.error('SEND PUSH ERROR:', err));
+    .catch((err: Error) => log(err.message));
 }
