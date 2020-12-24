@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 export interface ApiResponse {
   code: number;
@@ -21,9 +21,10 @@ export interface Message extends Array<string | number | boolean> {
 @Injectable({ providedIn: 'root' })
 export class API {
   public activeSession: Subject<string> = new Subject();
+  public isAdmin = false;
+
   private token = '';
   private tokenRow = 1;
-  public isAdmin = false;
 
   constructor(private http: HttpClient) {}
 
@@ -38,7 +39,7 @@ export class API {
     };
 
     const apiResponse = await this.post(payLoad);
-    if (apiResponse.code != 200) {
+    if (apiResponse.code !== 200) {
       return false;
     }
 
@@ -53,7 +54,7 @@ export class API {
 
   async logoff(): Promise<boolean> {
     this.activeSession.next('');
-    //TODO: send message to server to logout, or not, just leave old token!
+    // TODO: send message to server to logout, or not, just leave old token!
     return true;
   }
 
@@ -66,7 +67,7 @@ export class API {
     };
 
     const apiResponse = await this.post(payLoad);
-    if (apiResponse.code != 200) {
+    if (apiResponse.code !== 200) {
       return {};
     }
 
@@ -87,7 +88,7 @@ export class API {
     };
 
     const apiResponse = await this.post(payLoad);
-    if (apiResponse.code != 201) {
+    if (apiResponse.code !== 201) {
       return {};
     }
 
@@ -105,7 +106,7 @@ export class API {
     };
 
     const apiResponse = await this.post(payLoad);
-    if (apiResponse.code != 200) {
+    if (apiResponse.code !== 200) {
       return false;
     }
 
@@ -113,20 +114,20 @@ export class API {
   }
 
   async addSubscription(sub: PushSubscription): Promise<boolean> {
-    const JSONSub = sub.toJSON();
+    const jsonSub = sub.toJSON();
     const payLoad = {
       route: 'subscriptions',
       endPoint: 'addSubscription',
       publicKey: environment.publicKey,
       name: '',
-      endpointURL: JSONSub.endpoint,
-      keyP256dh: JSONSub.keys?.p256dh,
-      keyAuth: JSONSub.keys?.auth,
+      endpointURL: jsonSub.endpoint,
+      keyP256dh: jsonSub.keys?.p256dh,
+      keyAuth: jsonSub.keys?.auth,
       paused: 'false',
       topics: '*'
     };
     const apiResponse = await this.subscribe(payLoad);
-    if (apiResponse.code != 200) {
+    if (apiResponse.code !== 200) {
       return false;
     }
 
@@ -136,16 +137,16 @@ export class API {
   async subscribe(payLoad: any): Promise<any> {
     console.log(payLoad);
     try {
-      const parameters = new URLSearchParams(payLoad).toString();
-      console.log(parameters);
-      const subscriptionWindow = window.open(
-        environment.baseUrl + '?' + parameters,
-        '_blank'
-      );
-      const closeWindowTimeout = setTimeout(() => {
-        subscriptionWindow?.close();
-        clearTimeout(closeWindowTimeout);
-      }, 5000);
+      const response = await this.http
+        .post<Observable<Promise<any>>>(
+          '/.netlify/functions/subscribe',
+          JSON.stringify({
+            url: environment.baseUrl,
+            body: payLoad
+          })
+        )
+        .toPromise();
+      console.log(response);
       return {
         code: 200,
         data: {},
