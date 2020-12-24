@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { API } from 'src/app/services/backend.service';
+import { SweetAlertService } from 'src/app/services/sweetalert.service';
 import { WindowService } from 'src/app/services/window.service';
 
 @Component({
@@ -20,19 +21,17 @@ export class AppInstallComponent implements OnInit {
   constructor(
     private winRef: WindowService,
     private swPush: SwPush,
-    private api: API
+    private api: API,
+    private alert: SweetAlertService
   ) {
     this.windowEl = this.winRef.getWindow();
-    if (
-      Notification.permission === 'denied' ||
-      Notification.permission === 'default'
-    ) {
-      this.subscribeButton = true;
+    if (Notification.permission === 'default') {
+      this.askToSubscribe();
     }
 
     if (!this.winRef.isInStandaloneMode) {
       this.installButton = this.winRef.deferredPromptSubject.value
-        ? true
+        ? false // hide button
         : false;
       this.winRef.deferredPromptSubject.subscribe((e: any) => {
         if (e) {
@@ -60,7 +59,19 @@ export class AppInstallComponent implements OnInit {
     );
   }
 
-  subscribeToNotifications(event: any): void {
+  async askToSubscribe(): Promise<void> {
+    const subscribe = await this.alert.fireQuestion(
+      'Subscribe to Notifications',
+      'This way you can keep updated!',
+      'question',
+      'Subscribe',
+      'Cancel'
+    );
+
+    if (!subscribe) {
+      return;
+    }
+
     this.swPush
       .requestSubscription({
         serverPublicKey: this.vapidPublicKey
@@ -68,9 +79,17 @@ export class AppInstallComponent implements OnInit {
       .then((sub: PushSubscription) => {
         console.log(sub);
         const resp = this.api.addSubscription(sub);
+        if (resp) {
+          this.alert.fire('Subscribed!', '', 'success');
+        }
       })
-      .catch((err) =>
-        console.error('Could not subscribe to notifications', err)
-      );
+      .catch((err: Error) => {
+        this.alert.fire(
+          'Error!',
+          (err.message || '').replace('Error: ', ''),
+          'error'
+        );
+        console.error('Could not subscribe to notifications', err);
+      });
   }
 }
