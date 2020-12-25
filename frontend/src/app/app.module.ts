@@ -19,7 +19,7 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { FooterComponent } from './components/footer/footer.component';
-import { AppInstallComponent } from './components/app-install/app-install.component';
+import { AppInstallComponent } from './components/external/external.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { LoadingInterceptorService } from './shared/loading-interceptor.service';
 import { MaterialModule } from './material.module';

@@ -7,9 +7,9 @@ import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 import { WindowService } from 'src/app/services/window.service';
 
 @Component({
-  selector: 'app-app-install',
-  templateUrl: './app-install.component.html',
-  styleUrls: ['./app-install.component.scss']
+  selector: 'app-external',
+  templateUrl: './external.component.html',
+  styleUrls: ['./external.component.scss']
 })
 export class AppInstallComponent implements OnInit {
   public installButton = false;
