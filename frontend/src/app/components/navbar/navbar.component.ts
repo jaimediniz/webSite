@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { API } from 'src/app/services/backend.service';
-import { SweetAlertService } from 'src/app/services/sweetAlert.service';
-
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -10,11 +7,11 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  constructor(private alert: SweetAlertService) {}
+  constructor(private api: API) {}
 
   ngOnInit(): void {}
 
   test(): void {
-    this.alert.fireQuestion('test', 'test', 'question', 'Confirm', 'Cancel');
+    this.api.login({ username: 'Jaime', password: '123' });
   }
 }

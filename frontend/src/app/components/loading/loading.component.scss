@@ -1,0 +1,14 @@
+.spinner {
+  display: flex;
+  position: absolute;
+  z-index: 1059;
+  align-items: center;
+  vertical-align: middle;
+  place-content: center;
+  .background {
+    position: absolute;
+    z-index: -1;
+    background-color: rgb(0, 0, 0);
+    opacity: 0.4;
+  }
+}
