@@ -86,12 +86,8 @@ export class AppInstallComponent implements OnInit {
         this.alert.fire('Subscribed!', '', 'success');
       }
     } catch (err) {
-      this.alert.fire(
-        'Error!',
-        (err.message || '').replace('Error: ', ''),
-        'error'
-      );
-      this.logger.error('Could not subscribe to notifications', err);
+      this.alert.fire('Error!', err.message, 'error');
+      this.logger.error(err.message);
     }
   }
 }
