@@ -4,13 +4,15 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "run-p dev:*",
+    "dev": "run-p --print-label dev:*",
     "dev:netlify": "netlify dev",
     "dev:functions": "tsc -p tsconfig.functions.json -w",
     "build": "ng build --prod && npm run build:functions",
     "build:functions": "tsc -p tsconfig.functions.json",
     "test": "ng test",
-    "test-prod": "npm run build:functions && ng build --prod --build-optimizer && http-server ./dist/frontend",
+    "test-prod": "run-p --print-label test-prod:*",
+    "test-prod:frontend": "ng build --prod --build-optimizer && http-server ./dist/frontend --proxy http://127.0.0.1:8888",
+    "test-prod:functions": "npm run build:functions && npm run dev:netlify",
     "lint": "npx ng lint tandem_nice --fix",
     "e2e": "ng e2e"
   },
