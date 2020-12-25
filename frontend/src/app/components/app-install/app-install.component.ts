@@ -76,29 +76,22 @@ export class AppInstallComponent implements OnInit {
       return;
     }
 
-    this.loading.manualStart();
-    this.swPush
-      .requestSubscription({
+    try {
+      const sub: PushSubscription = await this.swPush.requestSubscription({
         serverPublicKey: this.vapidPublicKey
-      })
-      .then((sub: PushSubscription) => {
-        this.loading.manualStop();
-        return sub;
-      })
-      .then((sub: PushSubscription) => {
-        this.logger.log('Subscription:', sub);
-        const resp = this.api.addSubscription(sub);
-        if (resp) {
-          this.alert.fire('Subscribed!', '', 'success');
-        }
-      })
-      .catch((err: Error) => {
-        this.alert.fire(
-          'Error!',
-          (err.message || '').replace('Error: ', ''),
-          'error'
-        );
-        this.logger.error('Could not subscribe to notifications', err);
       });
+      this.logger.log('Subscription:', sub);
+      const resp = await this.api.addSubscription(sub);
+      if (resp) {
+        this.alert.fire('Subscribed!', '', 'success');
+      }
+    } catch (err) {
+      this.alert.fire(
+        'Error!',
+        (err.message || '').replace('Error: ', ''),
+        'error'
+      );
+      this.logger.error('Could not subscribe to notifications', err);
+    }
   }
 }
