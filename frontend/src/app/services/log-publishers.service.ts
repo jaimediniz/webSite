@@ -8,13 +8,13 @@ import {
 
 @Injectable()
 export class LogPublishersService {
+  // Public properties
+
+  publishers: LogPublisher[] = [];
   constructor() {
     // Build publishers arrays
     this.buildPublishers();
   }
-
-  // Public properties
-  publishers: LogPublisher[] = [];
 
   // Build publishers array
   buildPublishers(): void {

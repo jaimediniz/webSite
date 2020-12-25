@@ -32,7 +32,7 @@ export class LogLocalStorage extends LogPublisher {
 
   // Append log entry to local storage
   log(entry: LogEntry): Observable<boolean> {
-    let ret: boolean = false;
+    let ret = false;
     let values: LogEntry[];
 
     try {

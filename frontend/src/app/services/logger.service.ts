@@ -3,23 +3,24 @@ import { LogPublisher } from '../shared/log-publisher';
 import { LogPublishersService } from './log-publishers.service';
 
 export enum LogLevel {
-  All = 0,
-  Debug = 1,
-  Info = 2,
-  Warn = 3,
-  Error = 4,
-  Fatal = 5,
-  Off = 6
+  displayAll = 0,
+  displayDebug = 1,
+  displayInfo = 2,
+  displayWarn = 3,
+  displayError = 4,
+  displayFatal = 5,
+  displayOff = 6
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoggerService {
+  publishers: LogPublisher[];
+
   private level = 0;
   private logWithDate = false;
 
-  publishers: LogPublisher[];
   constructor(private publishersService: LogPublishersService) {
     // Set publishers
     this.publishers = this.publishersService.publishers;
@@ -44,48 +45,47 @@ export class LoggerService {
   }
 
   debug(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.Debug, optionalParams);
+    this.writeToLog(msg, LogLevel.displayDebug, optionalParams);
   }
 
   info(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.Info, optionalParams);
+    this.writeToLog(msg, LogLevel.displayInfo, optionalParams);
   }
 
   warn(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.Warn, optionalParams);
+    this.writeToLog(msg, LogLevel.displayWarn, optionalParams);
   }
 
   error(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.Error, optionalParams);
+    this.writeToLog(msg, LogLevel.displayError, optionalParams);
   }
 
   fatal(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.Fatal, optionalParams);
+    this.writeToLog(msg, LogLevel.displayFatal, optionalParams);
   }
 
   log(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.All, optionalParams);
+    this.writeToLog(msg, LogLevel.displayAll, optionalParams);
   }
 
   private writeToLog(msg: string, level: LogLevel, params: any[]) {
     if (this.shouldLog(level)) {
-      let entry: LogEntry = new LogEntry();
+      const entry: LogEntry = new LogEntry();
       entry.message = msg;
       entry.level = this.level;
       entry.extraInfo = params;
       entry.logWithDate = this.logWithDate;
-      console.log(this.level);
-      for (let logger of this.publishers) {
+      for (const logger of this.publishers) {
         logger.log(entry).subscribe((response) => {});
       }
     }
   }
 
   private shouldLog(level: LogLevel): boolean {
-    let ret: boolean = false;
+    let ret = false;
     if (
-      (level >= this.level && level !== LogLevel.Off) ||
-      this.level === LogLevel.All
+      (level >= this.level && level !== LogLevel.displayOff) ||
+      this.level === LogLevel.displayAll
     ) {
       ret = true;
     }
@@ -96,13 +96,13 @@ export class LoggerService {
 export class LogEntry {
   // Public Properties
   entryDate: Date = new Date();
-  message: string = '';
-  level: LogLevel = LogLevel.Debug;
+  message = '';
+  level: LogLevel = LogLevel.displayDebug;
   extraInfo: any[] = [];
-  logWithDate: boolean = true;
+  logWithDate = true;
 
   buildLogString(): string {
-    let ret: string = '';
+    let ret = '';
 
     if (this.logWithDate) {
       ret = new Date() + ' - ';
@@ -125,7 +125,7 @@ export class LogEntry {
       ret = '';
 
       // Build comma-delimited string
-      for (let item of params) {
+      for (const item of params) {
         ret += JSON.stringify(item) + ',';
       }
     }

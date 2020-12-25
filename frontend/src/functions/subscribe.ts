@@ -1,7 +1,7 @@
 import { APIGatewayEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import fetch from 'node-fetch';
 
-interface querySubscription {
+interface QuerySubscription {
   url: string;
   body: {
     route: string;
@@ -16,11 +16,11 @@ interface querySubscription {
   };
 }
 
-export async function handler(
+exports.handler = async (
   event: APIGatewayEvent,
   context: Context
-): Promise<APIGatewayProxyResult> {
-  const query: querySubscription = JSON.parse(event.body as string);
+): Promise<APIGatewayProxyResult> => {
+  const query: QuerySubscription = JSON.parse(event.body as string);
 
   await fetch(query.url, {
     method: 'post',
@@ -35,4 +35,4 @@ export async function handler(
     },
     body: '{"Created":true}'
   };
-}
+};
