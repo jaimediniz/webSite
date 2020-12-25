@@ -35,7 +35,7 @@ export class WindowService {
       }
 
       // Log launch display mode to analytics
-      this.logger.info('DISPLAY_MODE_LAUNCH:', displayMode);
+      this.logger.log('DISPLAY_MODE_LAUNCH:', displayMode);
 
       if (displayMode === 'browser tab') {
         this.isInStandaloneMode = false;

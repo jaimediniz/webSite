@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LogPublisher } from '../shared/log-publisher';
-import { LogPublishersService } from './log-publishers.service';
+import { localStoreLocation, LogPublisher } from '../shared/log-publisher';
+import { LogPublishersService } from '../shared/log-publishers.service';
 
 export enum LogLevel {
   displayAll = 0,
@@ -19,7 +19,7 @@ export class LoggerService {
   publishers: LogPublisher[];
 
   private level = 0;
-  private logWithDate = false;
+  private logWithDate = true;
 
   constructor(private publishersService: LogPublishersService) {
     // Set publishers
@@ -40,44 +40,95 @@ export class LoggerService {
     return `Logger Level: ${LogLevel[this.level]}`;
   }
 
-  setLogWithDate() {
-    this.logWithDate = true;
+  setLogWithDate(status: boolean): string {
+    this.logWithDate = status;
+    return `Log with date: ${status}`;
   }
 
   debug(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.displayDebug, optionalParams);
+    this.writeToLog(
+      msg,
+      'color:OliveDrab;',
+      LogLevel.displayDebug,
+      optionalParams
+    );
   }
 
   info(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.displayInfo, optionalParams);
+    this.writeToLog(msg, 'color:Blue;', LogLevel.displayInfo, optionalParams);
   }
 
   warn(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.displayWarn, optionalParams);
+    this.writeToLog(msg, 'color:Orange;', LogLevel.displayWarn, optionalParams);
   }
 
   error(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.displayError, optionalParams);
+    this.writeToLog(msg, 'color:Red;', LogLevel.displayError, optionalParams);
   }
 
   fatal(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.displayFatal, optionalParams);
+    this.writeToLog(
+      msg,
+      'color:Tomato;font-weight:bold;',
+      LogLevel.displayFatal,
+      optionalParams
+    );
   }
 
   log(msg: string, ...optionalParams: any[]) {
-    this.writeToLog(msg, LogLevel.displayAll, optionalParams);
+    this.writeToLog(msg, '', LogLevel.displayAll, optionalParams);
   }
 
-  private writeToLog(msg: string, level: LogLevel, params: any[]) {
-    if (this.shouldLog(level)) {
-      const entry: LogEntry = new LogEntry();
-      entry.message = msg;
-      entry.level = this.level;
-      entry.extraInfo = params;
-      entry.logWithDate = this.logWithDate;
-      for (const logger of this.publishers) {
-        logger.log(entry).subscribe((response) => {});
+  showStoredLogs(): void {
+    const values: Array<LogEntry> =
+      JSON.parse(localStorage?.getItem(localStoreLocation) || 'null') || [];
+
+    if (values.length) {
+      console.log(
+        '%c############### LOCAL STORAGE ###############',
+        'color:Tomato;font-weight:bold;'
+      );
+    }
+
+    values.forEach((element: LogEntry) => {
+      if (!this.shouldLog(element.level)) {
+        return;
       }
+      let ret = element.color ? '%c' : '';
+      ret += element.logWithDate ? `[${element.entryDate}]\n` : '';
+      ret += '- Message: ' + element.message;
+      if (element.extraInfo.length) {
+        ret += '\n- Extra Info:' + formatParams(element.extraInfo);
+      }
+      console.log(ret, element.color);
+    });
+
+    if (values.length) {
+      console.log(
+        '%c#############################################',
+        'color:Tomato;font-weight:bold;'
+      );
+    }
+  }
+
+  private writeToLog(
+    msg: string,
+    color: string,
+    level: LogLevel,
+    params: any[]
+  ): void {
+    if (!this.shouldLog(level)) {
+      return;
+    }
+
+    const entry: LogEntry = new LogEntry();
+    entry.message = msg;
+    entry.level = this.level;
+    entry.extraInfo = params;
+    entry.logWithDate = this.logWithDate;
+    entry.color = color;
+    for (const logger of this.publishers) {
+      logger.log(entry, color).subscribe((response) => {});
     }
   }
 
@@ -93,41 +144,36 @@ export class LoggerService {
   }
 }
 
+const formatParams = (params: any[]): string => {
+  let ret: string = params.join(',');
+
+  // Is there at least one object in the array?
+  if (params.some((p) => typeof p == 'object')) {
+    ret = '';
+
+    // Build comma-delimited string
+    for (const item of params) {
+      ret += '\n    - ' + JSON.stringify(item);
+    }
+  }
+  return ret;
+};
+
 export class LogEntry {
   // Public Properties
-  entryDate: Date = new Date();
+  entryDate: string = new Date().toUTCString();
   message = '';
   level: LogLevel = LogLevel.displayDebug;
   extraInfo: any[] = [];
   logWithDate = true;
+  color = '';
 
   buildLogString(): string {
-    let ret = '';
-
-    if (this.logWithDate) {
-      ret = new Date() + ' - ';
-    }
-
-    ret += 'Type: ' + LogLevel[this.level];
-    ret += ' - Message: ' + this.message;
+    let ret = this.color ? '%c' : '';
+    ret += this.logWithDate ? `[${this.entryDate}]\n` : '';
+    ret += '- Message: ' + this.message;
     if (this.extraInfo.length) {
-      ret += ' - Extra Info: ' + this.formatParams(this.extraInfo);
-    }
-
-    return ret;
-  }
-
-  private formatParams(params: any[]): string {
-    let ret: string = params.join(',');
-
-    // Is there at least one object in the array?
-    if (params.some((p) => typeof p == 'object')) {
-      ret = '';
-
-      // Build comma-delimited string
-      for (const item of params) {
-        ret += JSON.stringify(item) + ',';
-      }
+      ret += '\n- Extra Info:' + formatParams(this.extraInfo);
     }
 
     return ret;

@@ -2,16 +2,18 @@ import 'rxjs/add/observable/of';
 import { LogEntry } from '../services/logger.service';
 import { Observable, of } from 'rxjs';
 
+export const localStoreLocation = 'logging';
+
 export abstract class LogPublisher {
   location: string;
-  abstract log(record: LogEntry): Observable<boolean>;
+  abstract log(record: LogEntry, color: string): Observable<boolean>;
   abstract clear(): Observable<boolean>;
 }
 
 export class LogConsole extends LogPublisher {
-  log(entry: LogEntry): Observable<boolean> {
+  log(entry: LogEntry, color: string): Observable<boolean> {
     // Log to console
-    console.log(entry.buildLogString());
+    console.log(entry.buildLogString(), color);
     return of(true);
   }
 
@@ -27,11 +29,11 @@ export class LogLocalStorage extends LogPublisher {
     super();
 
     // Set location
-    this.location = 'logging';
+    this.location = localStoreLocation;
   }
 
   // Append log entry to local storage
-  log(entry: LogEntry): Observable<boolean> {
+  log(entry: LogEntry, color: string): Observable<boolean> {
     let ret = false;
     let values: LogEntry[];
 

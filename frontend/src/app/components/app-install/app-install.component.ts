@@ -46,16 +46,16 @@ export class AppInstallComponent implements OnInit {
   ngOnInit(): void {}
 
   installApp(event: any): void {
-    this.logger.info('', this.winRef.deferredPromptSubject.value);
+    this.logger.log('', this.winRef.deferredPromptSubject.value);
     // Show the install prompt
     this.winRef.deferredPromptSubject.value.prompt();
     // Wait for the user to respond to the prompt
     this.winRef.deferredPromptSubject.value.userChoice.then(
       (choiceResult: { outcome: string }) => {
         if (choiceResult.outcome === 'accepted') {
-          this.logger.info('User accepted the install prompt');
+          this.logger.log('User accepted the install prompt');
         } else {
-          this.logger.info('User dismissed the install prompt');
+          this.logger.log('User dismissed the install prompt');
         }
       }
     );
@@ -79,7 +79,7 @@ export class AppInstallComponent implements OnInit {
         serverPublicKey: this.vapidPublicKey
       })
       .then((sub: PushSubscription) => {
-        this.logger.info('Subscription:', sub);
+        this.logger.log('Subscription:', sub);
         const resp = this.api.addSubscription(sub);
         if (resp) {
           this.alert.fire('Subscribed!', '', 'success');

@@ -44,7 +44,7 @@ export class API {
       return false;
     }
 
-    this.logger.info('Login was a success!');
+    this.logger.log('Login was a success!');
 
     this.token = apiResponse.data.token;
     this.tokenRow = apiResponse.data.tokenRow;
@@ -136,7 +136,7 @@ export class API {
   }
 
   async subscribe(payLoad: any): Promise<any> {
-    this.logger.info('Payload', payLoad);
+    this.logger.log('Payload', payLoad);
     try {
       const response = await this.http
         .post<Observable<Promise<any>>>(
@@ -147,15 +147,15 @@ export class API {
           })
         )
         .toPromise();
-      this.logger.info('Response:', response);
+      this.logger.log('Response:', response);
       return {
         code: 200,
         data: {},
         error: false,
         message: ''
       };
-    } catch (e) {
-      this.logger.error('', e);
+    } catch (error) {
+      this.logger.error(error.message);
       return {
         code: 500,
         data: {},
@@ -166,15 +166,15 @@ export class API {
   }
 
   async post(payLoad: any): Promise<ApiResponse> {
-    this.logger.info('Payload', payLoad);
+    this.logger.log('Payload', payLoad);
     try {
       const apiResponse = await this.http
         .post<ApiResponse>(environment.baseUrl, JSON.stringify(payLoad))
         .toPromise();
-      this.logger.info('API Response', apiResponse);
+      this.logger.log('API Response', apiResponse);
       return apiResponse;
-    } catch (e) {
-      this.logger.error('', e);
+    } catch (error) {
+      this.logger.error(error.message);
       return {
         code: 500,
         data: {},
