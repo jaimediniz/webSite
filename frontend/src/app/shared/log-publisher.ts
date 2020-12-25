@@ -1,6 +1,6 @@
 import 'rxjs/add/observable/of';
 import { LogEntry } from '../services/logger.service';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export const localStoreLocation = 'logging';
 
@@ -14,12 +14,12 @@ export class LogConsole extends LogPublisher {
   log(entry: LogEntry, color: string): Observable<boolean> {
     // Log to console
     console.log(entry.buildLogString(), color);
-    return of(true);
+    return Observable.of(true);
   }
 
   clear(): Observable<boolean> {
     console.clear();
-    return of(true);
+    return Observable.of(true);
   }
 }
 
@@ -54,12 +54,12 @@ export class LogLocalStorage extends LogPublisher {
       console.warn(ex);
     }
 
-    return of(ret);
+    return Observable.of(ret);
   }
 
   // Clear all log entries from local storage
   clear(): Observable<boolean> {
     localStorage.removeItem(this.location);
-    return of(true);
+    return Observable.of(true);
   }
 }
