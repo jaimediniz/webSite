@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { Observable, Subject } from 'rxjs';
+import { LoggerService } from './logger.service';
 
 export interface ApiResponse {
   code: number;
@@ -26,7 +27,7 @@ export class API {
   private token = '';
   private tokenRow = 1;
 
-  constructor(private http: HttpClient) {}
+  constructor(private logger: LoggerService, private http: HttpClient) {}
 
   async login(jsonData: {
     username: string;
@@ -43,7 +44,7 @@ export class API {
       return false;
     }
 
-    console.log('Login was a success!');
+    this.logger.info('Login was a success!');
 
     this.token = apiResponse.data.token;
     this.tokenRow = apiResponse.data.tokenRow;
@@ -135,7 +136,7 @@ export class API {
   }
 
   async subscribe(payLoad: any): Promise<any> {
-    console.log(payLoad);
+    this.logger.info('Payload', payLoad);
     try {
       const response = await this.http
         .post<Observable<Promise<any>>>(
@@ -146,7 +147,7 @@ export class API {
           })
         )
         .toPromise();
-      console.log(response);
+      this.logger.info('Response:', response);
       return {
         code: 200,
         data: {},
@@ -154,7 +155,7 @@ export class API {
         message: ''
       };
     } catch (e) {
-      console.error(e);
+      this.logger.error('', e);
       return {
         code: 500,
         data: {},
@@ -165,15 +166,15 @@ export class API {
   }
 
   async post(payLoad: any): Promise<ApiResponse> {
-    console.log(payLoad);
+    this.logger.info('Payload', payLoad);
     try {
       const apiResponse = await this.http
         .post<ApiResponse>(environment.baseUrl, JSON.stringify(payLoad))
         .toPromise();
-      console.log(apiResponse);
+      this.logger.info('API Response', apiResponse);
       return apiResponse;
     } catch (e) {
-      console.error(e);
+      this.logger.error('', e);
       return {
         code: 500,
         data: {},

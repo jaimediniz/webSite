@@ -6,6 +6,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { LoggerService } from 'src/app/services/logger.service';
 import { LoadingService } from '../../services/loading.service';
 
 @Component({
@@ -23,7 +24,6 @@ export class LoadingComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
-    console.log('Start Spinner!');
     this.loadingSubscription = this.loadingScreenService.loading$
       .pipe()
       .subscribe((status: boolean) => {
@@ -33,7 +33,6 @@ export class LoadingComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('Destroy Spinner!');
     this.loadingSubscription.unsubscribe();
   }
 }

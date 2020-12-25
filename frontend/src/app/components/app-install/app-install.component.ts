@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { API } from 'src/app/services/backend.service';
+import { LoggerService } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 import { WindowService } from 'src/app/services/window.service';
 
@@ -19,6 +20,7 @@ export class AppInstallComponent implements OnInit {
   private windowEl: any;
 
   constructor(
+    private logger: LoggerService,
     private winRef: WindowService,
     private swPush: SwPush,
     private api: API,
@@ -44,16 +46,16 @@ export class AppInstallComponent implements OnInit {
   ngOnInit(): void {}
 
   installApp(event: any): void {
-    console.log(this.winRef.deferredPromptSubject.value);
+    this.logger.info('', this.winRef.deferredPromptSubject.value);
     // Show the install prompt
     this.winRef.deferredPromptSubject.value.prompt();
     // Wait for the user to respond to the prompt
     this.winRef.deferredPromptSubject.value.userChoice.then(
       (choiceResult: { outcome: string }) => {
         if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
+          this.logger.info('User accepted the install prompt');
         } else {
-          console.log('User dismissed the install prompt');
+          this.logger.info('User dismissed the install prompt');
         }
       }
     );
@@ -77,7 +79,7 @@ export class AppInstallComponent implements OnInit {
         serverPublicKey: this.vapidPublicKey
       })
       .then((sub: PushSubscription) => {
-        console.log(sub);
+        this.logger.info('Subscription:', sub);
         const resp = this.api.addSubscription(sub);
         if (resp) {
           this.alert.fire('Subscribed!', '', 'success');
@@ -89,7 +91,7 @@ export class AppInstallComponent implements OnInit {
           (err.message || '').replace('Error: ', ''),
           'error'
         );
-        console.error('Could not subscribe to notifications', err);
+        this.logger.error('Could not subscribe to notifications', err);
       });
   }
 }
