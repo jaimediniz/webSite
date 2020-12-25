@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { API } from 'src/app/services/backend.service';
+import { LoadingService } from 'src/app/services/loading.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 import { WindowService } from 'src/app/services/window.service';
@@ -24,7 +25,8 @@ export class AppInstallComponent implements OnInit {
     private winRef: WindowService,
     private swPush: SwPush,
     private api: API,
-    private alert: SweetAlertService
+    private alert: SweetAlertService,
+    private loading: LoadingService
   ) {
     this.windowEl = this.winRef.getWindow();
     if (Notification.permission === 'default') {
@@ -74,9 +76,14 @@ export class AppInstallComponent implements OnInit {
       return;
     }
 
+    this.loading.manualStart();
     this.swPush
       .requestSubscription({
         serverPublicKey: this.vapidPublicKey
+      })
+      .then((sub: PushSubscription) => {
+        this.loading.manualStop();
+        return sub;
       })
       .then((sub: PushSubscription) => {
         this.logger.log('Subscription:', sub);
