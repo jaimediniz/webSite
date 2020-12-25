@@ -33,6 +33,6 @@ exports.handler = async (
     headers: {
       'Content-Type': 'application/json'
     },
-    body: '{"Created":true}'
+    body: '{"code":201,"error":false,"message":"Success!"}'
   };
 };

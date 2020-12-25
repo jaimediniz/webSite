@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { API } from 'src/app/services/backend.service';
+import { LoadingService } from 'src/app/services/loading.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 import { WindowService } from 'src/app/services/window.service';
@@ -24,7 +25,8 @@ export class AppInstallComponent implements OnInit {
     private winRef: WindowService,
     private swPush: SwPush,
     private api: API,
-    private alert: SweetAlertService
+    private alert: SweetAlertService,
+    private loading: LoadingService
   ) {
     this.windowEl = this.winRef.getWindow();
     if (Notification.permission === 'default') {
@@ -74,24 +76,22 @@ export class AppInstallComponent implements OnInit {
       return;
     }
 
-    this.swPush
-      .requestSubscription({
+    try {
+      const sub: PushSubscription = await this.swPush.requestSubscription({
         serverPublicKey: this.vapidPublicKey
-      })
-      .then((sub: PushSubscription) => {
-        this.logger.log('Subscription:', sub);
-        const resp = this.api.addSubscription(sub);
-        if (resp) {
-          this.alert.fire('Subscribed!', '', 'success');
-        }
-      })
-      .catch((err: Error) => {
-        this.alert.fire(
-          'Error!',
-          (err.message || '').replace('Error: ', ''),
-          'error'
-        );
-        this.logger.error('Could not subscribe to notifications', err);
       });
+      this.logger.log('Subscription:', sub);
+      const resp = await this.api.addSubscription(sub);
+      if (resp) {
+        this.alert.fire('Subscribed!', '', 'success');
+      }
+    } catch (err) {
+      this.alert.fire(
+        'Error!',
+        (err.message || '').replace('Error: ', ''),
+        'error'
+      );
+      this.logger.error('Could not subscribe to notifications', err);
+    }
   }
 }

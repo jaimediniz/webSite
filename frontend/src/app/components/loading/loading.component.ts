@@ -1,12 +1,10 @@
 import {
   Component,
-  ElementRef,
   ChangeDetectorRef,
   AfterViewInit,
   OnDestroy
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { LoggerService } from 'src/app/services/logger.service';
 import { LoadingService } from '../../services/loading.service';
 
 @Component({
