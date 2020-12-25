@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatCardModule } from '@angular/material/card';
@@ -20,6 +20,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { FooterComponent } from './components/footer/footer.component';
 import { AppInstallComponent } from './components/app-install/app-install.component';
+import { LoadingComponent } from './components/loading/loading.component';
+import { LoadingInterceptorService } from './services/loading-interceptor.service';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
@@ -28,9 +31,11 @@ import { AppInstallComponent } from './components/app-install/app-install.compon
     NavbarComponent,
     AppComponent,
     FooterComponent,
-    AppInstallComponent
+    AppInstallComponent,
+    LoadingComponent
   ],
   imports: [
+    MaterialModule,
     BrowserModule,
     CommonModule,
     FormsModule,
@@ -53,7 +58,13 @@ import { AppInstallComponent } from './components/app-install/app-install.compon
     MatIconModule,
     MatCardModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

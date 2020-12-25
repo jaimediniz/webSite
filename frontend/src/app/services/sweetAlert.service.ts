@@ -13,9 +13,9 @@ export class SweetAlertService {
     icon: 'warning' | 'success' | 'error' | 'info' | 'question' | undefined
   ): void {
     Swal.fire({
-      title: title,
-      text: text,
-      icon: icon
+      title,
+      text,
+      icon
     });
   }
 
@@ -27,9 +27,9 @@ export class SweetAlertService {
     cancelButton: string
   ): Promise<boolean> {
     const result = await Swal.fire({
-      title: title,
-      text: text,
-      icon: icon,
+      title,
+      text,
+      icon,
       showCancelButton: true,
       confirmButtonText: confirmButton,
       cancelButtonText: cancelButton
