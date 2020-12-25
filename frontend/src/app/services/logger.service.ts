@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { localStoreLocation, LogPublisher } from '../shared/log-publisher';
 import { LogPublishersService } from '../shared/log-publishers.service';
 
@@ -18,7 +19,7 @@ export enum LogLevel {
 export class LoggerService {
   publishers: LogPublisher[];
 
-  private level = 0;
+  private level = environment.production ? 6 : 0;
   private logWithDate = true;
 
   constructor(private publishersService: LogPublishersService) {
