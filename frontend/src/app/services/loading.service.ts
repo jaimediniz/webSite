@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +9,10 @@ export class LoadingService {
   public loading$: Subject<boolean> = new Subject();
   private preventStop = false;
 
-  constructor() {}
+  constructor(private logger: LoggerService) {}
 
   startLoading() {
-    console.log('Start Loading Screen');
+    this.logger.log('Start Loading Screen');
     this.loading$.next(true);
   }
 
@@ -19,7 +20,7 @@ export class LoadingService {
     if (this.preventStop) {
       return;
     }
-    console.log('Stop Loading Screen');
+    this.logger.log('Stop Loading Screen');
     this.loading$.next(false);
   }
 

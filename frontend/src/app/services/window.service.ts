@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { LoggerService } from './logger.service';
 
-const getBaseWindow = (): Window => window;
+const getBaseWindow = (): Window => window as any;
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class WindowService {
 
   private windowEl: any;
 
-  constructor() {
+  constructor(private logger: LoggerService) {
     this.windowEl = getBaseWindow();
     this.installPrompt();
   }
@@ -34,7 +35,7 @@ export class WindowService {
       }
 
       // Log launch display mode to analytics
-      console.log('DISPLAY_MODE_LAUNCH:', displayMode);
+      this.logger.log('DISPLAY_MODE_LAUNCH:', displayMode);
 
       if (displayMode === 'browser tab') {
         this.isInStandaloneMode = false;

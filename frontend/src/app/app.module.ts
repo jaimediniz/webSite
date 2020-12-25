@@ -21,8 +21,10 @@ import { environment } from '../environments/environment';
 import { FooterComponent } from './components/footer/footer.component';
 import { AppInstallComponent } from './components/app-install/app-install.component';
 import { LoadingComponent } from './components/loading/loading.component';
-import { LoadingInterceptorService } from './services/loading-interceptor.service';
+import { LoadingInterceptorService } from './shared/loading-interceptor.service';
 import { MaterialModule } from './material.module';
+import { LogPublishersService } from './shared/log-publishers.service';
+import { LoggerService } from './services/logger.service';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { MaterialModule } from './material.module';
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptorService,
       multi: true
-    }
+    },
+    LoggerService,
+    LogPublishersService
   ],
   bootstrap: [AppComponent]
 })

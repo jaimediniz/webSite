@@ -8,7 +8,7 @@ import { SweetAlertService } from 'src/app/services/sweetAlert.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  constructor(private alert: SweetAlertService) {}
+  constructor(private api: API) {}
 
   ngOnInit(): void {}
 
