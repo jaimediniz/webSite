@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { API } from 'src/app/services/backend.service';
+import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,7 +8,7 @@ import { API } from 'src/app/services/backend.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  constructor(private api: API) {}
+  constructor(private alert: SweetAlertService) {}
 
   ngOnInit(): void {}
 
