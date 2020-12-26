@@ -24,6 +24,7 @@ jobs:
         with:
           publish-dir: "./frontend/dist/frontend"
           netlify-config-path: "netlify.toml"
+          functions-dir: "./frontend/dist/functions"
           production-deploy: true
           deploy-message: "GITHUB ACTIONS"
           enable-commit-status: true
