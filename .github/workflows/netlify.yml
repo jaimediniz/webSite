@@ -5,10 +5,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Netlify Actions
-      uses: nwtgck/actions-netlify@v1.1.11
-      with:
-        enable-commit-status: true
-        netlify-config-path: "netlify.toml"
-        deploy-message: "GITHUB ACTIONS"
-        publish-dir: "./frontend/dist/frontend"
+      - uses: actions/checkout@master
+      - name: Netlify Actions
+        uses: nwtgck/actions-netlify@v1.1.11
+        with:
+          enable-commit-status: true
+          netlify-config-path: "netlify.toml"
+          deploy-message: "GITHUB ACTIONS"
+          publish-dir: "./frontend/dist/frontend"
