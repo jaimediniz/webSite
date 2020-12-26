@@ -6,7 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Main Branch
-        uses: actions/checkout@dev
+        uses: actions/checkout@main
+        with:
+          ref: "dev"
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.4
       - name: Build
@@ -19,7 +21,6 @@ jobs:
         with:
           publish-dir: "./frontend/dist/frontend"
           netlify-config-path: "netlify.toml"
-          alias: "thinice"
           production-deploy: true
           deploy-message: "GITHUB ACTIONS"
           enable-commit-status: true
