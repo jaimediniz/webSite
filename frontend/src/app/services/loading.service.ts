@@ -12,7 +12,7 @@ export class LoadingService {
   constructor(private logger: LoggerService) {}
 
   startLoading() {
-    this.logger.log('Start Loading Screen');
+    this.logger.debug('Start Loading Screen');
     this.loading$.next(true);
   }
 
@@ -20,7 +20,7 @@ export class LoadingService {
     if (this.preventStop) {
       return;
     }
-    this.logger.log('Stop Loading Screen');
+    this.logger.debug('Stop Loading Screen');
     this.loading$.next(false);
   }
 

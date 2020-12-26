@@ -48,7 +48,7 @@ export class AppInstallComponent implements OnInit {
   ngOnInit(): void {}
 
   installApp(event: any): void {
-    this.logger.log('', this.winRef.deferredPromptSubject.value);
+    this.logger.debug('', this.winRef.deferredPromptSubject.value);
     // Show the install prompt
     this.winRef.deferredPromptSubject.value.prompt();
     // Wait for the user to respond to the prompt
@@ -80,7 +80,7 @@ export class AppInstallComponent implements OnInit {
       const sub: PushSubscription = await this.swPush.requestSubscription({
         serverPublicKey: this.vapidPublicKey
       });
-      this.logger.log('Subscription:', sub);
+      this.logger.debug('Subscription:', sub);
       const resp = await this.api.addSubscription(sub);
       if (resp) {
         this.alert.fire('Subscribed!', '', 'success');
