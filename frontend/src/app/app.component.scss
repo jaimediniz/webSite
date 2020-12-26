@@ -1,3 +1,8 @@
+.pageContent {
+  height: calc(100% - 72px) !important;
+  overflow-y: hidden;
+}
+
 @media all and (display-mode: standalone) {
   .testBackground {
     background-color: yellow;

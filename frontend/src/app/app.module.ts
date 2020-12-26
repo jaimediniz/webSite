@@ -25,6 +25,7 @@ import { LoadingInterceptorService } from './shared/loading-interceptor.service'
 import { MaterialModule } from './material.module';
 import { LogPublishersService } from './shared/log-publishers.service';
 import { LoggerService } from './services/logger.service';
+import { SchedulesComponent } from './components/pages/schedules/schedules.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { LoggerService } from './services/logger.service';
     AppComponent,
     FooterComponent,
     AppInstallComponent,
-    LoadingComponent
+    LoadingComponent,
+    SchedulesComponent
   ],
   imports: [
     MaterialModule,
