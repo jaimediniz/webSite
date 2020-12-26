@@ -9,10 +9,9 @@ jobs:
       - name: Netlify Actions
         uses: nwtgck/actions-netlify@v1.1.11
         with:
-          enable-commit-status: true
           netlify-config-path: "netlify.toml"
           deploy-message: "GITHUB ACTIONS"
-          publish-dir: "./frontend/dist/frontend"
+          enable-commit-status: true
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
