@@ -7,12 +7,9 @@
     <a class="nav-link" [routerLink]="['about']" routerLinkActive="active"
       >About</a
     >
-    <a
-      class="nav-link disabled"
-      routerLink="/currentActivities"
-      routerLinkActive="active"
+    <a class="nav-link" routerLink="/schedule" routerLinkActive="active"
       >Current Activities</a
     >
-    <a class="nav-link" (click)="test()">Test</a>
+    <a [hidden]="!testButton" class="nav-link" (click)="test()">Test</a>
   </div>
 </nav>

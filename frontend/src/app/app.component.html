@@ -1,19 +1,11 @@
 <app-loading class="h-100 w-100"></app-loading>
 <app-navbar class="w-100"></app-navbar>
-<app-app-install></app-app-install>
+<app-external></app-external>
 
-<main id="main" class="h-100 w-100 px-0 container-fluid">
+<main id="main" class="w-100 pageContent px-0 container-fluid">
   <div class="h-100 w-100 testBackground" [ngClass]="{ 'col-6': showOutlet }">
     <router-outlet></router-outlet>
   </div>
-
-  <div [hidden]="!showOutlet" class="col-6">
-    <router-outlet
-      name="sidebar"
-      (activate)="openSideRoute($event)"
-      (deactivate)="closeSideRoute($event)"
-    ></router-outlet>
-  </div>
-
-  <app-footer></app-footer>
 </main>
+
+<app-footer></app-footer>

@@ -5,18 +5,18 @@ import { LoadingService } from 'src/app/services/loading.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 import { WindowService } from 'src/app/services/window.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-app-install',
-  templateUrl: './app-install.component.html',
-  styleUrls: ['./app-install.component.scss']
+  selector: 'app-external',
+  templateUrl: './external.component.html',
+  styleUrls: ['./external.component.scss']
 })
 export class AppInstallComponent implements OnInit {
   public installButton = false;
   public subscribeButton = false;
 
-  readonly vapidPublicKey =
-    'BI-kZID4MzH86nyjsVHcE9CMwqSPrNtzga1weuQy_9-x68Kee5sxmbhmTUKy-QfhfofXomXZKxkNik5jZPEowOk';
+  readonly vapidPublicKey = environment.vapidPublicKey;
 
   private windowEl: any;
 
@@ -86,12 +86,8 @@ export class AppInstallComponent implements OnInit {
         this.alert.fire('Subscribed!', '', 'success');
       }
     } catch (err) {
-      this.alert.fire(
-        'Error!',
-        (err.message || '').replace('Error: ', ''),
-        'error'
-      );
-      this.logger.error('Could not subscribe to notifications', err);
+      this.alert.fire('Error!', err.message, 'error');
+      this.logger.error(err.message);
     }
   }
 }
