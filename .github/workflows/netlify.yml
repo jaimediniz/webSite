@@ -11,3 +11,4 @@ jobs:
         enable-commit-status: true
         netlify-config-path: "netlify.toml"
         deploy-message: "GITHUB ACTIONS"
+        publish-dir: "./frontend/dist/frontend"
