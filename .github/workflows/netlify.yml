@@ -19,6 +19,8 @@ jobs:
         with:
           publish-dir: "./frontend/dist/frontend"
           netlify-config-path: "netlify.toml"
+          alias: "thinice"
+          production-deploy: true
           deploy-message: "GITHUB ACTIONS"
           enable-commit-status: true
         env:
