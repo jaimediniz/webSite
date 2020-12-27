@@ -17,7 +17,7 @@ interface QuerySubscription {
   };
 }
 
-export default async function (request: HttpRequest<any>, response: any) {
+export default async (request: HttpRequest<any>, response: any) => {
   if (request.method !== 'POST') {
     return response.status(Status.BAD_REQUEST).send('');
   }
@@ -39,4 +39,4 @@ export default async function (request: HttpRequest<any>, response: any) {
     },
     body: '{"code":201,"error":false,"message":"Success!"}'
   });
-}
+};
