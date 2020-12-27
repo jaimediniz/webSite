@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/d7b6c16e-4860-4e4b-9d83-9a7290008c2c/deploy-status)](https://thinice.netlify.app) [![Labeler](https://github.com/NICETHI/webSite/workflows/Labeler/badge.svg?branch=main)](https://github.com/NICETHI/webSite/actions?query=workflow%3ALabeler)
+[![Labeler](https://github.com/NICETHI/webSite/workflows/Labeler/badge.svg?branch=main)](https://github.com/NICETHI/webSite/actions?query=workflow%3ALabeler)
 
 # Backend
 

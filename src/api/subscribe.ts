@@ -1,5 +1,7 @@
 import { APIGatewayEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import fetch from 'node-fetch';
+import Status from 'http-status-codes';
+import { HttpRequest } from '@angular/common/http';
 
 interface QuerySubscription {
   url: string;
@@ -16,25 +18,26 @@ interface QuerySubscription {
   };
 }
 
-exports.handler = async (
-  event: APIGatewayEvent,
-  context: Context
-): Promise<APIGatewayProxyResult> => {
-  const query: QuerySubscription = JSON.parse(event.body as string);
+export default async function (request: HttpRequest<any>, response: any) {
+  if (request.method !== 'POST') {
+    return response.status(Status.BAD_REQUEST).send('');
+  }
+
+  const query: QuerySubscription = JSON.parse(request?.body);
 
   const resp = await fetch(query.url, {
     method: 'post',
-    body: JSON.stringify(query.body),
+    body: JSON.stringify(query?.body ?? 'null'),
     headers: { 'Content-Type': 'application/json' }
   });
 
   console.log(resp);
 
-  return {
+  response.send({
     statusCode: 201,
     headers: {
       'Content-Type': 'application/json'
     },
     body: '{"code":201,"error":false,"message":"Success!"}'
-  };
-};
+  });
+}
