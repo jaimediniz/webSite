@@ -140,7 +140,7 @@ export class API {
     try {
       const response = await this.http
         .post<Observable<Promise<any>>>(
-          '/.netlify/functions/subscribe',
+          '/api/subscribe',
           JSON.stringify({
             url: environment.baseUrl,
             body: payLoad
