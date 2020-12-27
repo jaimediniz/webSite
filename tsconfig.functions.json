@@ -2,12 +2,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "rootDir": "./src/api",
     "module": "CommonJS",
     "target": "ES2017",
     "noImplicitAny": true,
     "preserveConstEnums": true,
-    "outDir": "./dist/functions",
+    "pretty": true,
+    "removeComments": true,
+    "outDir": "./api",
     "sourceMap": false
   },
-  "include": ["./src/functions/*.ts"]
+  "include": ["./src/api/**/*"],
+  "exclude": []
 }
