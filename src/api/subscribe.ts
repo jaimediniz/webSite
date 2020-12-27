@@ -1,4 +1,3 @@
-import { APIGatewayEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import fetch from 'node-fetch';
 import Status from 'http-status-codes';
 import { HttpRequest } from '@angular/common/http';
