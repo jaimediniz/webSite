@@ -6,7 +6,7 @@ on:
       - dev
 jobs:
   deploy:
-    if: github.event.label.name == 'preview'
+    #if: github.event.label.name == 'preview'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Main Branch
