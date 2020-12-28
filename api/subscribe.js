@@ -9,7 +9,7 @@ exports.default = async (request, response) => {
     if (!request.body) {
         return response.status(http_status_codes_1.default.BAD_REQUEST).send('');
     }
-    const resp = await node_fetch_1.default('https://script.google.com/macros/s/AKfycbyu6NAklRDLfkJB8yg_HWRiD09hfGw56llpssigb7-bjEhkV-P1/exec', {
+    const resp = await node_fetch_1.default('%baseUrl%', {
         method: 'post',
         body: request.body
     });
