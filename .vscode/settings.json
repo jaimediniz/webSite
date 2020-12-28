@@ -14,9 +14,5 @@
   "prettier.bracketSpacing": true,
   "prettier.jsxBracketSameLine": false,
   "prettier.semi": true,
-  "cSpell.words": [
-    "Swal",
-    "sweetalert",
-    "vercel"
-  ]
+  "cSpell.words": ["Swal", "sweetalert", "vercel"]
 }

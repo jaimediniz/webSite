@@ -13,7 +13,5 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  test(): void {
-    this.api.login({ username: 'Jaime', password: '123' });
-  }
+  test(): void {}
 }
