@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 import Status from 'http-status-codes';
-import { HttpRequest } from '@angular/common/http';
+import { Request, Response } from 'express';
 
-export default async (request: HttpRequest<any>, response: any) => {
+export default async (request: Request<any>, response: Response) => {
   if (request.method !== 'POST') {
     return response.status(Status.BAD_REQUEST).send('');
   }
@@ -11,14 +11,14 @@ export default async (request: HttpRequest<any>, response: any) => {
     return response.status(Status.BAD_REQUEST).send('');
   }
 
-  const resp = await fetch('%baseUrl%', {
+  const resp = await fetch(process.env.MONGODB_URI ?? '', {
     method: 'post',
     body: request.body
   });
 
   console.log(resp);
 
-  response.send({
+  return response.send({
     statusCode: 201,
     body: '{"code":201,"error":false,"message":"???!"}'
   });
