@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "run-p --print-label dev:*",
-    "build": "run-p --print-label build:*",
+    "build": "npm run build:functions && npm run build:static",
     "test-prod": "run-p --print-label test-prod:*",
     "dev:vercel": "vercel dev",
     "dev:functions": "tsc -p tsconfig.functions.json -w",
