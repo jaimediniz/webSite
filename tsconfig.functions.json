@@ -12,6 +12,6 @@
     "outDir": "./api",
     "sourceMap": false
   },
-  "include": ["./src/api/**/*"],
-  "exclude": []
+  "include": ["./src/api/**/*.ts"],
+  "exclude": ["./src/api/environments"]
 }
