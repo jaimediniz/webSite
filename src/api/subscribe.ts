@@ -12,7 +12,8 @@ export default async (request: Request, response: Response) => {
 
   let body;
   try {
-    body = request.body;
+    body = JSON.parse(request.body);
+    console.log(body);
   } catch (error) {
     return response
       .status(Status.BAD_REQUEST)
@@ -25,6 +26,7 @@ export default async (request: Request, response: Response) => {
     );
     await db.collection('Subscriptions').insertOne(body);
   } catch (err) {
+    console.log(err);
     return response
       .status(Status.INTERNAL_SERVER_ERROR)
       .json({ error: true, message: err.message });

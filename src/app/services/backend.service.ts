@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
-import { APIResponse, QuerySubscription } from '../shared/interfaces';
+import { APIResponse, Subscription } from '../shared/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class API {
@@ -28,19 +27,14 @@ export class API {
 
   async addSubscription(sub: PushSubscription): Promise<boolean> {
     const jsonSub = sub.toJSON();
-    const payLoad: QuerySubscription = {
-      url: environment.baseUrl,
-      body: {
-        route: 'subscriptions',
-        endPoint: 'addSubscription',
-        publicKey: environment.publicKey,
-        name: '',
-        endpointURL: jsonSub?.endpoint ?? '',
-        keyP256dh: jsonSub.keys?.p256dh ?? '',
-        keyAuth: jsonSub.keys?.auth ?? '',
-        paused: 'false',
-        topics: '*'
-      }
+    const payLoad: Subscription = {
+      name: '',
+      expirationTime: 'null',
+      endpoint: jsonSub?.endpoint ?? '',
+      p256dh: jsonSub.keys?.p256dh ?? '',
+      auth: jsonSub.keys?.auth ?? '',
+      paused: false,
+      topics: '*'
     };
 
     const apiResponse = await this.post('/api/subscribe', payLoad);

@@ -11,7 +11,8 @@ exports.default = async (request, response) => {
     }
     let body;
     try {
-        body = request.body;
+        body = JSON.parse(request.body);
+        console.log(body);
     }
     catch (error) {
         return response
@@ -23,6 +24,7 @@ exports.default = async (request, response) => {
         await db.collection('Subscriptions').insertOne(body);
     }
     catch (err) {
+        console.log(err);
         return response
             .status(http_status_codes_1.default.INTERNAL_SERVER_ERROR)
             .json({ error: true, message: err.message });
