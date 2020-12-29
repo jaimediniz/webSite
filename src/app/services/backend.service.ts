@@ -10,7 +10,7 @@ export class API {
   public activeSession: Subject<string> = new Subject();
   public isAdmin = false;
 
-  private InternalError: APIResponse = {
+  private internalError: APIResponse = {
     statusCode: 500,
     headers: {
       'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ export class API {
       return response;
     } catch (error) {
       this.logger.error(error.message);
-      return this.InternalError;
+      return this.internalError;
     }
   }
 }
