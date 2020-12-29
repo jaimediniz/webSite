@@ -27,14 +27,15 @@ exports.default = async (request, response) => {
         ? _b
         : ''
     );
-    await db.collection('Subscriptions').insertOne(body);
+    const result = await db.collection('Subscriptions').insertOne(body);
+    console.log(result);
+    return response
+      .status(http_status_codes_1.default.CREATED)
+      .json({ error: false, message: result });
   } catch (err) {
     console.log(err);
     return response
       .status(http_status_codes_1.default.INTERNAL_SERVER_ERROR)
       .json({ error: true, message: err.message });
   }
-  return response
-    .status(http_status_codes_1.default.CREATED)
-    .json({ error: false, message: 'Created!' });
 };

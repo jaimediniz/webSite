@@ -24,15 +24,15 @@ export default async (request: Request, response: Response) => {
     const db = await connectToDatabase(
       process.env.MONGODB_URI?.replace('{DB}', 'Tandem') ?? ''
     );
-    await db.collection('Subscriptions').insertOne(body);
+    const result = await db.collection('Subscriptions').insertOne(body);
+    console.log(result);
+    return response
+      .status(Status.CREATED)
+      .json({ error: false, message: result });
   } catch (err) {
     console.log(err);
     return response
       .status(Status.INTERNAL_SERVER_ERROR)
       .json({ error: true, message: err.message });
   }
-
-  return response
-    .status(Status.CREATED)
-    .json({ error: false, message: 'Created!' });
 };
