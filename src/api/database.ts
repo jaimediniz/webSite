@@ -8,11 +8,9 @@ export default async (request: Request, response: Response) => {
     return response.status(Status.BAD_REQUEST).send('');
   }
 
-  const db = await connectToDatabase(
-    process.env.MONGODB_URI?.replace('{DB}', 'sample_airbnb') ?? ''
-  );
+  const db = await connectToDatabase();
   const listings = await db
-    .collection('listingsAndReviews')
+    .collection('Subscriptions')
     .find({})
     .sort({ metacritic: -1 })
     .limit(20)
