@@ -4,6 +4,9 @@ const url = require('url');
 
 let cachedDb: Db;
 export const connectToDatabase = async () => {
+  if (cachedDb) {
+    return cachedDb;
+  }
   const uri = process.env.MONGODB_URI ?? '';
 
   const client = await MongoClient.connect(uri, {
