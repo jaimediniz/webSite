@@ -1,28 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongodb_1 = require("mongodb");
-const url = require('url');
-let cachedDb;
-async function connectToDatabase(uri) {
-    if (cachedDb) {
-        return cachedDb;
-    }
-    const client = await mongodb_1.MongoClient.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-    const db = await client.db(url.parse(uri).pathname.substr(1));
-    cachedDb = db;
-    return db;
-}
+const http_status_codes_1 = require("http-status-codes");
+const dbConnection_1 = require("./dbConnection");
 exports.default = async (request, response) => {
-    var _a;
-    const db = await connectToDatabase((_a = process.env.MONGODB_URI) !== null && _a !== void 0 ? _a : '');
+    var _a, _b;
+    if (request.method !== 'GET') {
+        return response.status(http_status_codes_1.default.BAD_REQUEST).send('');
+    }
+    const db = await dbConnection_1.connectToDatabase((_b = (_a = process.env.MONGODB_URI) === null || _a === void 0 ? void 0 : _a.replace('{DB}', 'sample_airbnb')) !== null && _b !== void 0 ? _b : '');
     const listings = await db
         .collection('listingsAndReviews')
         .find({})
         .sort({ metacritic: -1 })
         .limit(20)
         .toArray();
-    return response.status(200).json(listings);
+    return response.status(http_status_codes_1.default.ACCEPTED).json(listings);
 };

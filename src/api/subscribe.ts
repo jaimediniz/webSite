@@ -1,25 +1,36 @@
-import fetch from 'node-fetch';
-import Status from 'http-status-codes';
 import { Request, Response } from 'express';
+import Status from 'http-status-codes';
 
-export default async (request: Request<any>, response: Response) => {
-  if (request.method !== 'POST') {
-    return response.status(Status.BAD_REQUEST).send('');
+import { connectToDatabase } from './dbConnection';
+
+export default async (request: Request, response: Response) => {
+  if (request.method !== 'POST' || !request.body) {
+    return response
+      .status(Status.BAD_REQUEST)
+      .send({ error: true, message: 'Method not allowed.' });
   }
 
-  if (!request.body) {
-    return response.status(Status.BAD_REQUEST).send('');
+  let body;
+  try {
+    body = request.body;
+  } catch (error) {
+    return response
+      .status(Status.BAD_REQUEST)
+      .json({ error: true, message: 'Body is corrupted!' });
   }
 
-  const resp = await fetch(process.env.MONGODB_URI ?? '', {
-    method: 'post',
-    body: request.body
-  });
+  try {
+    const db = await connectToDatabase(
+      process.env.MONGODB_URI?.replace('{DB}', 'Tandem') ?? ''
+    );
+    await db.collection('Subscriptions').insertOne(body);
+  } catch (err) {
+    return response
+      .status(Status.INTERNAL_SERVER_ERROR)
+      .json({ error: true, message: err.message });
+  }
 
-  console.log(resp);
-
-  return response.send({
-    statusCode: 201,
-    body: '{"code":201,"error":false,"message":"???!"}'
-  });
+  return response
+    .status(Status.CREATED)
+    .json({ error: false, message: 'Created!' });
 };
