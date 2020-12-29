@@ -8,7 +8,7 @@
     "dev:vercel": "vercel dev",
     "dev:functions": "tsc -p tsconfig.functions.json -w",
     "build:static": "ng build --prod --build-optimizer",
-    "vercel-build": "tsc -p tsconfig.functions.json",
+    "vercel-build": "tsc -p tsconfig.functions.json && npm run build",
     "test-prod:frontend": "ng build --prod --build-optimizer && http-server ./dist/frontend --proxy http://127.0.0.1:3000",
     "test-prod:functions": "npm run dev",
     "lint": "npx ng lint tandem_nice --fix || exit 0",
