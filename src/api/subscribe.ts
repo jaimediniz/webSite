@@ -21,9 +21,7 @@ export default async (request: Request, response: Response) => {
   }
 
   try {
-    const db = await connectToDatabase(
-      process.env.MONGODB_URI?.replace('{DB}', 'Tandem') ?? ''
-    );
+    const db = await connectToDatabase();
     const result = await db.collection('Subscriptions').insertOne(body);
     console.log(result);
     return response

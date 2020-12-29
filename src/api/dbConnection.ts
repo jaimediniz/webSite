@@ -3,10 +3,8 @@ import { Db, MongoClient } from 'mongodb';
 const url = require('url');
 
 let cachedDb: Db;
-export const connectToDatabase = async (uri: string) => {
-  if (cachedDb) {
-    return cachedDb;
-  }
+export const connectToDatabase = async () => {
+  const uri = process.env.MONGODB_URI ?? '';
 
   const client = await MongoClient.connect(uri, {
     useNewUrlParser: true,

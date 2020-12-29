@@ -4,10 +4,10 @@ exports.connectToDatabase = void 0;
 const mongodb_1 = require('mongodb');
 const url = require('url');
 let cachedDb;
-exports.connectToDatabase = async (uri) => {
-  if (cachedDb) {
-    return cachedDb;
-  }
+exports.connectToDatabase = async () => {
+  var _a;
+  const uri =
+    (_a = process.env.MONGODB_URI) !== null && _a !== void 0 ? _a : '';
   const client = await mongodb_1.MongoClient.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true
