@@ -4,7 +4,7 @@ exports.connectToDatabase = void 0;
 const mongodb_1 = require('mongodb');
 const url = require('url');
 let cachedDb;
-async function connectToDatabase(uri) {
+exports.connectToDatabase = async (uri) => {
   if (cachedDb) {
     return cachedDb;
   }
@@ -15,5 +15,4 @@ async function connectToDatabase(uri) {
   const db = await client.db(url.parse(uri).pathname.substr(1));
   cachedDb = db;
   return db;
-}
-exports.connectToDatabase = connectToDatabase;
+};
