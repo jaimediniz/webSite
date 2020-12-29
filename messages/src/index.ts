@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { connectToDatabase } from '../../src/api/dbConnection';
 //@ts-ignore
 import { Subscription } from '../../src/app/shared/interfaces';
-import { Collection, Db, ObjectId } from 'mongodb';
+import { Collection } from 'mongodb';
 
 const email = 'jaimedinizn@gmail.com';
 const GCMAPIKey =
@@ -54,11 +54,7 @@ async function sendAllNotification(): Promise<boolean> {
   log(result.parsed);
 
   try {
-    collection = (
-      await connectToDatabase(
-        process.env.MONGODB_URI?.replace('{DB}', 'Tandem') ?? ''
-      )
-    ).collection('Subscriptions');
+    collection = (await connectToDatabase()).collection('Subscriptions');
     subscriptions = await collection.find({}).toArray();
   } catch (err) {
     console.error(err);

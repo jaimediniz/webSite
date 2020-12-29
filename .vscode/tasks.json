@@ -39,23 +39,13 @@
       "problemMatcher": []
     },
     {
-      "label": "makePushNotification",
-      "type": "shell",
-      "command": "echo ${input:messageTitle}: ${input:messageBody}: ${input:messageURL} && echo SEND MESSAGE?",
-      "options": {
-        "cwd": "${workspaceFolder}/push-notification"
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "Send Push Notification",
       "type": "shell",
-      "command": "npm run start --prod --password=\"${input:messagePassword}\" --title=\"${input:messageTitle}\" --body=\"${input:messageBody}\" --url=\"${input:messageURL}\"",
+      "command": "npm run start --prod --title=\"${input:messageTitle}\" --body=\"${input:messageBody}\" --url=\"${input:messageURL}\"",
       "options": {
-        "cwd": "${workspaceFolder}/push-notification"
+        "cwd": "${workspaceFolder}/messages"
       },
-      "problemMatcher": [],
-      "dependsOn": ["makePushNotification"]
+      "problemMatcher": []
     }
   ],
   "inputs": [
