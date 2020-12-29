@@ -1,15 +1,14 @@
 import { sendNotification, setVapidDetails, setGCMAPIKey } from 'web-push';
-import request from 'request';
-import fs from 'fs';
-import path from 'path';
+import dotenv from 'dotenv';
+//@ts-ignore
+import { connectToDatabase } from '../../src/api/dbConnection';
+//@ts-ignore
+import { Subscription } from '../../src/app/shared/interfaces';
+import { Collection, Db, ObjectId } from 'mongodb';
 
 const email = 'jaimedinizn@gmail.com';
 const GCMAPIKey =
   'BFnDCleBcPbCHW0Wj6m0OngT9665HC6YS2ZI0T-vQIYZmFP1u7XgJQs2GyqclZD_-s_AXS-0KiACzvU_AoqqK4Q';
-
-const backendPublicKey = '7qf4atg8JaQDT0zY1lnI2PUKX9IPwQRj';
-const backendUrl =
-  'https://script.google.com/macros/s/AKfycbyu6NAklRDLfkJB8yg_HWRiD09hfGw56llpssigb7-bjEhkV-P1/exec';
 
 const vapidKeys = {
   publicKey:
@@ -22,64 +21,59 @@ setVapidDetails(`mailto:${email}`, vapidKeys.publicKey, vapidKeys.privateKey);
 
 sendAllNotification();
 
-function sendAllNotification(): void {
-  const payLoad = {
-    route: 'subscriptions',
-    endPoint: 'getSubscriptions',
-    password: process.env.npm_config_password || 'tandemNICE',
-    publicKey: backendPublicKey
-  };
+let collection: Collection<Subscription>;
+let subscriptions: Array<Subscription>;
+let expired: Array<Subscription> = [];
+let itemsProcessed = 0;
 
-  request.post(
-    {
-      headers: { 'content-type': 'application/json' },
-      url: backendUrl,
-      followAllRedirects: false,
-      body: JSON.stringify(payLoad)
-    },
-    function (error, response, body) {
-      if (error) {
-        console.error('BACKEND ERROR (1):', error);
-      } else {
-        log(response.statusCode);
-        request(
-          response.headers['location'] as string,
-          function (err, resp, html) {
-            log(resp.statusCode);
-            const responseJSON: {
-              code: number;
-              error: boolean;
-              message: string;
-              data: { subscriptions: Array<Array<string>> };
-            } = JSON.parse(html);
+function done() {
+  log('All done');
+  process.exit(0);
+}
 
-            if (!responseJSON.error) {
-              log(responseJSON.message);
-              responseJSON.data.subscriptions.forEach((user: any) => {
-                let name = user[0];
+function updateDatabase() {
+  if (expired.length === 0) {
+    done();
+  }
 
-                sendPushNotification(
-                  {
-                    endpoint: user[1],
-                    expirationTime: user[2],
-                    keys: {
-                      p256dh: user[3],
-                      auth: user[4]
-                    },
-                    paused: user[5],
-                    topics: user[6]
-                  },
-                  newPayload(name, 'Title 1', 'Body 1')
-                );
-              });
-            } else {
-              console.error('BACKEND ERROR (2):', responseJSON.message);
-            }
-          }
-        );
-      }
+  let itemsProcessed = 0;
+  expired.forEach(async (subscription) => {
+    await collection.deleteOne({ _id: subscription._id });
+    itemsProcessed++;
+    if (itemsProcessed === expired.length) {
+      done();
     }
-  );
+  });
+}
+
+async function sendAllNotification(): Promise<boolean> {
+  const result = dotenv.config({ path: __dirname + '/./../../.env' });
+  if (result.error) {
+    throw result.error;
+  }
+  log(result.parsed);
+
+  try {
+    collection = (
+      await connectToDatabase(
+        process.env.MONGODB_URI?.replace('{DB}', 'Tandem') ?? ''
+      )
+    ).collection('Subscriptions');
+    subscriptions = await collection.find({}).toArray();
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+
+  if (subscriptions.length === 0) {
+    done();
+  }
+
+  subscriptions.forEach((subscription: Subscription) => {
+    log(subscription);
+    sendPushNotification(subscription);
+  });
+  return true;
 }
 
 function log(content: any) {
@@ -90,7 +84,7 @@ function log(content: any) {
 }
 
 var globalPayload: string;
-function newPayload(name: string, title?: string, body?: string): string {
+function newPayload(name?: string, title?: string, body?: string): string {
   if (globalPayload) {
     return globalPayload;
   }
@@ -135,15 +129,38 @@ function newPayload(name: string, title?: string, body?: string): string {
   return globalPayload;
 }
 
-function sendPushNotification(
-  pushSubscription: any,
-  notificationPayload: string
-): void {
-  if (pushSubscription.paused) {
+function sendPushNotification(subscription: Subscription): void {
+  if (subscription.paused) {
     return;
   }
-  log(pushSubscription);
+
+  const pushSubscription = {
+    endpoint: subscription.endpoint,
+    expirationTime: subscription.expirationTime,
+    keys: {
+      p256dh: subscription.p256dh,
+      auth: subscription.auth
+    }
+  };
+
+  const notificationPayload = newPayload(
+    subscription.name,
+    'Title 1',
+    'Body 1'
+  );
+
   sendNotification(pushSubscription, notificationPayload)
     .then((response) => log(response))
-    .catch((err: Error) => log(err.message));
+    .catch((err) => {
+      log(err.body);
+      if (err.body.includes('expired')) {
+        expired.push(subscription);
+      }
+    })
+    .finally(() => {
+      itemsProcessed++;
+      if (itemsProcessed === subscriptions.length) {
+        updateDatabase();
+      }
+    });
 }
