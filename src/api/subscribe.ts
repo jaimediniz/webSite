@@ -25,6 +25,7 @@ export default async (request: Request, response: Response) => {
       process.env.MONGODB_URI?.replace('{DB}', 'Tandem') ?? ''
     );
     const result = await db.collection('Subscriptions').insertOne(body);
+    console.log(result);
     return response
       .status(Status.CREATED)
       .json({ error: false, message: result });

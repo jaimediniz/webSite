@@ -28,6 +28,7 @@ exports.default = async (request, response) => {
         : ''
     );
     const result = await db.collection('Subscriptions').insertOne(body);
+    console.log(result);
     return response
       .status(http_status_codes_1.default.CREATED)
       .json({ error: false, message: result });
