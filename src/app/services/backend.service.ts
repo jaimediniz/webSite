@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
 import { APIResponse, Subscription } from '../shared/interfaces';
+import { LoadingService } from './loading.service';
 
 @Injectable({ providedIn: 'root' })
 export class API {
@@ -23,7 +24,11 @@ export class API {
     })
   };
 
-  constructor(private logger: LoggerService, private http: HttpClient) {}
+  constructor(
+    private logger: LoggerService,
+    private http: HttpClient,
+    private loading: LoadingService
+  ) {}
 
   async addSubscription(sub: PushSubscription): Promise<boolean> {
     const jsonSub = sub.toJSON();
@@ -47,9 +52,11 @@ export class API {
   async post(route: string, payLoad: any): Promise<APIResponse> {
     this.logger.log('Payload', payLoad);
     try {
+      this.loading.preventLoading();
       const response = await this.http
         .post<Promise<APIResponse>>(route, JSON.stringify(payLoad))
         .toPromise();
+      this.loading.allowLoading();
       this.logger.log('Response:', response);
       return response;
     } catch (error) {
