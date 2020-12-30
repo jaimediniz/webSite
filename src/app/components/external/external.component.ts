@@ -18,17 +18,13 @@ export class AppInstallComponent implements OnInit {
 
   readonly vapidPublicKey = environment.vapidPublicKey;
 
-  private windowEl: any;
-
   constructor(
     private logger: LoggerService,
     private winRef: WindowService,
     private swPush: SwPush,
     private api: API,
-    private alert: SweetAlertService,
-    private loading: LoadingService
+    private alert: SweetAlertService
   ) {
-    this.windowEl = this.winRef.getWindow();
     if (Notification.permission === 'default') {
       this.askToSubscribe();
     }

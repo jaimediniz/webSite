@@ -7,7 +7,7 @@ import { LoggerService } from './logger.service';
 })
 export class LoadingService {
   public loading$: Subject<boolean> = new Subject();
-  private preventStop = false;
+  private asyncCall = false;
 
   constructor(private logger: LoggerService) {}
 
@@ -17,20 +17,18 @@ export class LoadingService {
   }
 
   stopLoading() {
-    if (this.preventStop) {
+    if (this.asyncCall) {
       return;
     }
     this.logger.debug('Stop Loading Screen');
     this.loading$.next(false);
   }
 
-  manualStart() {
-    this.preventStop = true;
-    this.startLoading();
+  allowLoading() {
+    this.asyncCall = true;
   }
 
-  manualStop() {
-    this.preventStop = false;
-    this.stopLoading();
+  preventLoading() {
+    this.asyncCall = true;
   }
 }

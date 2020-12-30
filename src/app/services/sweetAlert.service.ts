@@ -5,7 +5,25 @@ import Swal from 'sweetalert2';
   providedIn: 'root'
 })
 export class SweetAlertService {
+  public toastSetup = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    timer: 2000,
+    showConfirmButton: false,
+    timerProgressBar: false,
+    showClass: {
+      popup: 'swal2-noanimation'
+      //icon: 'swal2-noanimation'
+    }
+  });
   constructor() {}
+
+  toast(
+    title: string,
+    icon: 'warning' | 'success' | 'error' | 'info' | 'question' | undefined
+  ): void {
+    this.toastSetup.fire(title, '', icon);
+  }
 
   fire(
     title: string,

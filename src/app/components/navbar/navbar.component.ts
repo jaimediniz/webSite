@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { API } from 'src/app/services/backend.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 
 @Component({
@@ -8,10 +7,12 @@ import { SweetAlertService } from 'src/app/services/sweetAlert.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  public testButton = false;
-  constructor(private api: API) {}
+  public testButton = true;
+  constructor(private alert: SweetAlertService) {}
 
   ngOnInit(): void {}
 
-  test(): void {}
+  test(): void {
+    this.alert.toast('Subscribed!', 'success');
+  }
 }
