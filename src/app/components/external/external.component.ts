@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { API } from 'src/app/services/backend.service';
-import { LoadingService } from 'src/app/services/loading.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 import { WindowService } from 'src/app/services/window.service';
@@ -23,8 +22,7 @@ export class AppInstallComponent implements OnInit {
     private winRef: WindowService,
     private swPush: SwPush,
     private api: API,
-    private alert: SweetAlertService,
-    private loading: LoadingService
+    private alert: SweetAlertService
   ) {
     if (Notification.permission === 'default') {
       this.askToSubscribe();
@@ -47,10 +45,7 @@ export class AppInstallComponent implements OnInit {
   installApp(event: any): void {
     this.logger.debug('', this.winRef.deferredPromptSubject.value);
 
-    this.loading.preventLoading();
     this.winRef.deferredPromptSubject.value.prompt();
-    this.loading.allowLoading();
-
     this.winRef.deferredPromptSubject.value.userChoice.then(
       (choiceResult: { outcome: string }) => {
         if (choiceResult.outcome === 'accepted') {
