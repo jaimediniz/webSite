@@ -43,10 +43,7 @@ export class API {
     };
 
     const apiResponse = await this.post('/api/subscribe', payLoad);
-    if (apiResponse.statusCode !== 200) {
-      return false;
-    }
-    return true;
+    return !(apiResponse as any).error;
   }
 
   async post(route: string, payLoad: any): Promise<APIResponse> {
@@ -55,7 +52,7 @@ export class API {
       const response = await this.http
         .post<Promise<APIResponse>>(route, JSON.stringify(payLoad))
         .toPromise();
-      this.logger.log('Response:', response);
+      this.logger.log('Response', response);
       return response;
     } catch (error) {
       this.logger.error(error.message);
