@@ -27,7 +27,7 @@ let expired: Array<Subscription> = [];
 let itemsProcessed = 0;
 
 function done() {
-  log('All done');
+  console.log('All done');
   process.exit(0);
 }
 
@@ -51,7 +51,7 @@ async function sendAllNotification(): Promise<boolean> {
   if (result.error) {
     throw result.error;
   }
-  log(result.parsed);
+  log('Dotenv Config', result.parsed);
 
   try {
     collection = (await connectToDatabase()).collection('Subscriptions');
@@ -66,17 +66,20 @@ async function sendAllNotification(): Promise<boolean> {
   }
 
   subscriptions.forEach((subscription: Subscription) => {
-    log(subscription);
+    log('Subscriptions', subscription);
     sendPushNotification(subscription);
   });
   return true;
 }
 
-function log(content: any) {
+function log(message: string, content: any) {
   if (process.env.NODE_ENV === 'production') {
     return;
   }
+  console.log('############################################');
+  console.log(message);
   console.dir(content);
+  console.log('############################################');
 }
 
 var globalPayload: string;
@@ -120,7 +123,7 @@ function newPayload(name?: string, title?: string, body?: string): string {
       actions: actions
     }
   };
-  log(payload);
+  log('Payload', payload);
   globalPayload = JSON.stringify(payload);
   return globalPayload;
 }
@@ -146,9 +149,9 @@ function sendPushNotification(subscription: Subscription): void {
   );
 
   sendNotification(pushSubscription, notificationPayload)
-    .then((response) => log(response))
+    .then((response) => log('sendNotification Response:', response))
     .catch((err) => {
-      log(err.body);
+      log('sendNotification Error:', err.body);
       if (err.body.includes('expired')) {
         expired.push(subscription);
       }
