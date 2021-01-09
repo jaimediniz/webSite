@@ -18,6 +18,8 @@
   },
   "scripts": {
     "start": "npx ts-node src/index.ts",
+    "test": "npm run start --title=\"Test\" --body=\"Test\"",
+    "test-skype": "npm run start --title=\"Test\" --body=\"Test\" --url=\"https://www.skype.com\"",
     "build": "npx tsc"
   }
 }
