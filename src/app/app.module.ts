@@ -21,7 +21,6 @@ import { environment } from '../environments/environment';
 import { FooterComponent } from './components/footer/footer.component';
 import { AppInstallComponent } from './components/external/external.component';
 import { LoadingComponent } from './components/loading/loading.component';
-import { LoadingInterceptorService } from './shared/loading-interceptor.service';
 import { MaterialModule } from './material.module';
 import { LogPublishersService } from './shared/log-publishers.service';
 import { LoggerService } from './services/logger.service';
@@ -62,15 +61,7 @@ import { SchedulesComponent } from './components/pages/schedules/schedules.compo
     MatIconModule,
     MatCardModule
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoadingInterceptorService,
-      multi: true
-    },
-    LoggerService,
-    LogPublishersService
-  ],
+  providers: [LoggerService, LogPublishersService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

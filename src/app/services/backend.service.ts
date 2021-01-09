@@ -42,9 +42,7 @@ export class API {
       topics: '*'
     };
 
-    this.loading.preventLoading();
     const apiResponse = await this.post('/api/subscribe', payLoad);
-    this.loading.allowLoading();
     if (apiResponse.statusCode !== 200) {
       return false;
     }
