@@ -1,12 +1,5 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-  ViewRef
-} from '@angular/core';
-import { Router } from '@angular/router';
-import { WindowService } from './services/window.service';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-app',
@@ -19,9 +12,14 @@ export class AppComponent implements OnInit {
   @ViewChild('popupContainer', { read: ViewContainerRef })
   private popupContainer: ViewContainerRef;
 
+  public fullScreen = false;
   public showOutlet = false;
 
-  constructor(private router: Router, private winRef: WindowService) {}
+  constructor(private route: ActivatedRoute) {
+    this.route.queryParams.subscribe((params) => {
+      this.fullScreen = params.fullScreen || false;
+    });
+  }
 
   ngOnInit(): void {}
 

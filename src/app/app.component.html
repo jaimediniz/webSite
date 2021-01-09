@@ -1,11 +1,15 @@
-<app-loading class="h-100 w-100"></app-loading>
-<app-navbar class="w-100"></app-navbar>
-<app-external></app-external>
+<app-loading *ngIf="!fullScreen" class="h-100 w-100"></app-loading>
+<app-navbar *ngIf="!fullScreen" class="w-100"></app-navbar>
+<app-external *ngIf="!fullScreen"></app-external>
 
-<main id="main" class="w-100 pageContent px-0 container-fluid">
+<main
+  id="main"
+  class="w-100 px-0 container-fluid"
+  [ngClass]="{ 'h-100': fullScreen, pageContent: !fullScreen }"
+>
   <div class="h-100 w-100 testBackground" [ngClass]="{ 'col-6': showOutlet }">
     <router-outlet></router-outlet>
   </div>
 </main>
 
-<app-footer></app-footer>
+<app-footer *ngIf="!fullScreen"></app-footer>
