@@ -1,11 +1,8 @@
 import { ObjectId } from 'bson';
 
 export interface APIResponse {
-  statusCode: number;
-  headers: {
-    'Content-Type': string;
-  };
-  body: string;
+  error: boolean;
+  message: string;
 }
 
 export interface Subscription {
