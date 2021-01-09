@@ -43,7 +43,7 @@ export class API {
     };
 
     const apiResponse = await this.post('/api/subscribe', payLoad);
-    return (apiResponse as any).error;
+    return !(apiResponse as any).error;
   }
 
   async post(route: string, payLoad: any): Promise<APIResponse> {
