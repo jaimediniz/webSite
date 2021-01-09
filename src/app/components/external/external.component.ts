@@ -23,7 +23,8 @@ export class AppInstallComponent implements OnInit {
     private winRef: WindowService,
     private swPush: SwPush,
     private api: API,
-    private alert: SweetAlertService
+    private alert: SweetAlertService,
+    private loading: LoadingService
   ) {
     if (Notification.permission === 'default') {
       this.askToSubscribe();
@@ -45,9 +46,11 @@ export class AppInstallComponent implements OnInit {
 
   installApp(event: any): void {
     this.logger.debug('', this.winRef.deferredPromptSubject.value);
-    // Show the install prompt
+
+    this.loading.preventLoading();
     this.winRef.deferredPromptSubject.value.prompt();
-    // Wait for the user to respond to the prompt
+    this.loading.allowLoading();
+
     this.winRef.deferredPromptSubject.value.userChoice.then(
       (choiceResult: { outcome: string }) => {
         if (choiceResult.outcome === 'accepted') {
