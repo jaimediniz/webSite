@@ -12,11 +12,8 @@ export class API {
   public isAdmin = false;
 
   private internalError: APIResponse = {
-    statusCode: 500,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
+    error: true,
+    message: JSON.stringify({
       code: 500,
       data: {},
       error: true,
