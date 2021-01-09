@@ -42,7 +42,9 @@ export class API {
       topics: '*'
     };
 
+    this.loading.preventLoading();
     const apiResponse = await this.post('/api/subscribe', payLoad);
+    this.loading.allowLoading();
     if (apiResponse.statusCode !== 200) {
       return false;
     }
@@ -52,11 +54,9 @@ export class API {
   async post(route: string, payLoad: any): Promise<APIResponse> {
     this.logger.log('Payload', payLoad);
     try {
-      this.loading.preventLoading();
       const response = await this.http
         .post<Promise<APIResponse>>(route, JSON.stringify(payLoad))
         .toPromise();
-      this.loading.allowLoading();
       this.logger.log('Response:', response);
       return response;
     } catch (error) {
