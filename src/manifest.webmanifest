@@ -5,13 +5,13 @@
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
-  "start_url": "./home",
+  "start_url": "./#/home",
   "shortcuts": [
     {
       "name": "Schedule Page",
       "short_name": "Schedule",
       "description": "View schedule page",
-      "url": "./schedule?fullScreen=true",
+      "url": "./#/schedule?fullScreen=true",
       "icons": [
         {
           "src": "assets/icons/schedule-192x192.png",
