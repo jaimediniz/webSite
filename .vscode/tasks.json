@@ -4,37 +4,33 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Push to Backend",
-      "type": "shell",
-      "command": "clasp push -f",
-      "options": {
-        "cwd": "${workspaceFolder}/backend"
-      },
-      "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
-      "label": "Serve frontend",
-      "type": "shell",
-      "command": "ng serve",
-      "options": {
-        "cwd": "${workspaceFolder}/frontend"
-      },
-      "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
       "label": "Format files",
       "type": "shell",
       "command": "npm run lint && prettier --write .",
       "options": {
         "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Dev",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Test Skype Push Notification",
+      "type": "shell",
+      "command": "npm run test-skype",
+      "options": {
+        "cwd": "${workspaceFolder}/messages"
       },
       "problemMatcher": []
     },
@@ -49,12 +45,6 @@
     }
   ],
   "inputs": [
-    {
-      "id": "messagePassword",
-      "description": "Message Password:",
-      "default": "",
-      "type": "promptString"
-    },
     {
       "id": "messageTitle",
       "description": "Message Title:",
