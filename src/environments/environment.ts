@@ -1,7 +1,7 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
+/* cSpell:disable */
 export const environment = {
   production: false,
   publicKey: '7qf4atg8JaQDT0zY1lnI2PUKX9IPwQRj',

@@ -1,4 +1,5 @@
 import { sendNotification, setVapidDetails, setGCMAPIKey } from 'web-push';
+//@ts-ignore
 import dotenv from 'dotenv';
 //@ts-ignore
 import { connectToDatabase } from '../../src/api/dbConnection';
@@ -6,6 +7,7 @@ import { connectToDatabase } from '../../src/api/dbConnection';
 import { Subscription } from '../../src/app/shared/interfaces';
 import { Collection } from 'mongodb';
 
+/* cSpell:disable */
 const email = 'jaimedinizn@gmail.com';
 const gcmApiKey =
   'BFnDCleBcPbCHW0Wj6m0OngT9665HC6YS2ZI0T-vQIYZmFP1u7XgJQs2GyqclZD_-s_AXS-0KiACzvU_AoqqK4Q';
@@ -18,6 +20,7 @@ const vapidKeys = {
 
 setGCMAPIKey(gcmApiKey);
 setVapidDetails(`mailto:${email}`, vapidKeys.publicKey, vapidKeys.privateKey);
+/* cSpell:enable */
 
 let collection: Collection<Subscription>;
 let subscriptions: Array<Subscription>;
