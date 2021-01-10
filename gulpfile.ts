@@ -1,10 +1,10 @@
-const { bundler, dest, src, task, watch } = require('gulp'),
-  replace = require('gulp-replace'),
-  ts = require('gulp-typescript'),
-  environment = require('./src/api/environments/environment').environment,
-  environmentProd = require('./src/api/environments/environment.prod')
-    .environment,
-  argv = require('yargs').argv;
+const { bundler, dest, src, task, watch } = require('gulp');
+const replace = require('gulp-replace');
+const ts = require('gulp-typescript');
+const environment = require('./src/api/environments/environment').environment;
+const environmentProd = require('./src/api/environments/environment.prod')
+  .environment;
+const argv = require('yargs').argv;
 
 const tsFunctions = ts.createProject('tsconfig.functions.json');
 
@@ -16,7 +16,7 @@ exports.default = () => {
   } else {
     env = environment;
   }
-  Object.keys(environment).forEach(function (key, index) {
+  Object.keys(environment).forEach((key, index) => {
     stream = stream.pipe(replace(`%${key}%`, (environment as any)[key]));
   });
   return stream.pipe(tsFunctions()).pipe(dest('./api'));

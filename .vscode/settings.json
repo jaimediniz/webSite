@@ -15,11 +15,15 @@
   "prettier.jsxBracketSameLine": false,
   "prettier.semi": true,
   "cSpell.words": [
+    "Datepicker",
+    "Sidenav",
     "Swal",
     "codelyzer",
     "compat",
     "devkit",
+    "noanimation",
     "sweetalert",
     "vercel"
-  ]
+  ],
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false
 }

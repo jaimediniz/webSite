@@ -1,3 +1,4 @@
+/* cSpell:disable */
 export const environment = {
   production: true,
   publicKey: '7qf4atg8JaQDT0zY1lnI2PUKX9IPwQRj',

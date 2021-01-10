@@ -1,3 +1,4 @@
+/* cspell: disable-next-line */
 import { ObjectId } from 'bson';
 
 export interface APIResponse {

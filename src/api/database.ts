@@ -9,11 +9,13 @@ export default async (request: Request, response: Response) => {
   }
 
   const db = await connectToDatabase();
+  /* cSpell:disable */
   const listings = await db
     .collection('Subscriptions')
     .find({})
     .sort({ metacritic: -1 })
     .limit(20)
     .toArray();
+  /* cSpell:enable */
   return response.status(Status.ACCEPTED).json(listings);
 };

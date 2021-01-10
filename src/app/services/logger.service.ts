@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { localStoreLocation, LogPublisher } from '../shared/log-publisher';
 import { LogPublishersService } from '../shared/log-publishers.service';
 
+// eslint-disable-next-line no-shadow
 export enum LogLevel {
   displayAll = 0,
   displayDebug = 1,

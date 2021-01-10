@@ -1,4 +1,5 @@
 import { sendNotification, setVapidDetails, setGCMAPIKey } from 'web-push';
+//@ts-ignore
 import dotenv from 'dotenv';
 //@ts-ignore
 import { connectToDatabase } from '../../src/api/dbConnection';
@@ -6,8 +7,9 @@ import { connectToDatabase } from '../../src/api/dbConnection';
 import { Subscription } from '../../src/app/shared/interfaces';
 import { Collection } from 'mongodb';
 
+/* cSpell:disable */
 const email = 'jaimedinizn@gmail.com';
-const GCMAPIKey =
+const gcmApiKey =
   'BFnDCleBcPbCHW0Wj6m0OngT9665HC6YS2ZI0T-vQIYZmFP1u7XgJQs2GyqclZD_-s_AXS-0KiACzvU_AoqqK4Q';
 
 const vapidKeys = {
@@ -16,37 +18,37 @@ const vapidKeys = {
   privateKey: 'QRebLr-ql9ZKGHUzYHaEtZjVtI2LhXHAn6ZiXseOgcg'
 };
 
-setGCMAPIKey(GCMAPIKey);
+setGCMAPIKey(gcmApiKey);
 setVapidDetails(`mailto:${email}`, vapidKeys.publicKey, vapidKeys.privateKey);
-
-sendAllNotification();
+/* cSpell:enable */
 
 let collection: Collection<Subscription>;
 let subscriptions: Array<Subscription>;
-let expired: Array<Subscription> = [];
+const expired: Array<Subscription> = [];
 let itemsProcessed = 0;
 
-function done() {
+const done = () => {
   console.log('All done');
   process.exit(0);
-}
+};
 
-function updateDatabase() {
+const updateDatabase = () => {
   if (expired.length === 0) {
     done();
   }
 
-  let itemsProcessed = 0;
+  itemsProcessed = 0;
   expired.forEach(async (subscription) => {
+    // eslint-disable-next-line no-underscore-dangle
     await collection.deleteOne({ _id: subscription._id });
     itemsProcessed++;
     if (itemsProcessed === expired.length) {
       done();
     }
   });
-}
+};
 
-async function sendAllNotification(): Promise<boolean> {
+const sendAllNotification = async (): Promise<boolean> => {
   const result = dotenv.config({ path: __dirname + '/./../../.env' });
   if (result.error) {
     throw result.error;
@@ -70,9 +72,9 @@ async function sendAllNotification(): Promise<boolean> {
     sendPushNotification(subscription);
   });
   return true;
-}
+};
 
-function log(message: string, content: any) {
+const log = (message: string, content: any) => {
   if (process.env.NODE_ENV === 'production') {
     return;
   }
@@ -80,10 +82,10 @@ function log(message: string, content: any) {
   console.log(message);
   console.dir(content);
   console.log('############################################');
-}
+};
 
-var globalPayload: string;
-function newPayload(name?: string, title?: string, body?: string): string {
+let globalPayload: string;
+const newPayload = (name?: string, title?: string, body?: string): string => {
   if (globalPayload) {
     return globalPayload;
   }
@@ -93,7 +95,7 @@ function newPayload(name?: string, title?: string, body?: string): string {
     if ((process.env.npm_config_url as string).includes('skype')) {
       actions = [
         {
-          action: 'skype',
+          action: 'explore',
           title: 'Skype session',
           icon: '/assets/skype-icon.png'
         }
@@ -120,15 +122,15 @@ function newPayload(name?: string, title?: string, body?: string): string {
         primaryKey: 1,
         url: process.env.npm_config_url
       },
-      actions: actions
+      actions
     }
   };
   log('Payload', payload);
   globalPayload = JSON.stringify(payload);
   return globalPayload;
-}
+};
 
-function sendPushNotification(subscription: Subscription): void {
+const sendPushNotification = (subscription: Subscription): void => {
   if (subscription.paused) {
     return;
   }
@@ -162,4 +164,6 @@ function sendPushNotification(subscription: Subscription): void {
         updateDatabase();
       }
     });
-}
+};
+
+sendAllNotification();
