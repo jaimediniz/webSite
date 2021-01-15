@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
-import { APIResponse, Subscription } from '../shared/interfaces';
+import { APIResponse, Subscription } from '../interfaces/interfaces';
 import { LoadingService } from './loading.service';
 
 @Injectable({ providedIn: 'root' })
