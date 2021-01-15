@@ -1,5 +1,5 @@
 .pageContent {
-  height: calc(100% - 72px) !important;
+  height: calc(100% - var(--navSize) - var(--footerSize)) !important;
   overflow-y: hidden;
 }
 

@@ -1,0 +1,44 @@
+.--navSize {
+  height: var(--navSize) !important;
+  max-height: var(--navSize) !important;
+  .navbar-brand {
+    padding: 0px;
+    img {
+      height: calc(var(--navSize) - 16px) !important;
+    }
+  }
+}
+
+.links {
+  display: flex;
+}
+
+.side-menu {
+  display: none;
+}
+
+::ng-deep .customize {
+  background: #f8f9fa;
+}
+
+.mat-menu-item,
+mat-icon {
+  color: black !important;
+}
+
+button.mat-menu-item:hover {
+  background-color: rgba($color: black, $alpha: 0.2) !important;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+@media (max-width: 768px) {
+  .links {
+    display: none;
+  }
+  .side-menu {
+    display: block;
+  }
+}

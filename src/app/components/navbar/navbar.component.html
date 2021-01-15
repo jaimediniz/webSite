@@ -1,14 +1,98 @@
-<nav class="navbar navbar-fixed-top bg-light d-flex justify-content-between">
-  <div class="navbar-brand"></div>
-  <div class="d-flex">
+<nav
+  class="navbar --navSize navbar-fixed-top d-flex justify-content-between"
+  [ngClass]="{ 'bg-light': !darkMode, 'bg-dark': darkMode }"
+>
+  <div class="navbar-brand">
+    <img src="assets/icons/icon-512x512.png" />
+  </div>
+  <div class="side-menu" [hidden]="false">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu class="customize" #menu="matMenu" xPosition="before">
+      <button
+        mat-menu-item
+        class="nav-link"
+        [routerLink]="['home']"
+        routerLinkActive="active"
+      >
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </button>
+      <button
+        mat-menu-item
+        class="nav-link"
+        [routerLink]="['about']"
+        routerLinkActive="active"
+      >
+        <mat-icon>info</mat-icon>
+        <span>About</span>
+      </button>
+      <button
+        mat-menu-item
+        class="nav-link"
+        routerLink="['schedule']"
+        routerLinkActive="active"
+      >
+        <mat-icon>calendar_today</mat-icon>
+        <span>Current Activities</span>
+      </button>
+      <button
+        mat-menu-item
+        class="nav-link"
+        routerLink="['register']"
+        routerLinkActive="active"
+      >
+        <mat-icon>person_add</mat-icon>
+        <span>Register</span>
+      </button>
+      <button
+        mat-menu-item
+        class="nav-link"
+        routerLink="['chat']"
+        routerLinkActive="active"
+      >
+        <mat-icon>chat</mat-icon>
+        <span>Chat Room</span>
+      </button>
+      <button
+        mat-menu-item
+        class="nav-link"
+        routerLink="['feedback']"
+        routerLinkActive="active"
+      >
+        <mat-icon>feedback</mat-icon>
+        <span>Feedback</span>
+      </button>
+      <button
+        mat-menu-item
+        [hidden]="!testButton"
+        class="nav-link"
+        (click)="test()"
+      >
+        <mat-icon>warning</mat-icon>
+        <span>Test</span>
+      </button>
+    </mat-menu>
+  </div>
+  <div class="links">
     <a class="nav-link" [routerLink]="['home']" routerLinkActive="active"
       >Home</a
     >
     <a class="nav-link" [routerLink]="['about']" routerLinkActive="active"
       >About</a
     >
-    <a class="nav-link" routerLink="/schedule" routerLinkActive="active"
+    <a class="nav-link" routerLink="['schedule']" routerLinkActive="active"
       >Current Activities</a
+    >
+    <a class="nav-link" routerLink="['register']" routerLinkActive="active"
+      >Register</a
+    >
+    <a class="nav-link" routerLink="['chat']" routerLinkActive="active"
+      >Chat Room</a
+    >
+    <a class="nav-link" routerLink="['feedback']" routerLinkActive="active"
+      >Feedback</a
     >
     <a [hidden]="!testButton" class="nav-link" (click)="test()">Test</a>
   </div>
