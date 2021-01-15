@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatCardModule } from '@angular/material/card';
@@ -24,6 +24,10 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { MaterialModule } from './material.module';
 import { LoggerService } from './services/logger.service';
 import { SchedulesComponent } from './components/pages/schedules/schedules.component';
+import { ChatComponent } from './components/pages/chat/chat.component';
+import { FeedbackComponent } from './components/pages/feedback/feedback.component';
+import { RegisterComponent } from './components/pages/register/register.component';
+import { ActivitiesComponent } from './components/pages/activities/activities.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +38,11 @@ import { SchedulesComponent } from './components/pages/schedules/schedules.compo
     FooterComponent,
     AppInstallComponent,
     LoadingComponent,
-    SchedulesComponent
+    SchedulesComponent,
+    ChatComponent,
+    FeedbackComponent,
+    RegisterComponent,
+    ActivitiesComponent
   ],
   imports: [
     MaterialModule,

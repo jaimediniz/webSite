@@ -82,16 +82,16 @@
     <a class="nav-link" [routerLink]="['about']" routerLinkActive="active"
       >About</a
     >
-    <a class="nav-link" routerLink="['schedule']" routerLinkActive="active"
+    <a class="nav-link" [routerLink]="['schedule']" routerLinkActive="active"
       >Current Activities</a
     >
-    <a class="nav-link" routerLink="['register']" routerLinkActive="active"
+    <a class="nav-link" [routerLink]="['register']" routerLinkActive="active"
       >Register</a
     >
-    <a class="nav-link" routerLink="['chat']" routerLinkActive="active"
+    <a class="nav-link" [routerLink]="['chat']" routerLinkActive="active"
       >Chat Room</a
     >
-    <a class="nav-link" routerLink="['feedback']" routerLinkActive="active"
+    <a class="nav-link" [routerLink]="['feedback']" routerLinkActive="active"
       >Feedback</a
     >
     <a [hidden]="!testButton" class="nav-link" (click)="test()">Test</a>
