@@ -22,7 +22,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AppInstallComponent } from './components/external/external.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { MaterialModule } from './material.module';
-import { LogPublishersService } from './shared/log-publishers.service';
 import { LoggerService } from './services/logger.service';
 import { SchedulesComponent } from './components/pages/schedules/schedules.component';
 
@@ -61,7 +60,7 @@ import { SchedulesComponent } from './components/pages/schedules/schedules.compo
     MatIconModule,
     MatCardModule
   ],
-  providers: [LoggerService, LogPublishersService],
+  providers: [LoggerService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
