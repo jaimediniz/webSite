@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
     private logger: LoggerService
   ) {}
 
-  @logIO
+  @logIO()
   test(bool: boolean): boolean {
     this.alert.toast('Subscribed!', 'success');
     this.logger.log('Payload', '');

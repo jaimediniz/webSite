@@ -1,26 +1,29 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-export function logIO(
-  target: any,
-  propertyKey: string,
-  descriptor: TypedPropertyDescriptor<any>
-) {
-  const originalMethod = descriptor.value; // save a reference to the original method
+let gLevel = environment.production ? 6 : 0;
 
+export function logIO() {
   const logger = new LoggerService();
-  descriptor.value = function nameless(...args: any[]) {
-    // pre
-    const uniqueId = Math.random().toString(36).substring(2);
-    logger.debugFunction(propertyKey, true, uniqueId, args);
-    // run and store result
-    const result = originalMethod.apply(this, args);
-    // post
-    logger.debugFunction(propertyKey, false, uniqueId, result);
-    // return the result of the original method (or modify it before returning)
-    return result;
+  return (
+    target: any,
+    propertyKey: string,
+    descriptor: TypedPropertyDescriptor<any>
+  ) => {
+    const originalMethod = descriptor.value; // save a reference to the original method
+    descriptor.value = function nameless(...args: any[]) {
+      // pre
+      const uniqueId = Math.random().toString(36).substring(2);
+      logger.debugFunction(propertyKey, true, uniqueId, args);
+      // run and store result
+      const result = originalMethod.apply(this, args);
+      // post
+      logger.debugFunction(propertyKey, false, uniqueId, result);
+      // return the result of the original method (or modify it before returning)
+      return result;
+    };
+    return descriptor;
   };
-  return descriptor;
 }
 
 // eslint-disable-next-line no-shadow
@@ -38,8 +41,6 @@ export enum LogLevel {
   providedIn: 'root'
 })
 export class LoggerService {
-  public level = environment.production ? 6 : 0;
-
   publishers: LogPublisher[] = [];
   public logWithDate = true;
 
@@ -70,8 +71,8 @@ export class LoggerService {
   }
 
   setLevel(level: number): string {
-    this.level = level;
-    return `Logger Level: ${LogLevel[this.level]}`;
+    gLevel = level;
+    return `Logger Level: ${LogLevel[gLevel]}`;
   }
 
   setLogWithDate(status: boolean): string {
@@ -158,7 +159,7 @@ export class LoggerService {
 
     const entry: LogEntry = new LogEntry();
     entry.message = msg;
-    entry.level = this.level;
+    entry.level = gLevel;
     entry.extraInfo = params;
     entry.logWithDate = this.logWithDate;
     entry.color = color;
@@ -171,8 +172,8 @@ export class LoggerService {
   private shouldLog(level: LogLevel): boolean {
     let ret = false;
     if (
-      (level >= this.level && level !== LogLevel.displayOff) ||
-      this.level === LogLevel.displayAll
+      (level >= gLevel && level !== LogLevel.displayOff) ||
+      gLevel === LogLevel.displayAll
     ) {
       ret = true;
     }
