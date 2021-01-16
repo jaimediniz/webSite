@@ -1,6 +1,30 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Observable, of } from 'rxjs';
+
+let gLevel = environment.production ? 6 : 0;
+
+export function logIO() {
+  const logger = new LoggerService();
+  return (
+    target: any,
+    propertyKey: string,
+    descriptor: TypedPropertyDescriptor<any>
+  ) => {
+    const originalMethod = descriptor.value; // save a reference to the original method
+    descriptor.value = function nameless(...args: any[]) {
+      // pre
+      const uniqueId = Math.random().toString(36).substring(2);
+      logger.debugFunction(propertyKey, true, uniqueId, args);
+      // run and store result
+      const result = originalMethod.apply(this, args);
+      // post
+      logger.debugFunction(propertyKey, false, uniqueId, result);
+      // return the result of the original method (or modify it before returning)
+      return result;
+    };
+    return descriptor;
+  };
+}
 
 // eslint-disable-next-line no-shadow
 export enum LogLevel {
@@ -18,9 +42,7 @@ export enum LogLevel {
 })
 export class LoggerService {
   publishers: LogPublisher[] = [];
-
-  private level = environment.production ? 6 : 0;
-  private logWithDate = true;
+  public logWithDate = true;
 
   constructor() {
     // Set publishers
@@ -49,13 +71,23 @@ export class LoggerService {
   }
 
   setLevel(level: number): string {
-    this.level = level;
-    return `Logger Level: ${LogLevel[this.level]}`;
+    gLevel = level;
+    return `Logger Level: ${LogLevel[gLevel]}`;
   }
 
   setLogWithDate(status: boolean): string {
     this.logWithDate = status;
     return `Log with date: ${status}`;
+  }
+
+  debugFunction(msg: string, ...optionalParams: any[]) {
+    this.writeToLog(
+      msg,
+      'color:OliveDrab;font-weight:bold;',
+      LogLevel.displayDebug,
+      optionalParams,
+      true
+    );
   }
 
   debug(msg: string, ...optionalParams: any[]) {
@@ -96,39 +128,30 @@ export class LoggerService {
     const values: Array<LogEntry> =
       JSON.parse(localStorage?.getItem(localStoreLocation) || 'null') || [];
 
-    if (values.length) {
-      console.log(
-        '%c############### LOCAL STORAGE ###############',
-        'color:Tomato;font-weight:bold;'
-      );
-    }
+    console.log(
+      '%c############### LOCAL STORAGE ###############',
+      'color:Tomato;font-weight:bold;'
+    );
 
     values.forEach((element: LogEntry) => {
       if (!this.shouldLog(element.level)) {
         return;
       }
-      let ret = element.color ? '%c' : '';
-      ret += element.logWithDate ? `[${element.entryDate}]\n` : '';
-      ret += '- Message: ' + element.message;
-      if (element.extraInfo.length) {
-        ret += '\n- Extra Info:' + formatParams(element.extraInfo);
-      }
-      console.log(ret, element.color);
+      console.log(LogEntry.msgString(element), element.color);
     });
 
-    if (values.length) {
-      console.log(
-        '%c#############################################',
-        'color:Tomato;font-weight:bold;'
-      );
-    }
+    console.log(
+      '%c#############################################',
+      'color:Tomato;font-weight:bold;'
+    );
   }
 
   private writeToLog(
     msg: string,
     color: string,
     level: LogLevel,
-    params: any[]
+    params: any[],
+    isFunction: boolean = false
   ): void {
     if (!this.shouldLog(level)) {
       return;
@@ -136,20 +159,21 @@ export class LoggerService {
 
     const entry: LogEntry = new LogEntry();
     entry.message = msg;
-    entry.level = this.level;
+    entry.level = gLevel;
     entry.extraInfo = params;
     entry.logWithDate = this.logWithDate;
     entry.color = color;
+    entry.isFunction = isFunction;
     for (const logger of this.publishers) {
-      logger.log(entry, color).subscribe((response) => {});
+      logger.log(entry, color);
     }
   }
 
   private shouldLog(level: LogLevel): boolean {
     let ret = false;
     if (
-      (level >= this.level && level !== LogLevel.displayOff) ||
-      this.level === LogLevel.displayAll
+      (level >= gLevel && level !== LogLevel.displayOff) ||
+      gLevel === LogLevel.displayAll
     ) {
       ret = true;
     }
@@ -180,16 +204,36 @@ export class LogEntry {
   extraInfo: any[] = [];
   logWithDate = true;
   color = '';
+  isFunction = false;
+
+  static msgString(entry: LogEntry): string {
+    let ret = entry.color ? '%c' : '';
+    ret += entry.logWithDate ? `[${entry.entryDate}]\n` : '';
+    if (entry.isFunction) {
+      return LogEntry.function(entry, ret);
+    }
+    return LogEntry.msg(entry, ret);
+  }
+
+  static function(entry: LogEntry, ret: string) {
+    ret += '- Function: ' + entry.message;
+    ret += '\n- Call ID:  ' + entry.extraInfo[1];
+    ret += `\n    ${
+      entry.extraInfo[0] ? 'The method args are' : 'The return value is'
+    }: ${JSON.stringify(entry.extraInfo[2])}`;
+    return ret;
+  }
+
+  static msg(entry: LogEntry, ret: string) {
+    ret += '- Message: ' + entry.message;
+    if (entry.extraInfo.length) {
+      ret += '\n- Extra Info:' + formatParams(entry.extraInfo);
+    }
+    return ret;
+  }
 
   buildLogString(): string {
-    let ret = this.color ? '%c' : '';
-    ret += this.logWithDate ? `[${this.entryDate}]\n` : '';
-    ret += '- Message: ' + this.message;
-    if (this.extraInfo.length) {
-      ret += '\n- Extra Info:' + formatParams(this.extraInfo);
-    }
-
-    return ret;
+    return LogEntry.msgString(this);
   }
 }
 
@@ -197,20 +241,18 @@ const localStoreLocation = 'logging';
 
 abstract class LogPublisher {
   location: string;
-  abstract log(record: LogEntry, color: string): Observable<boolean>;
-  abstract clear(): Observable<boolean>;
+  abstract log(record: LogEntry, color: string): void;
+  abstract clear(): void;
 }
 
 class LogConsole extends LogPublisher {
-  log(entry: LogEntry, color: string): Observable<boolean> {
+  log(entry: LogEntry, color: string): void {
     // Log to console
     console.log(entry.buildLogString(), color);
-    return of(true);
   }
 
-  clear(): Observable<boolean> {
+  clear(): void {
     console.clear();
-    return of(true);
   }
 }
 
@@ -224,7 +266,7 @@ class LogLocalStorage extends LogPublisher {
   }
 
   // Append log entry to local storage
-  log(entry: LogEntry, color: string): Observable<boolean> {
+  log(entry: LogEntry, color: string): void {
     let ret = false;
     let values: LogEntry[];
 
@@ -244,13 +286,10 @@ class LogLocalStorage extends LogPublisher {
       // Display error in console
       console.warn(ex);
     }
-
-    return of(ret);
   }
 
   // Clear all log entries from local storage
-  clear(): Observable<boolean> {
+  clear(): void {
     localStorage.removeItem(this.location);
-    return of(true);
   }
 }

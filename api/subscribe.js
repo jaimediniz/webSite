@@ -11,7 +11,6 @@ exports.default = async (request, response) => {
     let body;
     try {
         body = JSON.parse(request.body);
-        console.log(body);
     }
     catch (error) {
         return response
@@ -21,7 +20,6 @@ exports.default = async (request, response) => {
     try {
         const db = await dbConnection_1.connectToDatabase();
         const result = await db.collection('Subscriptions').insertOne(body);
-        console.log(result);
         return response
             .status(http_status_codes_1.default.CREATED)
             .json({ error: false, message: result });

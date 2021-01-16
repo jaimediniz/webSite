@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoggerService, logIO } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 
 @Component({
@@ -10,11 +11,17 @@ export class NavbarComponent implements OnInit {
   public darkMode = false;
   public testButton = true;
 
-  constructor(private alert: SweetAlertService) {}
+  constructor(
+    private alert: SweetAlertService,
+    private logger: LoggerService
+  ) {}
+
+  @logIO()
+  test(bool: boolean): boolean {
+    this.alert.toast('Subscribed!', 'success');
+    this.logger.log('Payload', '');
+    return !bool;
+  }
 
   ngOnInit(): void {}
-
-  test(): void {
-    this.alert.toast('Subscribed!', 'success');
-  }
 }

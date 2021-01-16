@@ -11,6 +11,9 @@
 
 .links {
   display: flex;
+  a {
+    cursor: pointer;
+  }
 }
 
 .side-menu {
