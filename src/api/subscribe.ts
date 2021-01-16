@@ -13,7 +13,6 @@ export default async (request: Request, response: Response) => {
   let body;
   try {
     body = JSON.parse(request.body);
-    console.log(body);
   } catch (error) {
     return response
       .status(Status.BAD_REQUEST)
@@ -23,7 +22,6 @@ export default async (request: Request, response: Response) => {
   try {
     const db = await connectToDatabase();
     const result = await db.collection('Subscriptions').insertOne(body);
-    console.log(result);
     return response
       .status(Status.CREATED)
       .json({ error: false, message: result });
