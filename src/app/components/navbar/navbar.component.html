@@ -68,7 +68,7 @@
         mat-menu-item
         [hidden]="!testButton"
         class="nav-link"
-        (click)="test()"
+        (click)="test(true)"
       >
         <mat-icon>warning</mat-icon>
         <span>Test</span>
@@ -94,6 +94,6 @@
     <a class="nav-link" [routerLink]="['feedback']" routerLinkActive="active"
       >Feedback</a
     >
-    <a [hidden]="!testButton" class="nav-link" (click)="test()">Test</a>
+    <a [hidden]="!testButton" class="nav-link" (click)="test(false)">Test</a>
   </div>
 </nav>
