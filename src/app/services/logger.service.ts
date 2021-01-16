@@ -9,18 +9,15 @@ export function logIO(
   new LoggerService().log(propertyKey);
   const originalMethod = descriptor.value; // save a reference to the original method
 
-  // NOTE: Do not use arrow syntax here. Use a function expression in
-  // order to use the correct value of `this` in this method (see notes below)
-
   const logger = new LoggerService();
-
   descriptor.value = function nameless(...args: any[]) {
     // pre
-    logger.debugFunction(propertyKey, true, args);
+    const uniqueId = Math.random().toString(36).substring(2);
+    logger.debugFunction(propertyKey, true, uniqueId, args);
     // run and store result
     const result = originalMethod.apply(this, args);
     // post
-    logger.debugFunction(propertyKey, false, result);
+    logger.debugFunction(propertyKey, false, uniqueId, result);
     // return the result of the original method (or modify it before returning)
     return result;
   };
@@ -86,7 +83,7 @@ export class LoggerService {
   debugFunction(msg: string, ...optionalParams: any[]) {
     this.writeToLog(
       msg,
-      'color:OliveDrab;',
+      'color:OliveDrab;font-weight:bold;',
       LogLevel.displayDebug,
       optionalParams,
       true
@@ -230,9 +227,10 @@ export class LogEntry {
 
   function(ret: string) {
     ret += '- Function: ' + this.message;
+    ret += '\n- Call ID:  ' + this.extraInfo[1];
     ret += `\n    ${
       this.extraInfo[0] ? 'The method args are' : 'The return value is'
-    }: ${JSON.stringify(this.extraInfo[1])}`;
+    }: ${JSON.stringify(this.extraInfo[2])}`;
     return ret;
   }
 
