@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 //@ts-ignore
 import { connectToDatabase } from '../../src/api/dbConnection';
 //@ts-ignore
-import { Subscription } from '../../src/app/shared/interfaces';
+import { Subscription } from '../../src/app/interfaces/interfaces';
 import { Collection } from 'mongodb';
 
 /* cSpell:disable */

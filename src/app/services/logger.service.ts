@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { localStoreLocation, LogPublisher } from '../shared/log-publisher';
-import { LogPublishersService } from '../shared/log-publishers.service';
+import { Observable, of } from 'rxjs';
 
 // eslint-disable-next-line no-shadow
 export enum LogLevel {
@@ -18,15 +17,27 @@ export enum LogLevel {
   providedIn: 'root'
 })
 export class LoggerService {
-  publishers: LogPublisher[];
+  publishers: LogPublisher[] = [];
 
   private level = environment.production ? 6 : 0;
   private logWithDate = true;
 
-  constructor(private publishersService: LogPublishersService) {
+  constructor() {
     // Set publishers
-    this.publishers = this.publishersService.publishers;
+    this.buildPublishers();
     this.addLoggerToWindow();
+  }
+
+  buildPublishers(): void {
+    // Create instance of LogConsole Class
+    this.publishers.push(new LogConsole());
+
+    if (environment.production) {
+      return;
+    }
+
+    // Create instance of `LogLocalStorage` Class
+    this.publishers.push(new LogLocalStorage());
   }
 
   addLoggerToWindow() {
@@ -179,5 +190,67 @@ export class LogEntry {
     }
 
     return ret;
+  }
+}
+
+const localStoreLocation = 'logging';
+
+abstract class LogPublisher {
+  location: string;
+  abstract log(record: LogEntry, color: string): Observable<boolean>;
+  abstract clear(): Observable<boolean>;
+}
+
+class LogConsole extends LogPublisher {
+  log(entry: LogEntry, color: string): Observable<boolean> {
+    // Log to console
+    console.log(entry.buildLogString(), color);
+    return of(true);
+  }
+
+  clear(): Observable<boolean> {
+    console.clear();
+    return of(true);
+  }
+}
+
+class LogLocalStorage extends LogPublisher {
+  constructor() {
+    // Must call `super()`from derived classes
+    super();
+
+    // Set location
+    this.location = localStoreLocation;
+  }
+
+  // Append log entry to local storage
+  log(entry: LogEntry, color: string): Observable<boolean> {
+    let ret = false;
+    let values: LogEntry[];
+
+    try {
+      // Get previous values from local storage
+      values = JSON.parse(localStorage?.getItem(this.location) || 'null') || [];
+
+      // Add new log entry to array
+      values.push(entry);
+
+      // Store array into local storage
+      localStorage.setItem(this.location, JSON.stringify(values));
+
+      // Set return value
+      ret = true;
+    } catch (ex) {
+      // Display error in console
+      console.warn(ex);
+    }
+
+    return of(ret);
+  }
+
+  // Clear all log entries from local storage
+  clear(): Observable<boolean> {
+    localStorage.removeItem(this.location);
+    return of(true);
   }
 }
