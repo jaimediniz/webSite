@@ -6,7 +6,6 @@ export function logIO(
   propertyKey: string,
   descriptor: TypedPropertyDescriptor<any>
 ) {
-  new LoggerService().log(propertyKey);
   const originalMethod = descriptor.value; // save a reference to the original method
 
   const logger = new LoggerService();
@@ -128,32 +127,22 @@ export class LoggerService {
     const values: Array<LogEntry> =
       JSON.parse(localStorage?.getItem(localStoreLocation) || 'null') || [];
 
-    if (values.length) {
-      console.log(
-        '%c############### LOCAL STORAGE ###############',
-        'color:Tomato;font-weight:bold;'
-      );
-    }
+    console.log(
+      '%c############### LOCAL STORAGE ###############',
+      'color:Tomato;font-weight:bold;'
+    );
 
     values.forEach((element: LogEntry) => {
       if (!this.shouldLog(element.level)) {
         return;
       }
-      let ret = element.color ? '%c' : '';
-      ret += element.logWithDate ? `[${element.entryDate}]\n` : '';
-      ret += '- Message: ' + element.message;
-      if (element.extraInfo.length) {
-        ret += '\n- Extra Info:' + formatParams(element.extraInfo);
-      }
-      console.log(ret, element.color);
+      console.log(LogEntry.msgString(element), element.color);
     });
 
-    if (values.length) {
-      console.log(
-        '%c#############################################',
-        'color:Tomato;font-weight:bold;'
-      );
-    }
+    console.log(
+      '%c#############################################',
+      'color:Tomato;font-weight:bold;'
+    );
   }
 
   private writeToLog(
@@ -216,31 +205,34 @@ export class LogEntry {
   color = '';
   isFunction = false;
 
-  buildLogString(): string {
-    let ret = this.color ? '%c' : '';
-    ret += this.logWithDate ? `[${this.entryDate}]\n` : '';
-    if (this.isFunction) {
-      return this.function(ret);
+  static msgString(entry: LogEntry): string {
+    let ret = entry.color ? '%c' : '';
+    ret += entry.logWithDate ? `[${entry.entryDate}]\n` : '';
+    if (entry.isFunction) {
+      return LogEntry.function(entry, ret);
     }
-    return this.msg(ret);
+    return LogEntry.msg(entry, ret);
   }
 
-  function(ret: string) {
-    ret += '- Function: ' + this.message;
-    ret += '\n- Call ID:  ' + this.extraInfo[1];
+  static function(entry: LogEntry, ret: string) {
+    ret += '- Function: ' + entry.message;
+    ret += '\n- Call ID:  ' + entry.extraInfo[1];
     ret += `\n    ${
-      this.extraInfo[0] ? 'The method args are' : 'The return value is'
-    }: ${JSON.stringify(this.extraInfo[2])}`;
+      entry.extraInfo[0] ? 'The method args are' : 'The return value is'
+    }: ${JSON.stringify(entry.extraInfo[2])}`;
     return ret;
   }
 
-  msg(ret: string) {
-    ret += '- Message: ' + this.message;
-    if (this.extraInfo.length) {
-      ret += '\n- Extra Info:' + formatParams(this.extraInfo);
+  static msg(entry: LogEntry, ret: string) {
+    ret += '- Message: ' + entry.message;
+    if (entry.extraInfo.length) {
+      ret += '\n- Extra Info:' + formatParams(entry.extraInfo);
     }
-
     return ret;
+  }
+
+  buildLogString(): string {
+    return LogEntry.msgString(this);
   }
 }
 
