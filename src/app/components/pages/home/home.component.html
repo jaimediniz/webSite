@@ -1,13 +1,23 @@
-<div class="h-100 w-100 content">
+<div
+  class="h-100 w-100 content"
+  [style.background-image]="'url(' + '../../../../assets/imgs/bg.jpg' + ')'"
+>
   <div class="first-part">
     <div class="goals">
-      <span>Language Learning made Interesting</span>
-      <span>Meet, Share & Learn</span>
+      <div class="title">LANGUAGE TANDEM</div>
+      <div class="sub-title">Language Learning made Interesting</div>
     </div>
     <div class="buttons-container">
-      <button>Schedule for Semester WS21</button>
-      <button>Poll</button>
-      <button>Activities for Future</button>
+      <div
+        class="d-flex align-items-start justify-content-between container"
+        [ngClass]="{ 'flex-column': false }"
+      >
+        <button [routerLink]="['', 'schedule']">
+          Schedule for Semester WS21
+        </button>
+        <button>Poll</button>
+        <button>Activities for Future</button>
+      </div>
     </div>
   </div>
 </div>
