@@ -4,6 +4,11 @@
 **/dist
 /tmp
 /out-tsc
+
+# environment
+**/.env
+**/environment*.ts
+
 # Only exists if Bazel was run
 /bazel-out
 
@@ -45,5 +50,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# Local Netlify folder
+# Local Vercel folder
 .vercel
