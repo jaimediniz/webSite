@@ -98,7 +98,8 @@ const newPayload = (name?: string, title?: string, body?: string): string => {
       actions = [
         {
           action: 'website',
-          title: 'Go to link'
+          title: 'Go to URL!',
+          icon: `${process.env.npm_config_url}/favicon.ico`
         }
       ];
     }
