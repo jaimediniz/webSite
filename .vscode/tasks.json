@@ -26,18 +26,18 @@
       }
     },
     {
-      "label": "Test Skype Push Notification",
+      "label": "Send Push Notification",
       "type": "shell",
-      "command": "npm run test-skype",
+      "command": "npm run start --prod --title=\"${input:messageTitle}\" --body=\"${input:messageBody}\" --url=\"${input:messageURL}\"",
       "options": {
         "cwd": "${workspaceFolder}/messages"
       },
       "problemMatcher": []
     },
     {
-      "label": "Send Push Notification",
+      "label": "Test Skype Message",
       "type": "shell",
-      "command": "npm run start --prod --title=\"${input:messageTitle}\" --body=\"${input:messageBody}\" --url=\"${input:messageURL}\"",
+      "command": "npm run start --prod --title=\"The German class is about to start!\" --body=\"Click on the link bellow to join the skype section\" --url=\"https://join.skype.com/mHS5XkJw4p0P\"",
       "options": {
         "cwd": "${workspaceFolder}/messages"
       },

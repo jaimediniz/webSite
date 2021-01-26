@@ -20,6 +20,8 @@
     "start": "npx ts-node src/index.ts",
     "test": "npm run start --title=\"Test\" --body=\"Test\"",
     "test-skype": "npm run start --title=\"Test\" --body=\"Test\" --url=\"https://www.skype.com\"",
+    "test-url": "npm run start --title=\"Test\" --body=\"Test\" --url=\"https://www.google.com\"",
+    "test-app": "npm run start --title=\"Test\" --body=\"Test\" --url=\"https://thinice.vercel.app/\"",
     "build": "npx tsc"
   }
 }
