@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { APIService } from 'src/app/services/backend.service';
 import { LoggerService, logIO } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 
@@ -13,14 +14,28 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private alert: SweetAlertService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private api: APIService
   ) {}
 
   @logIO()
-  test(bool: boolean): boolean {
-    this.alert.toast('Subscribed!', 'success');
-    this.logger.log('Payload', '');
-    return !bool;
+  async test(bool: boolean): Promise<boolean> {
+    const payLoad = {
+      username: 'jaime5',
+      password: '123'
+    };
+    const apiResponse = await this.api.login(payLoad);
+    return apiResponse;
+  }
+
+  async test2(bool: boolean): Promise<boolean> {
+    const payLoad = {
+      username: 'jaime5',
+      password: '1234',
+      role: 'admin'
+    };
+    const apiResponse = await this.api.register(payLoad);
+    return apiResponse;
   }
 
   ngOnInit(): void {}

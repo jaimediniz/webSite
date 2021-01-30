@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
 import { APIResponse, Subscription } from '../interfaces/interfaces';
 import { LoadingService } from './loading.service';
+import { SweetAlertService } from './sweetAlert.service';
 
 @Injectable({ providedIn: 'root' })
 export class APIService {
@@ -24,7 +25,8 @@ export class APIService {
   constructor(
     private logger: LoggerService,
     private http: HttpClient,
-    private loading: LoadingService
+    private loading: LoadingService,
+    private alert: SweetAlertService
   ) {}
 
   async addSubscription(sub: PushSubscription): Promise<boolean> {
@@ -41,6 +43,33 @@ export class APIService {
 
     const apiResponse = await this.post('/api/subscribe', payLoad);
     return !(apiResponse as any).error;
+  }
+
+  async login(payLoad: {
+    username: string;
+    password: string;
+  }): Promise<boolean> {
+    this.loading.startLoading();
+    const apiResponse = await this.post('/api/login', payLoad);
+    this.loading.stopLoading();
+    if (!(apiResponse as any).error) {
+      this.alert.toast('Success!', 'success');
+    }
+    return false;
+  }
+
+  async register(payLoad: {
+    username: string;
+    password: string;
+    role: string;
+  }): Promise<boolean> {
+    this.loading.startLoading();
+    const apiResponse = await this.post('/api/register', payLoad);
+    this.loading.stopLoading();
+    if (!(apiResponse as any).error) {
+      this.alert.toast('Registered!', 'success');
+    }
+    return false;
   }
 
   async post(route: string, payLoad: any): Promise<APIResponse> {
