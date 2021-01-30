@@ -44,7 +44,6 @@ export class SweetAlertService {
       html += 'code: <input id="swal-input3" class="swal2-input">';
     }
 
-    console.log(html);
     const { value: formValues } = await Swal.fire({
       html,
       focusConfirm: true,
@@ -87,5 +86,29 @@ export class SweetAlertService {
     }
 
     return false;
+  }
+
+  async uploadPicture(): Promise<boolean> {
+    const { value: file } = await Swal.fire({
+      title: 'Select image',
+      input: 'file',
+      inputAttributes: {
+        accept: 'image/*',
+        'aria-label': 'Upload your profile picture'
+      }
+    });
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        Swal.fire({
+          title: 'Your uploaded picture',
+          imageUrl: e.target.result,
+          imageAlt: 'The uploaded picture'
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+    return true;
   }
 }

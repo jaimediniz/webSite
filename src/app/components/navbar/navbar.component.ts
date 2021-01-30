@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
 
   @logIO()
   async test(bool: boolean): Promise<boolean> {
-    const apiResponse = await this.login(true);
+    const apiResponse = await this.alert.uploadPicture();
     return apiResponse;
   }
 
