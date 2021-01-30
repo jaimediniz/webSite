@@ -61,7 +61,7 @@ export class APIService {
   async register(payLoad: {
     username: string;
     password: string;
-    role: string;
+    code: string;
   }): Promise<boolean> {
     this.loading.startLoading();
     const apiResponse = await this.post('/api/register', payLoad);

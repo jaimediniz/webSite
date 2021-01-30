@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   @logIO()
-  async test(bool: boolean): Promise<boolean> {
+  async test2(bool: boolean): Promise<boolean> {
     const payLoad = {
       username: 'jaime5',
       password: '123'
@@ -28,11 +28,11 @@ export class NavbarComponent implements OnInit {
     return apiResponse;
   }
 
-  async test2(bool: boolean): Promise<boolean> {
+  async test(bool: boolean): Promise<boolean> {
     const payLoad = {
-      username: 'jaime5',
+      username: 'jaime55',
       password: '1234',
-      role: 'admin'
+      code: '6955037335'
     };
     const apiResponse = await this.api.register(payLoad);
     return apiResponse;
