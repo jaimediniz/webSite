@@ -23,3 +23,15 @@ button:focus {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+@media all and (max-width: 769px) {
+  .backgroundImage {
+    background-size: 500px 500px;
+  }
+}
+
+@media all and (max-width: 480px) {
+  .backgroundImage {
+    background-size: 300px 300px;
+  }
+}
