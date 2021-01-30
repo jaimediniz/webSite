@@ -1,34 +1,20 @@
 import { Request, Response } from 'express';
 import Status from 'http-status-codes';
 
-import { connectToDatabase } from './dbConnection';
+import { getBody, insertOne } from './dbConnection';
 
 export default async (request: Request, response: Response) => {
-  if (request.method !== 'POST' || !request.body) {
-    return response
-      .status(Status.BAD_REQUEST)
-      .send({ error: true, message: 'Method not allowed.' });
-  }
-
   let body;
   try {
-    body = JSON.parse(request.body);
-  } catch (error) {
+    body = await getBody(request.method, request.body);
+  } catch (err) {
     return response
       .status(Status.BAD_REQUEST)
-      .json({ error: true, message: 'Body is corrupted!' });
+      .send({ error: true, message: err.message });
   }
 
-  try {
-    const db = await connectToDatabase();
-    const result = await db.collection('Subscriptions').insertOne(body);
-    return response
-      .status(Status.CREATED)
-      .json({ error: false, message: result });
-  } catch (err) {
-    console.log(err);
-    return response
-      .status(Status.INTERNAL_SERVER_ERROR)
-      .json({ error: true, message: err.message });
-  }
+  const result = await insertOne('Subscriptions', body);
+  return response
+    .status(result.code)
+    .json({ error: result.error, message: result.message });
 };

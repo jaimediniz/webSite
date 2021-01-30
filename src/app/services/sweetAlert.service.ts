@@ -37,6 +37,34 @@ export class SweetAlertService {
     });
   }
 
+  async loginOrRegister(isRegister?: boolean): Promise<any> {
+    let html = 'username: <input id="swal-input1" class="swal2-input">';
+    html += 'password: <input id="swal-input2" class="swal2-input">';
+    if (isRegister) {
+      html += 'code: <input id="swal-input3" class="swal2-input">';
+    }
+
+    const { value: formValues } = await Swal.fire({
+      html,
+      focusConfirm: true,
+      confirmButtonText: `${isRegister ? 'Register' : 'Login'}`,
+      preConfirm: () => ({
+        username: (document.getElementById('swal-input1') as any).value,
+        password: (document.getElementById('swal-input2') as any).value,
+        code: (document.getElementById('swal-input3') as any).value
+      })
+    });
+
+    if (
+      formValues &&
+      formValues.username &&
+      formValues.password &&
+      formValues.code
+    ) {
+      return formValues;
+    }
+  }
+
   async fireQuestion(
     title: string,
     text: string,
@@ -58,5 +86,29 @@ export class SweetAlertService {
     }
 
     return false;
+  }
+
+  async uploadPicture(): Promise<boolean> {
+    const { value: file } = await Swal.fire({
+      title: 'Select image',
+      input: 'file',
+      inputAttributes: {
+        accept: 'image/*',
+        'aria-label': 'Upload your profile picture'
+      }
+    });
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        Swal.fire({
+          title: 'Your uploaded picture',
+          imageUrl: e.target.result,
+          imageAlt: 'The uploaded picture'
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+    return true;
   }
 }

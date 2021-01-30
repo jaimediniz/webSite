@@ -17,3 +17,21 @@ body {
 button:focus {
   outline: none !important;
 }
+
+.backgroundImage {
+  background-image: url('./assets/imgs/bg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media all and (max-width: 769px) {
+  .backgroundImage {
+    background-size: 500px 500px;
+  }
+}
+
+@media all and (max-width: 520px) {
+  .backgroundImage {
+    background-size: 300px 300px;
+  }
+}

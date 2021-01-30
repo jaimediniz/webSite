@@ -11,12 +11,12 @@ export function logIO() {
     descriptor: TypedPropertyDescriptor<any>
   ) => {
     const originalMethod = descriptor.value; // save a reference to the original method
-    descriptor.value = function nameless(...args: any[]) {
+    descriptor.value = async function nameless(...args: any[]) {
       // pre
       const uniqueId = Math.random().toString(36).substring(2);
       logger.debugFunction(propertyKey, true, uniqueId, args);
       // run and store result
-      const result = originalMethod.apply(this, args);
+      const result = await originalMethod.apply(this, args);
       // post
       logger.debugFunction(propertyKey, false, uniqueId, result);
       // return the result of the original method (or modify it before returning)
