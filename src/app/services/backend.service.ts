@@ -7,7 +7,7 @@ import { APIResponse, Subscription } from '../interfaces/interfaces';
 import { LoadingService } from './loading.service';
 
 @Injectable({ providedIn: 'root' })
-export class API {
+export class APIService {
   public activeSession: Subject<string> = new Subject();
   public isAdmin = false;
 

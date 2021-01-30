@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
-import { API } from 'src/app/services/backend.service';
+import { APIService } from 'src/app/services/backend.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 import { WindowService } from 'src/app/services/window.service';
@@ -21,7 +21,7 @@ export class AppInstallComponent implements OnInit {
     private logger: LoggerService,
     private winRef: WindowService,
     private swPush: SwPush,
-    private api: API,
+    private api: APIService,
     private alert: SweetAlertService
   ) {
     if (Notification.permission === 'default') {
