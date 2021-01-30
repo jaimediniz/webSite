@@ -19,22 +19,30 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   @logIO()
-  async test2(bool: boolean): Promise<boolean> {
-    const payLoad = {
-      username: 'jaime5',
-      password: '123'
-    };
-    const apiResponse = await this.api.login(payLoad);
+  async test(bool: boolean): Promise<boolean> {
+    const apiResponse = await this.login(true);
     return apiResponse;
   }
 
-  async test(bool: boolean): Promise<boolean> {
-    const payLoad = {
-      username: 'jaime55',
-      password: '1234',
-      code: '6955037335'
-    };
+  async register(bool: boolean): Promise<boolean> {
+    const payLoad = await this.alert.loginOrRegister(true);
+
+    if (!payLoad) {
+      return false;
+    }
+
     const apiResponse = await this.api.register(payLoad);
+    return apiResponse;
+  }
+
+  async login(bool: boolean): Promise<boolean> {
+    const payLoad = await this.alert.loginOrRegister();
+
+    if (!payLoad) {
+      return false;
+    }
+
+    const apiResponse = await this.api.login(payLoad);
     return apiResponse;
   }
 

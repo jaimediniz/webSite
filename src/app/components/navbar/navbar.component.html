@@ -37,12 +37,7 @@
         <mat-icon>calendar_today</mat-icon>
         <span>Current Activities</span>
       </button>
-      <button
-        mat-menu-item
-        class="nav-link"
-        [routerLink]="['register']"
-        routerLinkActive="active"
-      >
+      <button mat-menu-item class="nav-link" (click)="register(true)">
         <mat-icon>person_add</mat-icon>
         <span>Register</span>
       </button>
@@ -85,9 +80,7 @@
     <a class="nav-link" [routerLink]="['schedule']" routerLinkActive="active"
       >Current Activities</a
     >
-    <a class="nav-link" [routerLink]="['register']" routerLinkActive="active"
-      >Register</a
-    >
+    <a class="nav-link" (click)="register(true)">Register</a>
     <a class="nav-link" [routerLink]="['chat']" routerLinkActive="active"
       >Chat Room</a
     >
