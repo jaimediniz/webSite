@@ -25,5 +25,8 @@
     "sweetalert",
     "vercel"
   ],
-  "typescript.tsserver.experimental.enableProjectDiagnostics": false
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "files.exclude": {
+    "**/node_modules": true
+  }
 }
