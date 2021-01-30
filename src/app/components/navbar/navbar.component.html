@@ -72,21 +72,25 @@
   </div>
   <div class="links">
     <a class="nav-link" [routerLink]="['home']" routerLinkActive="active"
-      >Home</a
+      ><mat-icon>home</mat-icon><span>Home</span></a
     >
     <a class="nav-link" [routerLink]="['about']" routerLinkActive="active"
-      >About</a
+      ><mat-icon>info</mat-icon><span>About</span></a
     >
     <a class="nav-link" [routerLink]="['schedule']" routerLinkActive="active"
-      >Current Activities</a
+      ><mat-icon>calendar_today</mat-icon><span>Current Activities</span></a
     >
-    <a class="nav-link" (click)="register(true)">Register</a>
+    <a class="nav-link" (click)="register(true)"
+      ><mat-icon>person_add</mat-icon><span>Register</span></a
+    >
     <a class="nav-link" [routerLink]="['chat']" routerLinkActive="active"
-      >Chat Room</a
+      ><mat-icon>chat</mat-icon><span>Chat Room</span></a
     >
     <a class="nav-link" [routerLink]="['feedback']" routerLinkActive="active"
-      >Feedback</a
+      ><mat-icon>feedback</mat-icon><span>Feedback</span></a
     >
-    <a [hidden]="!testButton" class="nav-link" (click)="test(false)">Test</a>
+    <a [hidden]="!testButton" class="nav-link" (click)="test(false)"
+      ><mat-icon>warning</mat-icon><span>Test</span></a
+    >
   </div>
 </nav>

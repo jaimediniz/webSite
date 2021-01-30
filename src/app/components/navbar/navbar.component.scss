@@ -13,6 +13,9 @@
   display: flex;
   a {
     cursor: pointer;
+    span {
+      vertical-align: super;
+    }
   }
 }
 
@@ -33,7 +36,7 @@ button.mat-menu-item:hover {
   background-color: rgba($color: black, $alpha: 0.2) !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 930px) {
   .links {
     display: none;
   }
