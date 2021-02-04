@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.insertOne = exports.getBody = exports.connectToDatabase = void 0;
+exports.getAll = exports.insertOne = exports.getBody = exports.connectToDatabase = void 0;
 const mongodb_1 = require("mongodb");
 const http_status_codes_1 = require("http-status-codes");
 const url = require('url');
@@ -36,7 +36,30 @@ exports.insertOne = async (collection, body) => {
     try {
         const db = await exports.connectToDatabase();
         const result = await db.collection(collection).insertOne(body);
-        return { code: http_status_codes_1.default.CREATED, error: false, message: result };
+        return {
+            code: http_status_codes_1.default.CREATED,
+            error: false,
+            message: result
+        };
+    }
+    catch (err) {
+        console.log(err);
+        return {
+            code: http_status_codes_1.default.INTERNAL_SERVER_ERROR,
+            error: true,
+            message: err.message
+        };
+    }
+};
+exports.getAll = async (collection) => {
+    try {
+        const db = await exports.connectToDatabase();
+        const result = await db.collection(collection).find({}).toArray();
+        return {
+            code: http_status_codes_1.default.CREATED,
+            error: false,
+            message: result
+        };
     }
     catch (err) {
         console.log(err);

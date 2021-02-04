@@ -43,7 +43,32 @@ export const insertOne = async (
   try {
     const db = await connectToDatabase();
     const result = await db.collection(collection).insertOne(body);
-    return { code: Status.CREATED, error: false, message: result };
+    return {
+      code: Status.CREATED,
+      error: false,
+      message: result
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      code: Status.INTERNAL_SERVER_ERROR,
+      error: true,
+      message: err.message
+    };
+  }
+};
+
+export const getAll = async (
+  collection: string
+): Promise<{ code: number; error: boolean; message: any }> => {
+  try {
+    const db = await connectToDatabase();
+    const result = await db.collection(collection).find({}).toArray();
+    return {
+      code: Status.CREATED,
+      error: false,
+      message: result
+    };
   } catch (err) {
     console.log(err);
     return {

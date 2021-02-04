@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
-import { APIResponse, Subscription } from '../interfaces/interfaces';
+import { APIResponse } from '../interfaces/interfaces';
+import { Event, Subscription } from '../interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
 
@@ -72,6 +73,26 @@ export class APIService {
     return false;
   }
 
+  async getEvents(): Promise<Array<Event>> {
+    const apiResponse = (await this.get('/api/events')) as Array<Event>;
+    this.alert.toast('The list was updated!', 'success');
+    return apiResponse;
+  }
+
+  async addEvent(payLoad: {
+    username: string;
+    password: string;
+    code: string;
+  }): Promise<boolean> {
+    this.loading.startLoading();
+    const apiResponse = await this.post('/api/events', payLoad);
+    this.loading.stopLoading();
+    if (!(apiResponse as any).error) {
+      this.alert.toast('Add it!', 'success');
+    }
+    return false;
+  }
+
   async post(route: string, payLoad: any): Promise<APIResponse> {
     this.logger.log('Payload', payLoad);
     try {
@@ -83,6 +104,19 @@ export class APIService {
     } catch (error) {
       this.logger.error(error.message);
       return this.internalError;
+    }
+  }
+
+  async get(route: string): Promise<any> {
+    try {
+      const response = await this.http
+        .get<Promise<APIResponse>>(route)
+        .toPromise();
+      this.logger.log('Response', response);
+      return response;
+    } catch (error) {
+      this.logger.error(error.message);
+      return [];
     }
   }
 }
