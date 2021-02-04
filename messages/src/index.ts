@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 //@ts-ignore
 import { connectToDatabase } from '../../src/api/dbConnection';
 //@ts-ignore
-import { Subscription } from '../../src/app/interfaces/interfaces';
+import { Subscription } from '../../src/app/interfaces/database';
 import { Collection } from 'mongodb';
 
 import { gcmApiKey, vapidKeys } from './environment';
