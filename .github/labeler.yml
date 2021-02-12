@@ -2,10 +2,10 @@
 configuration:
   - any: ['github/**/*', './*']
 
-documentation: ./README.md
+doc: ./**/README.md
 
-# Backend
-backend: backend/**/*
+# Push Notification
+pushNotification: messages/**/*
 
 # Frontend
 frontend: frontend/**/*
