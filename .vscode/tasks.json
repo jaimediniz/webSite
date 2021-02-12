@@ -13,11 +13,24 @@
       "problemMatcher": []
     },
     {
+      "label": "Inspect Build",
+      "type": "shell",
+      "command": "vercel",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "label": "Run Dev",
       "type": "shell",
       "command": "npm run dev",
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}/frontend"
       },
       "problemMatcher": [],
       "group": {
