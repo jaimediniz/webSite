@@ -51,4 +51,4 @@ testem.log
 Thumbs.db
 
 # Local Vercel folder
-.vercel
+**/.vercel
