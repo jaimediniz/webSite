@@ -1,5 +1,11 @@
 <div class="h-100 w-100 schedule">
-  <button [disabled]="hideExportButton" (click)="exportSchedule()">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="hideExportButton"
+    (click)="exportSchedule()"
+    class="button"
+  >
     Export schedule
   </button>
   <table>
