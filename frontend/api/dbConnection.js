@@ -5,7 +5,7 @@ const mongodb_1 = require('mongodb');
 const http_status_codes_1 = require('http-status-codes');
 const url = require('url');
 let cachedDb;
-const connectToDatabase = async () => {
+exports.connectToDatabase = async () => {
   var _a;
   if (cachedDb) {
     return cachedDb;
@@ -20,8 +20,7 @@ const connectToDatabase = async () => {
   cachedDb = db;
   return db;
 };
-exports.connectToDatabase = connectToDatabase;
-const getBody = async (method, rawBody) => {
+exports.getBody = async (method, rawBody) => {
   if (method !== 'POST' || !rawBody) {
     throw new Error('Method not allowed.');
   }
@@ -33,8 +32,7 @@ const getBody = async (method, rawBody) => {
   }
   return body;
 };
-exports.getBody = getBody;
-const insertOne = async (collection, body) => {
+exports.insertOne = async (collection, body) => {
   try {
     const db = await exports.connectToDatabase();
     const result = await db.collection(collection).insertOne(body);
@@ -52,8 +50,7 @@ const insertOne = async (collection, body) => {
     };
   }
 };
-exports.insertOne = insertOne;
-const getAll = async (collection) => {
+exports.getAll = async (collection) => {
   try {
     const db = await exports.connectToDatabase();
     const result = await db.collection(collection).find({}).toArray();
@@ -71,4 +68,3 @@ const getAll = async (collection) => {
     };
   }
 };
-exports.getAll = getAll;

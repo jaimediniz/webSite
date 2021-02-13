@@ -16,9 +16,11 @@ export interface Event {
   _id?: ObjectId;
   name: string;
   description: string;
+  status: 'TENTATIVE' | 'CONFIRMED' | 'CANCELLED';
   author: string;
-  creation: string;
   start: string;
   end: string;
-  status: boolean;
+  url: string;
+  imageUrl: string;
+  location: string;
 }

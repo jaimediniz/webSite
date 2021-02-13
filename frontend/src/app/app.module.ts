@@ -28,6 +28,8 @@ import { ChatComponent } from './components/pages/chat/chat.component';
 import { FeedbackComponent } from './components/pages/feedback/feedback.component';
 import { RegisterComponent } from './components/pages/register/register.component';
 import { ActivitiesComponent } from './components/pages/activities/activities.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,8 @@ import { ActivitiesComponent } from './components/pages/activities/activities.co
     MatCardModule,
     ServiceWorkerModule.register('custom-service-worker.js', {
       enabled: environment.production
-    })
+    }),
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   exports: [
     MatButtonModule,

@@ -1,31 +1,52 @@
 <div class="h-100 w-100 schedule">
-  <table>
-    <colgroup>
-      <col class="name" />
-      <col />
-      <col class="name" />
-      <col class="date" />
-      <col class="date" />
-      <col class="date" />
-      <col class="status" />
-    </colgroup>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Author</th>
-      <th class="date">Creation</th>
-      <th class="date">Start</th>
-      <th class="date">End</th>
-      <th>Status</th>
-    </tr>
-    <tr *ngFor="let event of events">
-      <td>{{ event.name }}</td>
-      <td>{{ event.description }}</td>
-      <td>{{ event.author }}</td>
-      <td>{{ event.creation | date: 'dd/MM/yyyy | HH:MM' }}</td>
-      <td>{{ event.start | date: 'dd/MM/yyyy | HH:MM' }}</td>
-      <td>{{ event.end | date: 'dd/MM/yyyy | HH:MM' }}</td>
-      <td>{{ event.status }}</td>
-    </tr>
-  </table>
+  <div class="panel">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="hideExportButton"
+      (click)="exportSchedule()"
+    >
+      Export schedule
+    </button>
+
+    <div class="title">
+      <h3>{{ viewDate | calendarDate: view + 'ViewTitle':'en' }}</h3>
+    </div>
+
+    <div
+      class="btn btn-primary"
+      mwlCalendarPreviousView
+      [view]="view"
+      [(viewDate)]="viewDate"
+      (viewDateChange)="closeOpenMonthViewDay()"
+    >
+      Previous
+    </div>
+    <div
+      class="btn btn-outline-secondary"
+      mwlCalendarToday
+      [(viewDate)]="viewDate"
+    >
+      Today
+    </div>
+    <div
+      class="btn btn-primary"
+      mwlCalendarNextView
+      [view]="view"
+      [(viewDate)]="viewDate"
+      (viewDateChange)="closeOpenMonthViewDay()"
+    >
+      Next
+    </div>
+  </div>
+
+  <mwl-calendar-month-view
+    [viewDate]="viewDate"
+    [events]="events"
+    [activeDayIsOpen]="activeDayIsOpen"
+    (dayClicked)="dayClicked($event.day)"
+    (eventClicked)="eventClicked($event.event)"
+    class="calendar"
+  >
+  </mwl-calendar-month-view>
 </div>
