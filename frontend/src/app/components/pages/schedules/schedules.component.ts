@@ -1,9 +1,23 @@
 import { ReturnStatement } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
+import { CalendarView } from 'angular-calendar';
+import { CalendarEvent } from 'calendar-utils';
 import * as ics from 'ics';
+import { isSameMonth, isSameDay } from 'date-fns';
 
 import { APIService } from 'src/app/services/backend.service';
 import { Event } from '../../../interfaces/database';
+
+function getTimezoneOffsetString(date: Date): string {
+  const timezoneOffset = date.getTimezoneOffset();
+  const hoursOffset = String(
+    Math.floor(Math.abs(timezoneOffset / 60))
+  ).padStart(2, '0');
+  const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
+  const direction = timezoneOffset > 0 ? '-' : '+';
+
+  return `T00:00:00${direction}${hoursOffset}:${minutesOffset}`;
+}
 
 @Component({
   selector: 'app-schedules',
@@ -11,23 +25,65 @@ import { Event } from '../../../interfaces/database';
   styleUrls: ['./schedules.component.scss']
 })
 export class SchedulesComponent implements OnInit {
-  public events: Array<Event>;
+  viewDate: Date = new Date();
+  events: CalendarEvent<any>[];
+  view: CalendarView = CalendarView.Month;
+  CalendarView = CalendarView;
+  activeDayIsOpen = false;
+
   public hideExportButton = true;
 
   constructor(private api: APIService) {
     this.api.getEvents().then((response: any) => {
       console.log(response);
-      this.events = response.message;
+      this.events = response.message.map((event: Event) => ({
+        title: event.name,
+        start: new Date(event.start),
+        color: '#fff',
+        allDay: true,
+        meta: {
+          event
+        }
+      }));
       this.hideExportButton = false;
     });
   }
 
   ngOnInit(): void {}
 
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
+  }
+
+  dayClicked({
+    date,
+    events
+  }: {
+    date: Date;
+    events: CalendarEvent<{ event: Event }>[];
+  }): void {
+    if (isSameMonth(date, this.viewDate)) {
+      if (
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+        this.viewDate = date;
+      }
+    }
+  }
+
+  eventClicked(event: CalendarEvent<{ event: Event }>): void {
+    window.open(event?.meta?.event.url ?? '', '_blank');
+  }
+
   exportSchedule() {
-    let exportEvents: any = [];
+    const exportEvents: any = [];
     let processedItems = 0;
-    this.events.forEach((event) => {
+    this.events.forEach((fullEvent) => {
+      const event = fullEvent.meta.event;
       const newEvent = {
         calName: 'NICE Events',
         title: event.name,
