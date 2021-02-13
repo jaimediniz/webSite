@@ -1,38 +1,24 @@
-[![Labeler](https://github.com/NICETHI/webSite/workflows/Labeler/badge.svg?branch=main)](https://github.com/NICETHI/webSite/actions?query=workflow%3ALabeler)
-
-# Backend
-
-# Frontend
-
 This project was generated with
 [Angular CLI](https://github.com/angular/angular-cli) version 11.0.3.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app
-will automatically reload if you change any of the source files.
+Must have Vercel installed in global scope. Run `npm install -g vercel` to
+install it.
 
-## Code scaffolding
+Run `npm run dev` for a dev server. Navigate to `http://localhost:3000/`. The
+app will automatically reload if you change any of the source files.
 
-Run `ng generate component component-name` to generate a new component. You can
-also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Production server
 
-## Build
+Run `npm run test-prod` for a prod server. Will not reload automatically after
+changes.
 
-Run `ng build` to build the project. The build artifacts will be stored in the
-`dist/` directory. Use the `--prod` flag for a production build.
+## Push request
 
-## Running unit tests
+Must have Prettier installed in global scope. Run `npm install -g prettier` to
+install it.
 
-Run `ng test` to execute the unit tests via
-[Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via
-[Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the
-[Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Before pushing to GitHub is necessary to run
+`npm run lint && prettier --write .`. This way the code will always be formatted
+and lint before the pull request.
