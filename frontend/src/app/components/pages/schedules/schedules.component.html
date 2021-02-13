@@ -1,4 +1,7 @@
 <div class="h-100 w-100 schedule">
+  <button [disabled]="hideExportButton" (click)="exportSchedule()">
+    Export schedule
+  </button>
   <table>
     <colgroup>
       <col class="name" />
@@ -13,7 +16,6 @@
       <th>Name</th>
       <th>Description</th>
       <th>Author</th>
-      <th class="date">Creation</th>
       <th class="date">Start</th>
       <th class="date">End</th>
       <th>Status</th>
@@ -22,7 +24,6 @@
       <td>{{ event.name }}</td>
       <td>{{ event.description }}</td>
       <td>{{ event.author }}</td>
-      <td>{{ event.creation | date: 'dd/MM/yyyy | HH:MM' }}</td>
       <td>{{ event.start | date: 'dd/MM/yyyy | HH:MM' }}</td>
       <td>{{ event.end | date: 'dd/MM/yyyy | HH:MM' }}</td>
       <td>{{ event.status }}</td>
