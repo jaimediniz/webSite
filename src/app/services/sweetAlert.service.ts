@@ -21,7 +21,6 @@ export class SweetAlertService {
       timer: 2000,
       showConfirmButton: false,
       timerProgressBar: true,
-      target: 'toast',
       showClass: {
         popup: 'swal2-noanimation'
         //icon: 'swal2-noanimation'
