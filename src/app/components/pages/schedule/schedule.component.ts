@@ -38,6 +38,17 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const now = new Date();
+    const previous = new Date(
+      localStorage?.getItem(this.location + '_time') || ''
+    );
+    // milliseconds * seconds * minutes * hours
+    if (now.getTime() - previous.getTime() > 1000 * 60 * 60 * 1) {
+      this.fetchEvents();
+    }
+  }
+
+  fetchEvents() {
     this.api.getEvents().then((response: any) => {
       this.events = response.message.map((event: Event) => ({
         title: event.name,
@@ -49,6 +60,7 @@ export class ScheduleComponent implements OnInit {
         }
       }));
       localStorage.setItem(this.location, JSON.stringify(this.events));
+      localStorage.setItem(this.location + '_time', `${new Date()}`);
       this.hideExportButton = false;
     });
   }
