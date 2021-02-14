@@ -5,24 +5,36 @@ import Swal from 'sweetalert2';
   providedIn: 'root'
 })
 export class SweetAlertService {
-  public toastSetup = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    timer: 2000,
-    showConfirmButton: false,
-    timerProgressBar: false,
-    showClass: {
-      popup: 'swal2-noanimation'
-      //icon: 'swal2-noanimation'
-    }
-  });
   constructor() {}
 
   toast(
     title: string,
-    icon: 'warning' | 'success' | 'error' | 'info' | 'question' | undefined
+    icon: 'warning' | 'success' | 'error' | 'info' | 'question' | undefined,
+    footer: string
   ): void {
-    this.toastSetup.fire(title, '', icon);
+    Swal.fire({
+      title,
+      icon,
+      footer,
+      toast: true,
+      position: 'top-end',
+      timer: 2000,
+      showConfirmButton: false,
+      timerProgressBar: true,
+      target: 'toast',
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      },
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      },
+      willClose: (toast) => {
+        document.body.className =
+          'swal2-toast-shown swal2-toast-column swal2-shown';
+      }
+    });
   }
 
   fire(
