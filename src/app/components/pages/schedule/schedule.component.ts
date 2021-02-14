@@ -1,4 +1,3 @@
-import { ReturnStatement } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { CalendarView } from 'angular-calendar';
 import { CalendarEvent } from 'calendar-utils';
@@ -22,9 +21,24 @@ export class ScheduleComponent implements OnInit {
 
   public hideExportButton = true;
 
+  location = 'schedule';
+
   constructor(private api: APIService) {
+    this.events = (
+      JSON.parse(localStorage?.getItem(this.location) || 'null') || []
+    ).map((event: any) => ({
+      title: event.title,
+      start: new Date(event.start),
+      color: event.color,
+      allDay: event.allDay,
+      meta: event.meta
+    }));
+
+    console.log(this.events);
+  }
+
+  ngOnInit(): void {
     this.api.getEvents().then((response: any) => {
-      console.log(response);
       this.events = response.message.map((event: Event) => ({
         title: event.name,
         start: new Date(event.start),
@@ -34,11 +48,10 @@ export class ScheduleComponent implements OnInit {
           event
         }
       }));
+      localStorage.setItem(this.location, JSON.stringify(this.events));
       this.hideExportButton = false;
     });
   }
-
-  ngOnInit(): void {}
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
