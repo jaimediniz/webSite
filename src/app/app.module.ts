@@ -23,7 +23,7 @@ import { AppInstallComponent } from './components/external/external.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { MaterialModule } from './material.module';
 import { LoggerService } from './services/logger.service';
-import { SchedulesComponent } from './components/pages/schedules/schedules.component';
+import { ScheduleComponent } from './components/pages/schedule/schedule.component';
 import { ChatComponent } from './components/pages/chat/chat.component';
 import { FeedbackComponent } from './components/pages/feedback/feedback.component';
 import { RegisterComponent } from './components/pages/register/register.component';
@@ -40,7 +40,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     FooterComponent,
     AppInstallComponent,
     LoadingComponent,
-    SchedulesComponent,
+    ScheduleComponent,
     ChatComponent,
     FeedbackComponent,
     RegisterComponent,

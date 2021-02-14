@@ -8,27 +8,16 @@ import { isSameMonth, isSameDay } from 'date-fns';
 import { APIService } from 'src/app/services/backend.service';
 import { Event } from '../../../interfaces/database';
 
-function getTimezoneOffsetString(date: Date): string {
-  const timezoneOffset = date.getTimezoneOffset();
-  const hoursOffset = String(
-    Math.floor(Math.abs(timezoneOffset / 60))
-  ).padStart(2, '0');
-  const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
-  const direction = timezoneOffset > 0 ? '-' : '+';
-
-  return `T00:00:00${direction}${hoursOffset}:${minutesOffset}`;
-}
-
 @Component({
-  selector: 'app-schedules',
-  templateUrl: './schedules.component.html',
-  styleUrls: ['./schedules.component.scss']
+  selector: 'app-schedule',
+  templateUrl: './schedule.component.html',
+  styleUrls: ['./schedule.component.scss']
 })
-export class SchedulesComponent implements OnInit {
+export class ScheduleComponent implements OnInit {
   viewDate: Date = new Date();
   events: CalendarEvent<any>[];
   view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
+  calendarView = CalendarView;
   activeDayIsOpen = false;
 
   public hideExportButton = true;
