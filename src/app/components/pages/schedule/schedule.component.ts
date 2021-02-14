@@ -45,9 +45,11 @@ export class ScheduleComponent implements OnInit {
       localStorage?.getItem(this.location + '_time') || ''
     );
     // milliseconds * seconds * minutes * hours
-    if (now.getTime() - previous.getTime() > 1000 * 60 * 60 * 1) {
-      this.fetchEvents();
+    if (now.getTime() - previous.getTime() < 1000 * 60 * 60 * 1) {
+      this.hideExportButton = false;
+      return;
     }
+    this.fetchEvents();
   }
 
   fetchEvents() {
