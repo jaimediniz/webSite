@@ -29,10 +29,6 @@ export class SweetAlertService {
       didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer);
         toast.addEventListener('mouseleave', Swal.resumeTimer);
-      },
-      willClose: (toast) => {
-        document.body.className =
-          'swal2-toast-shown swal2-toast-column swal2-shown';
       }
     });
   }
