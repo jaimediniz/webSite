@@ -1,6 +1,6 @@
 # Ignore functions:
-api/*
-dist/**/*
+**/api/*.js
+**/dist/**/*
 
 # Ignore files from gitignore
 
