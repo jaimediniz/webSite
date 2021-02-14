@@ -6,7 +6,17 @@
     {
       "label": "Format files",
       "type": "shell",
-      "command": "npm run lint && prettier --write .",
+      "command": "prettier --write .",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "dependsOn": ["Lint files"]
+    },
+    {
+      "label": "Lint files",
+      "type": "shell",
+      "command": "npm run lint",
       "options": {
         "cwd": "${workspaceFolder}/frontend"
       },
