@@ -77,7 +77,7 @@ export class AppInstallComponent implements OnInit {
       this.logger.debug('Subscription:', sub);
       const resp = await this.api.addSubscription(sub);
       if (resp) {
-        this.alert.toast('Subscribed!', 'success');
+        this.alert.toast('Subscribed!', 'success', '');
       }
     } catch (err) {
       this.alert.fire('Error!', err.message, 'error');

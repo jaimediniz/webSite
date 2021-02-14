@@ -54,7 +54,7 @@ export class APIService {
     const apiResponse = await this.post('/api/login', payLoad);
     this.loading.stopLoading();
     if (!(apiResponse as any).error) {
-      this.alert.toast('Success!', 'success');
+      this.alert.toast('Success!', 'success', '');
     }
     return false;
   }
@@ -68,14 +68,14 @@ export class APIService {
     const apiResponse = await this.post('/api/register', payLoad);
     this.loading.stopLoading();
     if (!(apiResponse as any).error) {
-      this.alert.toast('Registered!', 'success');
+      this.alert.toast('Registered!', 'success', '');
     }
     return false;
   }
 
   async getEvents(): Promise<Array<Event>> {
     const apiResponse = (await this.get('/api/events')) as Array<Event>;
-    this.alert.toast('The list was updated!', 'success');
+    this.alert.toast('Updated!', 'success', 'The list was updated!');
     return apiResponse;
   }
 
@@ -88,7 +88,7 @@ export class APIService {
     const apiResponse = await this.post('/api/events', payLoad);
     this.loading.stopLoading();
     if (!(apiResponse as any).error) {
-      this.alert.toast('Add it!', 'success');
+      this.alert.toast('Add it!', 'success', '');
     }
     return false;
   }
