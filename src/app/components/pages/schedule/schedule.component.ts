@@ -1,4 +1,3 @@
-import { ReturnStatement } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { CalendarView } from 'angular-calendar';
 import { CalendarEvent } from 'calendar-utils';
@@ -6,36 +5,53 @@ import * as ics from 'ics';
 import { isSameMonth, isSameDay } from 'date-fns';
 
 import { APIService } from 'src/app/services/backend.service';
+import { SweetAlertService } from 'src/app/services/sweetAlert.service';
+
 import { Event } from '../../../interfaces/database';
 
-function getTimezoneOffsetString(date: Date): string {
-  const timezoneOffset = date.getTimezoneOffset();
-  const hoursOffset = String(
-    Math.floor(Math.abs(timezoneOffset / 60))
-  ).padStart(2, '0');
-  const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
-  const direction = timezoneOffset > 0 ? '-' : '+';
-
-  return `T00:00:00${direction}${hoursOffset}:${minutesOffset}`;
-}
-
 @Component({
-  selector: 'app-schedules',
-  templateUrl: './schedules.component.html',
-  styleUrls: ['./schedules.component.scss']
+  selector: 'app-schedule',
+  templateUrl: './schedule.component.html',
+  styleUrls: ['./schedule.component.scss']
 })
-export class SchedulesComponent implements OnInit {
+export class ScheduleComponent implements OnInit {
   viewDate: Date = new Date();
   events: CalendarEvent<any>[];
   view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
+  calendarView = CalendarView;
   activeDayIsOpen = false;
 
   public hideExportButton = true;
 
-  constructor(private api: APIService) {
+  location = 'schedule';
+
+  constructor(private api: APIService, private alert: SweetAlertService) {
+    this.events = (
+      JSON.parse(localStorage?.getItem(this.location) || 'null') || []
+    ).map((event: any) => ({
+      title: event.title,
+      start: new Date(event.start),
+      color: event.color,
+      allDay: event.allDay,
+      meta: event.meta
+    }));
+
+    console.log(this.events);
+  }
+
+  ngOnInit(): void {
+    const now = new Date();
+    const previous = new Date(
+      localStorage?.getItem(this.location + '_time') || ''
+    );
+    // milliseconds * seconds * minutes * hours
+    if (now.getTime() - previous.getTime() > 1000 * 60 * 60 * 1) {
+      this.fetchEvents();
+    }
+  }
+
+  fetchEvents() {
     this.api.getEvents().then((response: any) => {
-      console.log(response);
       this.events = response.message.map((event: Event) => ({
         title: event.name,
         start: new Date(event.start),
@@ -45,11 +61,11 @@ export class SchedulesComponent implements OnInit {
           event
         }
       }));
+      localStorage.setItem(this.location, JSON.stringify(this.events));
+      localStorage.setItem(this.location + '_time', `${new Date()}`);
       this.hideExportButton = false;
     });
   }
-
-  ngOnInit(): void {}
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
@@ -76,7 +92,10 @@ export class SchedulesComponent implements OnInit {
   }
 
   eventClicked(event: CalendarEvent<{ event: Event }>): void {
-    window.open(event?.meta?.event.url ?? '', '_blank');
+    if (!event?.meta?.event) {
+      return;
+    }
+    this.alert.displayEvent(event.meta.event);
   }
 
   exportSchedule() {

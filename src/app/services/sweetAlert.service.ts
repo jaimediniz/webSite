@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
+import { Event } from '../interfaces/database';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,6 @@ export class SweetAlertService {
       timer: 2000,
       showConfirmButton: false,
       timerProgressBar: true,
-      target: 'toast',
       showClass: {
         popup: 'swal2-noanimation'
         //icon: 'swal2-noanimation'
@@ -94,6 +94,18 @@ export class SweetAlertService {
     }
 
     return false;
+  }
+
+  displayEvent(event: Event): void {
+    const url = event.url
+      ? `<br><a href="${event.url}">Click here to see more.</a>`
+      : '';
+    const html = `<b>Description:</b> ${event.description}` + url;
+    Swal.fire({
+      title: event.name,
+      html,
+      imageUrl: event.imageUrl
+    });
   }
 
   async uploadPicture(): Promise<boolean> {
