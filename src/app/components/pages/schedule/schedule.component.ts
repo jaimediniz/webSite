@@ -5,6 +5,8 @@ import * as ics from 'ics';
 import { isSameMonth, isSameDay } from 'date-fns';
 
 import { APIService } from 'src/app/services/backend.service';
+import { SweetAlertService } from 'src/app/services/sweetAlert.service';
+
 import { Event } from '../../../interfaces/database';
 
 @Component({
@@ -23,7 +25,7 @@ export class ScheduleComponent implements OnInit {
 
   location = 'schedule';
 
-  constructor(private api: APIService) {
+  constructor(private api: APIService, private alert: SweetAlertService) {
     this.events = (
       JSON.parse(localStorage?.getItem(this.location) || 'null') || []
     ).map((event: any) => ({
@@ -90,7 +92,10 @@ export class ScheduleComponent implements OnInit {
   }
 
   eventClicked(event: CalendarEvent<{ event: Event }>): void {
-    window.open(event?.meta?.event.url ?? '', '_blank');
+    if (!event?.meta?.event) {
+      return;
+    }
+    this.alert.displayEvent(event.meta.event);
   }
 
   exportSchedule() {
