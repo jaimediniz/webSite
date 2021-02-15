@@ -28,13 +28,18 @@ export class ScheduleComponent implements OnInit {
   constructor(private api: APIService, private alert: SweetAlertService) {
     this.events = (
       JSON.parse(localStorage?.getItem(this.location) || 'null') || []
-    ).map((event: any) => ({
-      title: event.title,
-      start: new Date(event.start),
-      color: event.color,
-      allDay: event.allDay,
-      meta: event.meta
-    }));
+    ).map((event: any) => {
+      // Preload images
+      const tmpImg = new Image();
+      tmpImg.src = event.meta.event.imageUrl;
+      return {
+        title: event.title,
+        start: new Date(event.start),
+        color: event.color,
+        allDay: event.allDay,
+        meta: event.meta
+      };
+    });
 
     console.log(this.events);
   }
@@ -54,15 +59,20 @@ export class ScheduleComponent implements OnInit {
 
   fetchEvents() {
     this.api.getEvents().then((response: any) => {
-      this.events = response.message.map((event: Event) => ({
-        title: event.name,
-        start: new Date(event.start),
-        color: '#fff',
-        allDay: true,
-        meta: {
-          event
-        }
-      }));
+      this.events = response.message.map((event: Event) => {
+        // Preload images
+        const tmpImg = new Image();
+        tmpImg.src = event.imageUrl;
+        return {
+          title: event.name,
+          start: new Date(event.start),
+          color: '#fff',
+          allDay: true,
+          meta: {
+            event
+          }
+        };
+      });
       localStorage.setItem(this.location, JSON.stringify(this.events));
       localStorage.setItem(this.location + '_time', `${new Date()}`);
       this.hideExportButton = false;
