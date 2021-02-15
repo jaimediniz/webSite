@@ -14,6 +14,7 @@
     <mat-menu class="customize" #menu="matMenu" xPosition="before">
       <button
         mat-menu-item
+        [hidden]="!homeButton"
         class="nav-link"
         [routerLink]="['home']"
         routerLinkActive="active"
@@ -23,6 +24,7 @@
       </button>
       <button
         mat-menu-item
+        [hidden]="!aboutButton"
         class="nav-link"
         [routerLink]="['about']"
         routerLinkActive="active"
@@ -32,6 +34,7 @@
       </button>
       <button
         mat-menu-item
+        [hidden]="!activitiesButton"
         class="nav-link"
         [routerLink]="['schedule']"
         routerLinkActive="active"
@@ -39,12 +42,18 @@
         <mat-icon>calendar_today</mat-icon>
         <span>Current Activities</span>
       </button>
-      <button mat-menu-item class="nav-link" (click)="register(true)">
+      <button
+        mat-menu-item
+        [hidden]="!registerButton"
+        class="nav-link"
+        (click)="register(true)"
+      >
         <mat-icon>person_add</mat-icon>
         <span>Register</span>
       </button>
       <button
         mat-menu-item
+        [hidden]="!chatButton"
         class="nav-link"
         [routerLink]="['chat']"
         routerLinkActive="active"
@@ -54,6 +63,7 @@
       </button>
       <button
         mat-menu-item
+        [hidden]="!feedbackButton"
         class="nav-link"
         [routerLink]="['feedback']"
         routerLinkActive="active"
@@ -73,22 +83,42 @@
     </mat-menu>
   </div>
   <div class="links">
-    <a class="nav-link" [routerLink]="['home']" routerLinkActive="active"
+    <a
+      [hidden]="!homeButton"
+      class="nav-link"
+      [routerLink]="['home']"
+      routerLinkActive="active"
       ><mat-icon>home</mat-icon><span>Home</span></a
     >
-    <a class="nav-link" [routerLink]="['about']" routerLinkActive="active"
+    <a
+      [hidden]="!aboutButton"
+      class="nav-link"
+      [routerLink]="['about']"
+      routerLinkActive="active"
       ><mat-icon>info</mat-icon><span>About</span></a
     >
-    <a class="nav-link" [routerLink]="['schedule']" routerLinkActive="active"
+    <a
+      [hidden]="!activitiesButton"
+      class="nav-link"
+      [routerLink]="['schedule']"
+      routerLinkActive="active"
       ><mat-icon>calendar_today</mat-icon><span>Current Activities</span></a
     >
-    <a class="nav-link" (click)="register(true)"
+    <a [hidden]="!registerButton" class="nav-link" (click)="register(true)"
       ><mat-icon>person_add</mat-icon><span>Register</span></a
     >
-    <a class="nav-link" [routerLink]="['chat']" routerLinkActive="active"
+    <a
+      [hidden]="!chatButton"
+      class="nav-link"
+      [routerLink]="['chat']"
+      routerLinkActive="active"
       ><mat-icon>chat</mat-icon><span>Chat Room</span></a
     >
-    <a class="nav-link" [routerLink]="['feedback']" routerLinkActive="active"
+    <a
+      [hidden]="!feedbackButton"
+      class="nav-link"
+      [routerLink]="['feedback']"
+      routerLinkActive="active"
       ><mat-icon>feedback</mat-icon><span>Feedback</span></a
     >
     <a [hidden]="!testButton" class="nav-link" (click)="test(false)"
