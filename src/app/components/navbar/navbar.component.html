@@ -3,7 +3,9 @@
   [ngClass]="{ 'bg-light': !darkMode, 'bg-dark': darkMode }"
 >
   <div class="navbar-brand">
-    <img src="assets/icons/icon-512x512.png" />
+    <a [routerLink]="['home']">
+      <img src="assets/icons/icon-512x512.png" />
+    </a>
   </div>
   <div class="side-menu" [hidden]="false">
     <button mat-icon-button [matMenuTriggerFor]="menu">
