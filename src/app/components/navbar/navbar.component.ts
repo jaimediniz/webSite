@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from 'src/app/services/backend.service';
-import { LoggerService, logIO } from 'src/app/services/logger.service';
+import { logIO } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
+
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -10,13 +12,20 @@ import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 })
 export class NavbarComponent implements OnInit {
   public darkMode = false;
-  public testButton = true;
 
-  constructor(
-    private alert: SweetAlertService,
-    private logger: LoggerService,
-    private api: APIService
-  ) {}
+  // Control buttons
+  public homeButton = true;
+  public activitiesButton = true;
+
+  public aboutButton = false;
+  public registerButton = false;
+  public chatButton = false;
+  public feedbackButton = false;
+
+  // Test button is only showed in dev
+  public testButton = !environment.production;
+
+  constructor(private alert: SweetAlertService, private api: APIService) {}
 
   @logIO()
   async test(bool: boolean): Promise<boolean> {
