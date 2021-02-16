@@ -9,6 +9,8 @@ import { FeedbackComponent } from './components/pages/feedback/feedback.componen
 import { AdminComponent } from './components/pages/admin/admin.component';
 import { RegisterComponent } from './components/pages/register/register.component';
 
+import { AdminGuard } from 'src/guard/admin';
+
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
@@ -16,13 +18,14 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'chat', component: ChatComponent },
   { path: 'feedback', component: FeedbackComponent },
-  { path: 'admin', component: AdminComponent },
+  { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AdminGuard]
 })
 export class AppRoutingModule {}

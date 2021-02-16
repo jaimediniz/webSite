@@ -80,6 +80,25 @@
         <mat-icon>warning</mat-icon>
         <span>Test</span>
       </button>
+      <button
+        mat-menu-item
+        [hidden]="!adminButton"
+        class="nav-link"
+        [routerLink]="['admin']"
+        routerLinkActive="active"
+      >
+        <mat-icon>feedback</mat-icon>
+        <span>Admin Panel</span>
+      </button>
+      <button
+        mat-menu-item
+        [hidden]="!loginButton"
+        class="nav-link"
+        (click)="login()"
+      >
+        <mat-icon>feedback</mat-icon>
+        <span>Login</span>
+      </button>
     </mat-menu>
   </div>
   <div class="links">
@@ -123,6 +142,16 @@
     >
     <a [hidden]="!testButton" class="nav-link" (click)="test(false)"
       ><mat-icon>warning</mat-icon><span>Test</span></a
+    >
+    <a
+      [hidden]="!adminButton"
+      class="nav-link"
+      [routerLink]="['admin']"
+      routerLinkActive="active"
+      ><mat-icon>feedback</mat-icon><span>Admin Panel</span></a
+    >
+    <a [hidden]="!loginButton" class="nav-link" (click)="login()"
+      ><mat-icon>feedback</mat-icon><span>Login</span></a
     >
   </div>
 </nav>

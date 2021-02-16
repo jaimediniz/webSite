@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie';
 import { APIService } from 'src/app/services/backend.service';
 import { logIO } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
@@ -16,7 +17,9 @@ export class NavbarComponent implements OnInit {
   // Control buttons
   public homeButton = true;
   public activitiesButton = true;
+  public loginButton = true;
 
+  public adminButton = false;
   public aboutButton = false;
   public registerButton = false;
   public chatButton = false;
@@ -25,7 +28,16 @@ export class NavbarComponent implements OnInit {
   // Test button is only showed in dev
   public testButton = !environment.production;
 
-  constructor(private alert: SweetAlertService, private api: APIService) {}
+  constructor(
+    private alert: SweetAlertService,
+    private api: APIService,
+    private cookieService: CookieService
+  ) {
+    if (this.cookieService.get('Admin')) {
+      this.adminButton = true;
+      this.loginButton = false;
+    }
+  }
 
   @logIO()
   async test(bool: boolean): Promise<boolean> {
@@ -44,16 +56,37 @@ export class NavbarComponent implements OnInit {
     return apiResponse;
   }
 
-  async login(bool: boolean): Promise<boolean> {
-    const payLoad = await this.alert.loginOrRegister();
+  // async login(bool: boolean): Promise<boolean> {
+  //   const payLoad = await this.alert.loginOrRegister();
 
-    if (!payLoad) {
-      return false;
-    }
+  //   if (!payLoad) {
+  //     return false;
+  //   }
 
-    const apiResponse = await this.api.login(payLoad);
-    return apiResponse;
-  }
+  //   const apiResponse = await this.api.login(payLoad);
+  //   return apiResponse;
+  // }
 
   ngOnInit(): void {}
+
+  async login(): Promise<void> {
+    /*
+    TODO: change data to encoded key
+          the key should change with the date
+    */
+    const resp = { code: 200, error: false, message: '', data: 'ok' };
+
+    if (resp.error) {
+      return;
+    }
+
+    const expires = new Date();
+    expires.setHours(23, 59, 59, 0);
+    this.cookieService.put('Admin', resp.data, {
+      expires
+    });
+    this.alert.toast('Logged!', 'success', 'You are now logged.');
+    this.loginButton = false;
+    this.adminButton = true;
+  }
 }

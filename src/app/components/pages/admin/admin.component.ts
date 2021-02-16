@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie';
+import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 
 @Component({
   selector: 'app-admin',
@@ -6,18 +8,37 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  private users = [];
-  constructor() {
+  public loginButton = true;
+  public users: Array<{ id: number; name: string }>;
+
+  constructor(
+    private cookieService: CookieService,
+    private alert: SweetAlertService
+  ) {
     this.getUsers();
   }
 
   ngOnInit(): void {}
 
-  getUsers(): void {
-    const dbUsers: any = [];
+  async getUsers(): Promise<void> {
+    const resp = {
+      code: 200,
+      error: false,
+      message: '',
+      data: [{ id: 1, name: 'Jaime' }]
+    };
 
-    this.users = dbUsers;
+    if (resp.message.includes('should be removed')) {
+      this.cookieService.remove('Admin');
+      // Logoff
+      return;
+    }
+
+    if (resp.error) {
+      return;
+    }
+
+    this.users = resp.data;
+    this.loginButton = false;
   }
-
-  addUser(): void {}
 }

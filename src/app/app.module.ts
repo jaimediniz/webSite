@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { CookieModule } from 'ngx-cookie';
 
 import { MaterialModule } from './material.module';
 import { MatCardModule } from '@angular/material/card';
@@ -68,7 +69,11 @@ import { AdminComponent } from './components/pages/admin/admin.component';
     ServiceWorkerModule.register('custom-service-worker.js', {
       enabled: environment.production
     }),
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
+    CookieModule.forRoot()
   ],
   exports: [
     MatButtonModule,
