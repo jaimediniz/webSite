@@ -9,7 +9,7 @@ import { FeedbackComponent } from './components/pages/feedback/feedback.componen
 import { AdminComponent } from './components/pages/admin/admin.component';
 import { RegisterComponent } from './components/pages/register/register.component';
 
-import { AdminGuard } from 'src/guard/admin';
+import { AdminGuard } from 'src/app/guard/admin';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
