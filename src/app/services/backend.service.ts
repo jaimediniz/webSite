@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
-import { APIResponse } from '../interfaces/interfaces';
+import { APILoginResponse, APIResponse } from '../interfaces/backend';
 import { Event, Subscription } from '../interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
+import { CookieService } from 'ngx-cookie';
 
 @Injectable({ providedIn: 'root' })
 export class APIService {
@@ -20,14 +21,16 @@ export class APIService {
       data: {},
       error: true,
       message: 'Something is wrong!'
-    })
+    }),
+    data: ''
   };
 
   constructor(
     private logger: LoggerService,
     private http: HttpClient,
     private loading: LoadingService,
-    private alert: SweetAlertService
+    private alert: SweetAlertService,
+    private cookieService: CookieService
   ) {}
 
   async addSubscription(sub: PushSubscription): Promise<boolean> {
@@ -51,12 +54,23 @@ export class APIService {
     password: string;
   }): Promise<boolean> {
     this.loading.startLoading();
-    const apiResponse = await this.post('/api/login', payLoad);
+    const apiResponse: APILoginResponse = await this.post(
+      '/api/login',
+      payLoad
+    );
     this.loading.stopLoading();
-    if (!(apiResponse as any).error) {
-      this.alert.toast('Success!', 'success', '');
+
+    if (apiResponse.error) {
+      return false;
     }
-    return false;
+
+    this.alert.toast('Logged!', 'success', 'You are now logged.');
+    const expires = new Date();
+    expires.setHours(23, 59, 59, 0);
+    this.cookieService.put('Admin', apiResponse.message, {
+      expires
+    });
+    return true;
   }
 
   async register(payLoad: {
@@ -67,7 +81,7 @@ export class APIService {
     this.loading.startLoading();
     const apiResponse = await this.post('/api/register', payLoad);
     this.loading.stopLoading();
-    if (!(apiResponse as any).error) {
+    if (!apiResponse.error) {
       this.alert.toast('Registered!', 'success', '');
     }
     return false;
@@ -87,13 +101,13 @@ export class APIService {
     this.loading.startLoading();
     const apiResponse = await this.post('/api/events', payLoad);
     this.loading.stopLoading();
-    if (!(apiResponse as any).error) {
+    if (!apiResponse.error) {
       this.alert.toast('Add it!', 'success', '');
     }
     return false;
   }
 
-  async post(route: string, payLoad: any): Promise<APIResponse> {
+  async post(route: string, payLoad: any): Promise<any> {
     this.logger.log('Payload', payLoad);
     try {
       const response = await this.http

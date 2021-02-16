@@ -74,18 +74,15 @@ export class NavbarComponent implements OnInit {
     TODO: change data to encoded key
           the key should change with the date
     */
-    const resp = { code: 200, error: false, message: '', data: 'ok' };
+    const success = await this.api.login({
+      username: 'username',
+      password: 'password'
+    });
 
-    if (resp.error) {
+    if (!success) {
       return;
     }
 
-    const expires = new Date();
-    expires.setHours(23, 59, 59, 0);
-    this.cookieService.put('Admin', resp.data, {
-      expires
-    });
-    this.alert.toast('Logged!', 'success', 'You are now logged.');
     this.loginButton = false;
     this.adminButton = true;
   }
