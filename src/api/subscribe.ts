@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Status from 'http-status-codes';
+import { APIResponse } from 'src/app/interfaces/backend';
 
 import { getBody, insertOne } from './dbConnection';
 
@@ -11,6 +12,7 @@ const post = async (
 };
 
 export default async (request: Request, response: Response) => {
+  let json: APIResponse;
   try {
     let result;
     if (request.method === 'POST') {
@@ -18,17 +20,14 @@ export default async (request: Request, response: Response) => {
     }
 
     if (result) {
-      return response
-        .status(result.code)
-        .json({ error: result.error, message: result.message });
+      json = { error: result.error, message: result.message };
+      return response.status(result.code).json(json);
     }
 
-    return response
-      .status(Status.BAD_REQUEST)
-      .json({ error: true, message: 'Bad Request' });
+    json = { error: true, message: 'Bad Request' };
+    return response.status(Status.BAD_REQUEST).json(json);
   } catch (err) {
-    return response
-      .status(Status.INTERNAL_SERVER_ERROR)
-      .json({ error: true, message: err.message });
+    json = { error: true, message: err.message };
+    return response.status(Status.INTERNAL_SERVER_ERROR).json(json);
   }
 };
