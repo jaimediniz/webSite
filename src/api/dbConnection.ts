@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { Db, MongoClient } from 'mongodb';
 import Status from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
@@ -13,10 +14,14 @@ const expires = () => {
   return expiresDate.getTime();
 };
 
-export const isValidKeyForRole = async (
-  key: string,
+export const isUserAllowed = async (
+  request: Request,
   role: string
-): Promise<boolean> => await bcrypt.compare(expires() + role + RANDOM_KEY, key);
+): Promise<boolean> =>
+  await bcrypt.compare(
+    expires() + role + RANDOM_KEY,
+    request?.headers?.authorization ?? ''
+  );
 
 export const getKeyForRole = async (role: string) =>
   await bcrypt.hash(expires() + role + RANDOM_KEY, 10);

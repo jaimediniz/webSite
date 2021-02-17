@@ -2,34 +2,32 @@ import { Request, Response } from 'express';
 import Status from 'http-status-codes';
 import { APIResponse } from 'src/interfaces/backend';
 
-import { getAll, isValidKeyForRole } from './dbConnection';
+import { getAll, isUserAllowed } from './dbConnection';
 
-const get = async (request: Request): Promise<APIResponse<Array<any>>> => {
-  if (
-    !(await isValidKeyForRole(request?.headers?.authorization ?? '', 'admin'))
-  ) {
-    return {
+const get = async (): Promise<APIResponse<Array<any>>> => await getAll('Users');
+
+export default async (request: Request, response: Response) => {
+  let json: APIResponse<Array<any>>;
+  if (!isUserAllowed(request, 'admin')) {
+    json = {
       code: Status.BAD_REQUEST,
       error: true,
       message: 'Access denied.',
       data: []
     };
+    return response.status(json.code).json(json);
   }
-  return await getAll('Users');
-};
 
-export default async (request: Request, response: Response) => {
-  let json: APIResponse;
   try {
     let result;
     if (request.method === 'GET') {
-      result = await get(request);
+      result = await get();
     } else {
       result = {
         code: Status.BAD_REQUEST,
         error: true,
         message: 'Bad Request',
-        data: {}
+        data: []
       };
     }
 
@@ -45,7 +43,7 @@ export default async (request: Request, response: Response) => {
       code: Status.INTERNAL_SERVER_ERROR,
       error: true,
       message: err.message,
-      data: {}
+      data: []
     };
     return response.status(Status.INTERNAL_SERVER_ERROR).json(json);
   }
