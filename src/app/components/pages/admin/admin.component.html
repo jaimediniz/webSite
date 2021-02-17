@@ -1,14 +1,58 @@
-<table>
-  <colgroup>
-    <col class="id" />
-    <col class="name" />
-  </colgroup>
-  <tr>
-    <th>Id</th>
-    <th>Name</th>
-  </tr>
-  <tr *ngFor="let user of users">
-    <td>{{ user._id }}</td>
-    <td>{{ user.name }}</td>
-  </tr>
-</table>
+<div class="">
+  <mat-form-field appearance="fill" color="accent">
+    <mat-label>Collection</mat-label>
+    <mat-select
+      (selectionChange)="getTable($event.value)"
+      [(value)]="selectedCollection"
+    >
+      <mat-option *ngFor="let collection of collections" [value]="collection">
+        {{ collection.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="d-flex flex-column">
+  <table>
+    <colgroup>
+      <col class="icons" />
+      <col class="id" />
+      <col class="columns" />
+    </colgroup>
+    <tr>
+      <th></th>
+      <th>ID</th>
+      <th *ngFor="let property of selectedCollection.properties">
+        {{ property }}
+      </th>
+    </tr>
+    <tr *ngFor="let row of table; let i = index">
+      <td>
+        <div class="iconsDiv">
+          <a (click)="deleteElement(row)"
+            ><mat-icon class="delete">delete_forever</mat-icon></a
+          >
+          <a
+            [hidden]="editing.hasOwnProperty(i)"
+            (click)="startEditElement(i, row)"
+            ><mat-icon class="edit">mode_edit</mat-icon></a
+          >
+          <a
+            [hidden]="!editing.hasOwnProperty(i)"
+            (click)="cancelEditElement(i, row)"
+            ><mat-icon class="cancel">close</mat-icon></a
+          >
+          <a
+            [hidden]="!editing.hasOwnProperty(i)"
+            (click)="finishEditElement(i, row)"
+            ><mat-icon class="done">done</mat-icon></a
+          >
+        </div>
+      </td>
+      <td>{{ i }}</td>
+      <td *ngFor="let property of selectedCollection.properties">
+        {{ row[property] }}
+      </td>
+    </tr>
+  </table>
+</div>
