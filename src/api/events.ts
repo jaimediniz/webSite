@@ -25,15 +25,16 @@ export default async (request: Request, response: Response) => {
       result = await get();
     } else if (request.method === 'POST') {
       result = await post(request);
+    } else {
+      result = {
+        code: Status.BAD_REQUEST,
+        error: true,
+        message: 'Bad Request'
+      };
     }
 
-    if (result) {
-      json = { error: result.error, message: result.message };
-      return response.status(result.code).json(json);
-    }
-
-    json = { error: true, message: 'Bad Request' };
-    return response.status(Status.BAD_REQUEST).json(json);
+    json = { error: result.error, message: result.message };
+    return response.status(result.code).json(json);
   } catch (err) {
     json = { error: true, message: err.message };
     return response.status(Status.INTERNAL_SERVER_ERROR).json(json);
