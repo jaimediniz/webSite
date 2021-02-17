@@ -1,8 +1,25 @@
 import { Db, MongoClient } from 'mongodb';
 import Status from 'http-status-codes';
+import * as bcrypt from 'bcrypt';
 import { APIResponse } from 'src/interfaces/backend';
 
 const url = require('url');
+
+// Adds complexity to the key
+const RANDOM_KEY = 'UAF7EeHWsF7cL73i4A3';
+const expires = () => {
+  const expiresDate = new Date();
+  expiresDate.setHours(23, 59, 59, 0);
+  return expiresDate.getTime();
+};
+
+export const isValidKeyForRole = async (
+  key: string,
+  role: string
+): Promise<boolean> => await bcrypt.compare(expires() + role + RANDOM_KEY, key);
+
+export const getKeyForRole = async (role: string) =>
+  await bcrypt.hash(expires() + role + RANDOM_KEY, 10);
 
 let cachedDb: Db;
 export const connectToDatabase = async () => {
@@ -44,7 +61,6 @@ export const insertOne = async (
   try {
     const db = await connectToDatabase();
     const result = await db.collection(collection).insertOne(body);
-    console.log(result);
     return {
       code: Status.CREATED,
       error: false,
@@ -52,7 +68,6 @@ export const insertOne = async (
       data: result
     };
   } catch (err) {
-    console.log(err);
     return {
       code: Status.INTERNAL_SERVER_ERROR,
       error: true,
@@ -76,7 +91,6 @@ export const getAll = async (
       data: result
     };
   } catch (err) {
-    console.log(err);
     return {
       code: Status.INTERNAL_SERVER_ERROR,
       error: true,

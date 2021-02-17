@@ -2,24 +2,9 @@ import { Request, Response } from 'express';
 import Status from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
 
-import { getBody, getAll } from './dbConnection';
+import { getBody, getAll, getKeyForRole } from './dbConnection';
 import { APILoginResponse } from 'src/interfaces/backend';
-import { Users } from 'src/interfaces/database';
-
-// Adds complexity to the key
-const RANDOM_KEY = 'UAF7EeHWsF7cL73i4A3';
-
-export const isValidKeyForRole = async (key: string, role: string) =>
-  await bcrypt.compare(expires() + role + RANDOM_KEY, key);
-
-export const getKeyForRole = async (role: string) =>
-  await bcrypt.hash(expires() + role + RANDOM_KEY, 10);
-
-const expires = () => {
-  const expiresDate = new Date();
-  expiresDate.setHours(23, 59, 59, 0);
-  return expiresDate;
-};
+import { User } from 'src/interfaces/database';
 
 const post = async (
   request: Request
@@ -30,7 +15,7 @@ const post = async (
   data: { role: string; key: string };
 }> => {
   const body = await getBody(request.method, request.body);
-  const users: Array<Users> = (
+  const users: Array<User> = (
     await getAll('Users', {
       username: body.username
     })

@@ -7,23 +7,35 @@ const post = async (request) => {
     return await dbConnection_1.insertOne('Subscriptions', body);
 };
 exports.default = async (request, response) => {
+    let json;
     try {
         let result;
         if (request.method === 'POST') {
             result = await post(request);
         }
-        if (result) {
-            return response
-                .status(result.code)
-                .json({ error: result.error, message: result.message });
+        else {
+            result = {
+                code: http_status_codes_1.default.BAD_REQUEST,
+                error: true,
+                message: 'Bad Request',
+                data: {}
+            };
         }
-        return response
-            .status(http_status_codes_1.default.BAD_REQUEST)
-            .json({ error: true, message: 'Bad Request' });
+        json = {
+            code: result.code,
+            error: result.error,
+            message: result.message,
+            data: {}
+        };
+        return response.status(result.code).json(json);
     }
     catch (err) {
-        return response
-            .status(http_status_codes_1.default.INTERNAL_SERVER_ERROR)
-            .json({ error: true, message: err.message });
+        json = {
+            code: http_status_codes_1.default.INTERNAL_SERVER_ERROR,
+            error: true,
+            message: err.message,
+            data: {}
+        };
+        return response.status(http_status_codes_1.default.INTERNAL_SERVER_ERROR).json(json);
     }
 };
