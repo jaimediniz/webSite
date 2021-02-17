@@ -19,7 +19,6 @@ exports.default = async (request, response) => {
             .json({ error: true, message: 'Body is corrupted!' });
     }
     const role = roles[body.code];
-    console.log(role);
     if (!role) {
         return response
             .status(http_status_codes_1.default.BAD_REQUEST)

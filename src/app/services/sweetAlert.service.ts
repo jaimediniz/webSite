@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Event } from '../interfaces/database';
+import { Event } from '../../interfaces/database';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class SweetAlertService {
       footer,
       toast: true,
       position: 'top-end',
-      timer: 2000,
+      timer: 1000,
       showConfirmButton: false,
       timerProgressBar: true,
       showClass: {
@@ -41,36 +41,42 @@ export class SweetAlertService {
     Swal.fire({
       title,
       text,
-      icon
+      icon,
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      }
     });
   }
 
   async loginOrRegister(isRegister?: boolean): Promise<any> {
-    let html = 'username: <input id="swal-input1" class="swal2-input">';
-    html += 'password: <input id="swal-input2" class="swal2-input">';
+    let html =
+      'username: <input id="swal-input1" class="swal2-input" autocomplete="off">';
+    html +=
+      'password: <input type="password" id="swal-input2" class="swal2-input" autocomplete="off">';
     if (isRegister) {
-      html += 'code: <input id="swal-input3" class="swal2-input">';
+      html +=
+        'code: <input id="swal-input3" class="swal2-input" autocomplete="off">';
     }
 
     const { value: formValues } = await Swal.fire({
       html,
       focusConfirm: true,
+      allowEnterKey: true,
+      allowEscapeKey: true,
       confirmButtonText: `${isRegister ? 'Register' : 'Login'}`,
       preConfirm: () => ({
         username: (document.getElementById('swal-input1') as any).value,
         password: (document.getElementById('swal-input2') as any).value,
-        code: (document.getElementById('swal-input3') as any).value
-      })
+        code: (document.getElementById('swal-input3') as any)?.value ?? ''
+      }),
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      }
     });
 
-    if (
-      formValues &&
-      formValues.username &&
-      formValues.password &&
-      formValues.code
-    ) {
-      return formValues;
-    }
+    return formValues;
   }
 
   async fireQuestion(
@@ -86,7 +92,11 @@ export class SweetAlertService {
       icon,
       showCancelButton: true,
       confirmButtonText: confirmButton,
-      cancelButtonText: cancelButton
+      cancelButtonText: cancelButton,
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      }
     });
 
     if (result.value) {
@@ -104,7 +114,11 @@ export class SweetAlertService {
     Swal.fire({
       title: event.name,
       html,
-      imageUrl: event.imageUrl
+      imageUrl: event.imageUrl,
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      }
     });
   }
 

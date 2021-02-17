@@ -1,7 +1,30 @@
+import { Request } from 'express';
 import { Db, MongoClient } from 'mongodb';
 import Status from 'http-status-codes';
+import * as bcrypt from 'bcrypt';
+import { APIResponse } from 'src/interfaces/backend';
 
 const url = require('url');
+
+// Adds complexity to the key
+const RANDOM_KEY = 'UAF7EeHWsF7cL73i4A3';
+const expires = () => {
+  const expiresDate = new Date();
+  expiresDate.setHours(23, 59, 59, 0);
+  return expiresDate.getTime();
+};
+
+export const isUserAllowed = async (
+  request: Request,
+  role: string
+): Promise<boolean> =>
+  await bcrypt.compare(
+    expires() + role + RANDOM_KEY,
+    request?.headers?.authorization ?? ''
+  );
+
+export const getKeyForRole = async (role: string) =>
+  await bcrypt.hash(expires() + role + RANDOM_KEY, 10);
 
 let cachedDb: Db;
 export const connectToDatabase = async () => {
@@ -39,42 +62,45 @@ export const getBody = async (method: string, rawBody: string) => {
 export const insertOne = async (
   collection: string,
   body: any
-): Promise<{ code: number; error: boolean; message: any }> => {
+): Promise<APIResponse> => {
   try {
     const db = await connectToDatabase();
     const result = await db.collection(collection).insertOne(body);
     return {
       code: Status.CREATED,
       error: false,
-      message: result
+      message: '',
+      data: result
     };
   } catch (err) {
-    console.log(err);
     return {
       code: Status.INTERNAL_SERVER_ERROR,
       error: true,
-      message: err.message
+      message: err.message,
+      data: []
     };
   }
 };
 
 export const getAll = async (
-  collection: string
-): Promise<{ code: number; error: boolean; message: any }> => {
+  collection: string,
+  find: any = {}
+): Promise<APIResponse<Array<any>>> => {
   try {
     const db = await connectToDatabase();
-    const result = await db.collection(collection).find({}).toArray();
+    const result = await db.collection(collection).find(find).toArray();
     return {
-      code: Status.CREATED,
+      code: Status.ACCEPTED,
       error: false,
-      message: result
+      message: '',
+      data: result
     };
   } catch (err) {
-    console.log(err);
     return {
       code: Status.INTERNAL_SERVER_ERROR,
       error: true,
-      message: err.message
+      message: err.message,
+      data: []
     };
   }
 };

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie';
 import { APIService } from 'src/app/services/backend.service';
 import { logIO } from 'src/app/services/logger.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
@@ -16,7 +18,10 @@ export class NavbarComponent implements OnInit {
   // Control buttons
   public homeButton = true;
   public activitiesButton = true;
+  public loginButton = true;
 
+  public adminButton = false;
+  public logoffButton = false;
   public aboutButton = false;
   public registerButton = false;
   public chatButton = false;
@@ -25,7 +30,18 @@ export class NavbarComponent implements OnInit {
   // Test button is only showed in dev
   public testButton = !environment.production;
 
-  constructor(private alert: SweetAlertService, private api: APIService) {}
+  constructor(
+    private alert: SweetAlertService,
+    private api: APIService,
+    private cookieService: CookieService,
+    private router: Router
+  ) {
+    if (this.cookieService.get('role') === 'admin') {
+      this.loginButton = false;
+      this.adminButton = true;
+      this.logoffButton = true;
+    }
+  }
 
   @logIO()
   async test(bool: boolean): Promise<boolean> {
@@ -44,16 +60,32 @@ export class NavbarComponent implements OnInit {
     return apiResponse;
   }
 
-  async login(bool: boolean): Promise<boolean> {
-    const payLoad = await this.alert.loginOrRegister();
+  ngOnInit(): void {}
 
-    if (!payLoad) {
-      return false;
+  async login(): Promise<void> {
+    const payLoad = await this.alert.loginOrRegister();
+    if (!payLoad || !payLoad.username || !payLoad.password) {
+      return;
     }
 
-    const apiResponse = await this.api.login(payLoad);
-    return apiResponse;
+    const success = await this.api.login(payLoad);
+
+    if (!success) {
+      return;
+    }
+
+    this.loginButton = false;
+    this.adminButton = true;
+    this.logoffButton = true;
   }
 
-  ngOnInit(): void {}
+  async logoff() {
+    this.cookieService.put('Role', 'user');
+    this.cookieService.remove('Key');
+    this.loginButton = true;
+    this.adminButton = false;
+    this.logoffButton = false;
+    this.router.navigate(['home']);
+    this.alert.toast('Logged off!', 'success', 'You are no longer logged.');
+  }
 }

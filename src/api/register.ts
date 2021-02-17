@@ -22,7 +22,6 @@ export default async (request: Request, response: Response) => {
 
   // @ts-expect-error
   const role = roles[body.code];
-  console.log(role);
   if (!role) {
     return response
       .status(Status.BAD_REQUEST)

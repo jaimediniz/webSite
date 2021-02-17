@@ -1,0 +1,14 @@
+<table>
+  <colgroup>
+    <col class="id" />
+    <col class="name" />
+  </colgroup>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+  </tr>
+  <tr *ngFor="let user of users">
+    <td>{{ user._id }}</td>
+    <td>{{ user.name }}</td>
+  </tr>
+</table>
