@@ -7,7 +7,7 @@ import { isSameMonth, isSameDay } from 'date-fns';
 import { APIService } from 'src/app/services/backend.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 
-import { Event } from '../../../interfaces/database';
+import { Event } from '../../../../interfaces/database';
 
 @Component({
   selector: 'app-schedule',

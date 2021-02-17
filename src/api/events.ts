@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Status from 'http-status-codes';
-import { APIResponse } from 'src/app/interfaces/backend';
+import { APIResponse } from 'src/interfaces/backend';
 
 import { getBody, insertOne, getAll } from './dbConnection';
 

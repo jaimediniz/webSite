@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
-import { APILoginResponse, APIResponse } from '../interfaces/backend';
-import { Event, Subscription } from '../interfaces/database';
+import { APILoginResponse, APIResponse } from '../../interfaces/backend';
+import { Event, Subscription } from '../../interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
 import { CookieService } from 'ngx-cookie';
