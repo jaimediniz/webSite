@@ -40,8 +40,6 @@ export class ScheduleComponent implements OnInit {
         meta: event.meta
       };
     });
-
-    console.log(this.events);
   }
 
   ngOnInit(): void {

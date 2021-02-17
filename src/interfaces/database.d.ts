@@ -25,7 +25,7 @@ export interface Event {
   location: string;
 }
 
-export interface Users {
+export interface User {
   _id?: ObjectId;
   name: string;
   username: string;

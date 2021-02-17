@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
 import {
   APIEventsResponse,
   APILoginResponse,
-  APIResponse
+  APIResponse,
+  APIUsersResponse
 } from '../../interfaces/backend';
-import { Event, Subscription } from '../../interfaces/database';
+import { Event, User, Subscription } from '../../interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
 import { CookieService } from 'ngx-cookie';
@@ -90,6 +91,12 @@ export class APIService {
     return apiResponse.data;
   }
 
+  async getUsers(): Promise<Array<User>> {
+    const apiResponse: APIUsersResponse = await this.get('/api/admin');
+    this.alert.toast('Updated!', 'success', 'The list was updated!');
+    return apiResponse.data;
+  }
+
   async addEvent(payLoad: {
     username: string;
     password: string;
@@ -106,8 +113,14 @@ export class APIService {
 
   async get(route: string): Promise<APIResponse> {
     try {
+      const requestOptions = {
+        headers: new HttpHeaders({
+          authorization: this.cookieService.get('Key')
+        }),
+        withCredentials: true
+      };
       const response = await this.http
-        .get<Promise<APIResponse>>(route)
+        .get<Promise<APIResponse>>(route, requestOptions)
         .toPromise();
       this.logger.log('Response', response);
       return response;
@@ -121,8 +134,18 @@ export class APIService {
   async post(route: string, payLoad: any): Promise<APIResponse> {
     this.logger.log('Payload', payLoad);
     try {
+      const requestOptions = {
+        headers: new HttpHeaders({
+          authorization: this.cookieService.get('Key')
+        }),
+        withCredentials: true
+      };
       const response = await this.http
-        .post<Promise<APIResponse>>(route, JSON.stringify(payLoad))
+        .post<Promise<APIResponse>>(
+          route,
+          JSON.stringify(payLoad),
+          requestOptions
+        )
         .toPromise();
       this.logger.log('Response', response);
       return response;

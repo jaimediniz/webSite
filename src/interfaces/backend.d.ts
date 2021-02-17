@@ -1,4 +1,4 @@
-import { Event } from './database';
+import { Event, User } from './database';
 
 export interface APIResponse<T = any> {
   code: number;
@@ -13,3 +13,5 @@ export type APILoginResponse = APIResponse<{
 }>;
 
 export type APIEventsResponse = APIResponse<Array<Event>>;
+
+export type APIUsersResponse = APIResponse<Array<User>>;
