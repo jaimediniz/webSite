@@ -75,8 +75,8 @@ export class NavbarComponent implements OnInit {
           the key should change with the date
     */
     const success = await this.api.login({
-      username: 'username',
-      password: 'password'
+      username: 'jaime5',
+      password: '1234'
     });
 
     if (!success) {
