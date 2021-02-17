@@ -20,6 +20,7 @@ export class NavbarComponent implements OnInit {
   public loginButton = true;
 
   public adminButton = false;
+  public logoffButton = false;
   public aboutButton = false;
   public registerButton = false;
   public chatButton = false;
@@ -34,8 +35,9 @@ export class NavbarComponent implements OnInit {
     private cookieService: CookieService
   ) {
     if (this.cookieService.get('role') === 'admin') {
-      this.adminButton = true;
       this.loginButton = false;
+      this.adminButton = true;
+      this.logoffButton = true;
     }
   }
 
@@ -85,5 +87,15 @@ export class NavbarComponent implements OnInit {
 
     this.loginButton = false;
     this.adminButton = true;
+    this.logoffButton = true;
+  }
+
+  async logoff() {
+    this.cookieService.put('Role', 'user');
+    this.cookieService.remove('Key');
+    this.loginButton = true;
+    this.adminButton = false;
+    this.logoffButton = false;
+    this.alert.toast('Logged off!', 'success', 'You are no longer logged.');
   }
 }

@@ -99,6 +99,15 @@
         <mat-icon>feedback</mat-icon>
         <span>Login</span>
       </button>
+      <button
+        mat-menu-item
+        [hidden]="!logoffButton"
+        class="nav-link"
+        (click)="logoff()"
+      >
+        <mat-icon>feedback</mat-icon>
+        <span>Logoff</span>
+      </button>
     </mat-menu>
   </div>
   <div class="links">
@@ -152,6 +161,9 @@
     >
     <a [hidden]="!loginButton" class="nav-link" (click)="login()"
       ><mat-icon>feedback</mat-icon><span>Login</span></a
+    >
+    <a [hidden]="!logoffButton" class="nav-link" (click)="logoff()"
+      ><mat-icon>feedback</mat-icon><span>Logoff</span></a
     >
   </div>
 </nav>
