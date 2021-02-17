@@ -50,10 +50,13 @@ export class SweetAlertService {
   }
 
   async loginOrRegister(isRegister?: boolean): Promise<any> {
-    let html = 'username: <input id="swal-input1" class="swal2-input">';
-    html += 'password: <input id="swal-input2" class="swal2-input">';
+    let html =
+      'username: <input id="swal-input1" class="swal2-input" autocomplete="off">';
+    html +=
+      'password: <input type="password" id="swal-input2" class="swal2-input" autocomplete="off">';
     if (isRegister) {
-      html += 'code: <input id="swal-input3" class="swal2-input">';
+      html +=
+        'code: <input id="swal-input3" class="swal2-input" autocomplete="off">';
     }
 
     const { value: formValues } = await Swal.fire({
@@ -63,7 +66,7 @@ export class SweetAlertService {
       preConfirm: () => ({
         username: (document.getElementById('swal-input1') as any).value,
         password: (document.getElementById('swal-input2') as any).value,
-        code: (document.getElementById('swal-input3') as any).value
+        code: (document.getElementById('swal-input3') as any)?.value ?? ''
       }),
       showClass: {
         popup: 'swal2-noanimation'
@@ -71,14 +74,7 @@ export class SweetAlertService {
       }
     });
 
-    if (
-      formValues &&
-      formValues.username &&
-      formValues.password &&
-      formValues.code
-    ) {
-      return formValues;
-    }
+    return formValues;
   }
 
   async fireQuestion(

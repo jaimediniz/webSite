@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 import { APIService } from 'src/app/services/backend.service';
 import { logIO } from 'src/app/services/logger.service';
@@ -32,7 +33,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     private alert: SweetAlertService,
     private api: APIService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router
   ) {
     if (this.cookieService.get('role') === 'admin') {
       this.loginButton = false;
@@ -58,17 +60,6 @@ export class NavbarComponent implements OnInit {
     return apiResponse;
   }
 
-  // async login(bool: boolean): Promise<boolean> {
-  //   const payLoad = await this.alert.loginOrRegister();
-
-  //   if (!payLoad) {
-  //     return false;
-  //   }
-
-  //   const apiResponse = await this.api.login(payLoad);
-  //   return apiResponse;
-  // }
-
   ngOnInit(): void {}
 
   async login(): Promise<void> {
@@ -76,10 +67,10 @@ export class NavbarComponent implements OnInit {
     TODO: change data to encoded key
           the key should change with the date
     */
-    const success = await this.api.login({
-      username: 'jaime5',
-      password: '1234'
-    });
+
+    const payLoad = await this.alert.loginOrRegister();
+    console.log(payLoad);
+    const success = await this.api.login(payLoad);
 
     if (!success) {
       return;
@@ -96,6 +87,7 @@ export class NavbarComponent implements OnInit {
     this.loginButton = true;
     this.adminButton = false;
     this.logoffButton = false;
+    this.router.navigate(['home']);
     this.alert.toast('Logged off!', 'success', 'You are no longer logged.');
   }
 }
