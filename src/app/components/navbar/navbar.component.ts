@@ -63,11 +63,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {}
 
   async login(): Promise<void> {
-    /*
-    TODO: change data to encoded key
-          the key should change with the date
-    */
-
     const payLoad = await this.alert.loginOrRegister();
     console.log(payLoad);
     const success = await this.api.login(payLoad);

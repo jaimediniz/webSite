@@ -6,25 +6,19 @@ import { getBody, getAll } from './dbConnection';
 import { APILoginResponse } from 'src/interfaces/backend';
 import { Users } from 'src/interfaces/database';
 
-export const isValidKey = (key: string) =>
-  // TODO: Check if cookie is valid
-  true;
+// Adds complexity to the key
+const RANDOM_KEY = 'UAF7EeHWsF7cL73i4A3';
 
-const get = async (): Promise<{
-  code: number;
-  error: boolean;
-  message: string;
-  data: any;
-}> => {
-  if (!isValidKey('')) {
-    return {
-      code: Status.BAD_REQUEST,
-      error: true,
-      message: 'The cookie is expired!',
-      data: { role: 'user', key: '' }
-    };
-  }
-  return { code: Status.ACCEPTED, error: false, message: 'Success', data: {} };
+export const isValidKeyForRole = async (key: string, role: string) =>
+  await bcrypt.compare(expires() + role + RANDOM_KEY, key);
+
+export const getKeyForRole = async (role: string) =>
+  await bcrypt.hash(expires() + role + RANDOM_KEY, 10);
+
+const expires = () => {
+  const expiresDate = new Date();
+  expiresDate.setHours(23, 59, 59, 0);
+  return expiresDate;
 };
 
 const post = async (
@@ -54,13 +48,13 @@ const post = async (
     };
   }
 
-  // TODO: create cookie
+  const key = await getKeyForRole(users[0].role);
 
   return {
     code: Status.ACCEPTED,
     error: false,
     message: 'Success',
-    data: { role: users[0].role, key: '123' }
+    data: { role: users[0].role, key }
   };
 };
 
@@ -68,9 +62,7 @@ export default async (request: Request, response: Response) => {
   let json: APILoginResponse;
   try {
     let result;
-    if (request.method === 'GET') {
-      result = await get();
-    } else if (request.method === 'POST') {
+    if (request.method === 'POST') {
       result = await post(request);
     } else {
       result = {
