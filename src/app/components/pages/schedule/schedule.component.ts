@@ -59,7 +59,7 @@ export class ScheduleComponent implements OnInit {
 
   fetchEvents() {
     this.api.getEvents().then((response: any) => {
-      this.events = response.message.map((event: Event) => {
+      this.events = response.map((event: Event) => {
         // Preload images
         const tmpImg = new Image();
         tmpImg.src = event.imageUrl;
