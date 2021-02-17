@@ -1,48 +1,30 @@
 import { Request, Response } from 'express';
-import Status from 'http-status-codes';
-import { APIResponse } from 'src/interfaces/backend';
+import { APIEventsResponse, APIResponse } from 'src/interfaces/backend';
 
-import { getBody, insertOne, getAll } from './dbConnection';
+import { getBody, insertOne, getAll, badRequest } from './dbConnection';
 
-const get = async (): Promise<APIResponse<Array<any>>> =>
-  await getAll('Events');
+const get = async (request: Request, response: Response): Promise<void> => {
+  const json: APIEventsResponse = await getAll('Events');
+  response.status(json.code).json(json);
+};
 
-const post = async (request: Request): Promise<APIResponse> => {
+const post = async (request: Request, response: Response): Promise<void> => {
   const body = await getBody(request.method, request.body);
-  return await insertOne('Events', body);
+  if (!body) {
+    return badRequest(response);
+  }
+  const json: APIResponse = await insertOne('Events', body);
+  response.status(json.code).json(json);
 };
 
 export default async (request: Request, response: Response) => {
-  let json: APIResponse;
-  try {
-    let result;
-    if (request.method === 'GET') {
-      result = await get();
-    } else if (request.method === 'POST') {
-      result = await post(request);
-    } else {
-      result = {
-        code: Status.BAD_REQUEST,
-        error: true,
-        message: 'Bad Request',
-        data: {}
-      };
-    }
-
-    json = {
-      code: result.code,
-      error: result.error,
-      message: result.message,
-      data: result.data
-    };
-    return response.status(result.code).json(json);
-  } catch (err) {
-    json = {
-      code: Status.INTERNAL_SERVER_ERROR,
-      error: true,
-      message: err.message,
-      data: {}
-    };
-    return response.status(Status.INTERNAL_SERVER_ERROR).json(json);
+  if (request.method === 'GET') {
+    return await get(request, response);
   }
+
+  if (request.method === 'POST') {
+    return await post(request, response);
+  }
+
+  return badRequest(response);
 };

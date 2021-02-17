@@ -1,0 +1,36 @@
+.mat-form-field {
+  background-color: darkslategray;
+}
+
+td {
+  word-break: break-word;
+}
+
+.columns {
+  max-width: 20px;
+}
+
+.icons {
+  width: 75px;
+}
+
+.iconsDiv {
+  display: flex;
+  a {
+    padding: 0;
+    cursor: pointer;
+  }
+}
+
+.delete {
+  color: #ee4d307d;
+}
+.edit {
+  color: black;
+}
+.done {
+  color: green;
+}
+.cancel {
+  color: tomato;
+}

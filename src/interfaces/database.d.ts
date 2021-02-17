@@ -26,7 +26,7 @@ export interface Event {
 }
 
 export interface User {
-  _id?: ObjectId;
+  _id: ObjectId;
   name: string;
   username: string;
   password: string;
