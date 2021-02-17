@@ -64,7 +64,10 @@ export class NavbarComponent implements OnInit {
 
   async login(): Promise<void> {
     const payLoad = await this.alert.loginOrRegister();
-    console.log(payLoad);
+    if (!payLoad || !payLoad.username || !payLoad.password) {
+      return;
+    }
+
     const success = await this.api.login(payLoad);
 
     if (!success) {

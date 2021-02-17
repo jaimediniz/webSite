@@ -62,6 +62,8 @@ export class SweetAlertService {
     const { value: formValues } = await Swal.fire({
       html,
       focusConfirm: true,
+      allowEnterKey: true,
+      allowEscapeKey: true,
       confirmButtonText: `${isRegister ? 'Register' : 'Login'}`,
       preConfirm: () => ({
         username: (document.getElementById('swal-input1') as any).value,
