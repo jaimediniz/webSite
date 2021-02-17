@@ -7,7 +7,7 @@ import { isSameMonth, isSameDay } from 'date-fns';
 import { APIService } from 'src/app/services/backend.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 
-import { Event } from '../../../interfaces/database';
+import { Event } from '../../../../interfaces/database';
 
 @Component({
   selector: 'app-schedule',
@@ -40,8 +40,6 @@ export class ScheduleComponent implements OnInit {
         meta: event.meta
       };
     });
-
-    console.log(this.events);
   }
 
   ngOnInit(): void {
@@ -59,7 +57,7 @@ export class ScheduleComponent implements OnInit {
 
   fetchEvents() {
     this.api.getEvents().then((response: any) => {
-      this.events = response.message.map((event: Event) => {
+      this.events = response.map((event: Event) => {
         // Preload images
         const tmpImg = new Image();
         tmpImg.src = event.imageUrl;

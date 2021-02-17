@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
-import { APIResponse } from '../interfaces/interfaces';
-import { Event, Subscription } from '../interfaces/database';
+import {
+  APIEventsResponse,
+  APILoginResponse,
+  APIResponse,
+  APIUsersResponse
+} from '../../interfaces/backend';
+import { Event, User, Subscription } from '../../interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
+import { CookieService } from 'ngx-cookie';
 
 @Injectable({ providedIn: 'root' })
 export class APIService {
   public activeSession: Subject<string> = new Subject();
   public isAdmin = false;
 
-  private internalError: APIResponse = {
-    error: true,
-    message: JSON.stringify({
-      code: 500,
-      data: {},
-      error: true,
-      message: 'Something is wrong!'
-    })
-  };
-
   constructor(
     private logger: LoggerService,
     private http: HttpClient,
     private loading: LoadingService,
-    private alert: SweetAlertService
+    private alert: SweetAlertService,
+    private cookieService: CookieService
   ) {}
 
   async addSubscription(sub: PushSubscription): Promise<boolean> {
@@ -51,12 +48,27 @@ export class APIService {
     password: string;
   }): Promise<boolean> {
     this.loading.startLoading();
-    const apiResponse = await this.post('/api/login', payLoad);
+    const apiResponse: APILoginResponse = await this.post(
+      '/api/login',
+      payLoad
+    );
     this.loading.stopLoading();
-    if (!(apiResponse as any).error) {
-      this.alert.toast('Success!', 'success', '');
+
+    const expires = new Date();
+    expires.setHours(23, 59, 59, 0);
+    this.cookieService.put('Role', apiResponse.data.role, {
+      expires
+    });
+    this.cookieService.put('Key', apiResponse.data.key, {
+      expires
+    });
+
+    if (apiResponse.error) {
+      this.alert.toast('Something went wrong!', 'error', apiResponse.message);
+      return false;
     }
-    return false;
+    this.alert.toast('Logged!', 'success', 'You are now logged.');
+    return true;
   }
 
   async register(payLoad: {
@@ -67,16 +79,22 @@ export class APIService {
     this.loading.startLoading();
     const apiResponse = await this.post('/api/register', payLoad);
     this.loading.stopLoading();
-    if (!(apiResponse as any).error) {
+    if (!apiResponse.error) {
       this.alert.toast('Registered!', 'success', '');
     }
     return false;
   }
 
   async getEvents(): Promise<Array<Event>> {
-    const apiResponse = (await this.get('/api/events')) as Array<Event>;
+    const apiResponse: APIEventsResponse = await this.get('/api/events');
     this.alert.toast('Updated!', 'success', 'The list was updated!');
-    return apiResponse;
+    return apiResponse.data;
+  }
+
+  async getUsers(): Promise<Array<User>> {
+    const apiResponse: APIUsersResponse = await this.get('/api/admin');
+    this.alert.toast('Updated!', 'success', 'The list was updated!');
+    return apiResponse.data;
   }
 
   async addEvent(payLoad: {
@@ -87,36 +105,54 @@ export class APIService {
     this.loading.startLoading();
     const apiResponse = await this.post('/api/events', payLoad);
     this.loading.stopLoading();
-    if (!(apiResponse as any).error) {
+    if (!apiResponse.error) {
       this.alert.toast('Add it!', 'success', '');
     }
     return false;
   }
 
-  async post(route: string, payLoad: any): Promise<APIResponse> {
-    this.logger.log('Payload', payLoad);
+  async get(route: string): Promise<APIResponse> {
     try {
+      const requestOptions = {
+        headers: new HttpHeaders({
+          authorization: this.cookieService.get('Key')
+        }),
+        withCredentials: true
+      };
       const response = await this.http
-        .post<Promise<APIResponse>>(route, JSON.stringify(payLoad))
+        .get<Promise<APIResponse>>(route, requestOptions)
         .toPromise();
       this.logger.log('Response', response);
       return response;
     } catch (error) {
-      this.logger.error(error.message);
-      return this.internalError;
+      const response: APIResponse = error.error;
+      this.logger.error('BACKEND - GET - ERROR', response);
+      return response;
     }
   }
 
-  async get(route: string): Promise<any> {
+  async post(route: string, payLoad: any): Promise<APIResponse> {
+    this.logger.log('Payload', payLoad);
     try {
+      const requestOptions = {
+        headers: new HttpHeaders({
+          authorization: this.cookieService.get('Key')
+        }),
+        withCredentials: true
+      };
       const response = await this.http
-        .get<Promise<APIResponse>>(route)
+        .post<Promise<APIResponse>>(
+          route,
+          JSON.stringify(payLoad),
+          requestOptions
+        )
         .toPromise();
       this.logger.log('Response', response);
       return response;
     } catch (error) {
-      this.logger.error(error.message);
-      return [];
+      const response: APIResponse = error.error;
+      this.logger.error('BACKEND - POST - ERROR', error.error);
+      return response;
     }
   }
 }

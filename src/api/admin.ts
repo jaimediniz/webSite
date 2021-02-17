@@ -2,27 +2,32 @@ import { Request, Response } from 'express';
 import Status from 'http-status-codes';
 import { APIResponse } from 'src/interfaces/backend';
 
-import { getBody, insertOne } from './dbConnection';
+import { getAll, isUserAllowed } from './dbConnection';
 
-const post = async (
-  request: Request
-): Promise<{ code: number; error: boolean; message: string }> => {
-  const body = await getBody(request.method, request.body);
-  return await insertOne('Subscriptions', body);
-};
+const get = async (): Promise<APIResponse<Array<any>>> => await getAll('Users');
 
 export default async (request: Request, response: Response) => {
-  let json: APIResponse;
+  let json: APIResponse<Array<any>>;
+  if (!isUserAllowed(request, 'admin')) {
+    json = {
+      code: Status.BAD_REQUEST,
+      error: true,
+      message: 'Access denied.',
+      data: []
+    };
+    return response.status(json.code).json(json);
+  }
+
   try {
     let result;
-    if (request.method === 'POST') {
-      result = await post(request);
+    if (request.method === 'GET') {
+      result = await get();
     } else {
       result = {
         code: Status.BAD_REQUEST,
         error: true,
         message: 'Bad Request',
-        data: {}
+        data: []
       };
     }
 
@@ -30,7 +35,7 @@ export default async (request: Request, response: Response) => {
       code: result.code,
       error: result.error,
       message: result.message,
-      data: {}
+      data: result.data
     };
     return response.status(result.code).json(json);
   } catch (err) {
@@ -38,7 +43,7 @@ export default async (request: Request, response: Response) => {
       code: Status.INTERNAL_SERVER_ERROR,
       error: true,
       message: err.message,
-      data: {}
+      data: []
     };
     return response.status(Status.INTERNAL_SERVER_ERROR).json(json);
   }
