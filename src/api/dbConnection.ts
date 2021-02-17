@@ -40,7 +40,7 @@ export const getBody = async (method: string, rawBody: string) => {
 export const insertOne = async (
   collection: string,
   body: any
-): Promise<APIResponse<any>> => {
+): Promise<APIResponse> => {
   try {
     const db = await connectToDatabase();
     const result = await db.collection(collection).insertOne(body);

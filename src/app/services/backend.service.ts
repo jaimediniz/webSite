@@ -107,11 +107,11 @@ export class APIService {
     return false;
   }
 
-  async post(route: string, payLoad: any): Promise<APIResponse<any>> {
+  async post(route: string, payLoad: any): Promise<APIResponse> {
     this.logger.log('Payload', payLoad);
     try {
       const response = await this.http
-        .post<Promise<APIResponse<any>>>(route, JSON.stringify(payLoad))
+        .post<Promise<APIResponse>>(route, JSON.stringify(payLoad))
         .toPromise();
       this.logger.log('Response', response);
       return response;
@@ -121,10 +121,10 @@ export class APIService {
     }
   }
 
-  async get(route: string): Promise<APIResponse<any>> {
+  async get(route: string): Promise<APIResponse> {
     try {
       const response = await this.http
-        .get<Promise<APIResponse<any>>>(route)
+        .get<Promise<APIResponse>>(route)
         .toPromise();
       this.logger.log('Response', response);
       return response;

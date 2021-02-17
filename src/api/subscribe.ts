@@ -12,7 +12,7 @@ const post = async (
 };
 
 export default async (request: Request, response: Response) => {
-  let json: APIResponse<any>;
+  let json: APIResponse;
   try {
     let result;
     if (request.method === 'POST') {

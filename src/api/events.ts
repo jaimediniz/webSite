@@ -7,13 +7,13 @@ import { getBody, insertOne, getAll } from './dbConnection';
 const get = async (): Promise<APIResponse<Array<any>>> =>
   await getAll('Events');
 
-const post = async (request: Request): Promise<APIResponse<any>> => {
+const post = async (request: Request): Promise<APIResponse> => {
   const body = await getBody(request.method, request.body);
   return await insertOne('Events', body);
 };
 
 export default async (request: Request, response: Response) => {
-  let json: APIResponse<any>;
+  let json: APIResponse;
   try {
     let result;
     if (request.method === 'GET') {

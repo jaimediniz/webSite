@@ -1,6 +1,6 @@
 import { Event } from './database';
 
-export interface APIResponse<T> {
+export interface APIResponse<T = any> {
   code: number;
   error: boolean;
   message: string;
