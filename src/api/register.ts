@@ -1,31 +1,23 @@
 import { Request, Response } from 'express';
-import Status from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
 
-import { insertOne } from './dbConnection';
+import { insertOne, getBody, badRequest } from './dbConnection';
 
 const roles = {
   6955037335: 'admin',
   3901821888: 'user',
   5365032369: 'mod'
 };
-
-export default async (request: Request, response: Response) => {
-  let body;
-  try {
-    body = JSON.parse(request.body);
-  } catch (error) {
-    return response
-      .status(Status.BAD_REQUEST)
-      .json({ error: true, message: 'Body is corrupted!' });
+const post = async (request: Request, response: Response): Promise<void> => {
+  const body = await getBody(request.method, request.body);
+  if (!body) {
+    return badRequest(response);
   }
 
   // @ts-expect-error
   const role = roles[body.code];
   if (!role) {
-    return response
-      .status(Status.BAD_REQUEST)
-      .json({ error: true, message: 'Body is corrupted!' });
+    return badRequest(response);
   }
 
   const payload = {
@@ -34,8 +26,14 @@ export default async (request: Request, response: Response) => {
     role
   };
 
-  const result = await insertOne('Users', payload);
-  return response
-    .status(result.code)
-    .json({ error: result.error, message: result.message });
+  const json = await insertOne('Users', payload);
+  response.status(json.code).json(json);
+};
+
+export default async (request: Request, response: Response) => {
+  if (request.method === 'POST') {
+    return await post(request, response);
+  }
+
+  return badRequest(response);
 };

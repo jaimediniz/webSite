@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAll = exports.insertOne = exports.getBody = exports.connectToDatabase = exports.getKeyForRole = exports.isValidKeyForRole = void 0;
+exports.badRequest = exports.getAll = exports.insertOne = exports.getBody = exports.connectToDatabase = exports.login = exports.getKeyForRole = exports.isUserAllowed = void 0;
 const mongodb_1 = require("mongodb");
 const http_status_codes_1 = require("http-status-codes");
 const bcrypt = require("bcrypt");
@@ -11,8 +11,20 @@ const expires = () => {
     expiresDate.setHours(23, 59, 59, 0);
     return expiresDate.getTime();
 };
-exports.isValidKeyForRole = async (key, role) => await bcrypt.compare(expires() + role + RANDOM_KEY, key);
+exports.isUserAllowed = async (request, role) => {
+    var _a, _b;
+    return await bcrypt.compare(expires() + role + RANDOM_KEY, (_b = (_a = request === null || request === void 0 ? void 0 : request.headers) === null || _a === void 0 ? void 0 : _a.authorization) !== null && _b !== void 0 ? _b : '');
+};
 exports.getKeyForRole = async (role) => await bcrypt.hash(expires() + role + RANDOM_KEY, 10);
+exports.login = async (role) => {
+    const key = exports.getKeyForRole(role);
+    return {
+        code: http_status_codes_1.default.ACCEPTED,
+        error: false,
+        message: 'Logged',
+        data: { role, key }
+    };
+};
 let cachedDb;
 exports.connectToDatabase = async () => {
     var _a;
@@ -80,4 +92,13 @@ exports.getAll = async (collection, find = {}) => {
             data: []
         };
     }
+};
+exports.badRequest = (response, data = {}) => {
+    const error = {
+        code: http_status_codes_1.default.BAD_REQUEST,
+        error: true,
+        message: 'Bad Request',
+        data
+    };
+    response.status(error.code).json(error);
 };

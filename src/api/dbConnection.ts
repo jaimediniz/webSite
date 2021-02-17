@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { Db, MongoClient } from 'mongodb';
 import Status from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
@@ -25,6 +25,16 @@ export const isUserAllowed = async (
 
 export const getKeyForRole = async (role: string) =>
   await bcrypt.hash(expires() + role + RANDOM_KEY, 10);
+
+export const login = async (role: string) => {
+  const key = getKeyForRole(role);
+  return {
+    code: Status.ACCEPTED,
+    error: false,
+    message: 'Logged',
+    data: { role, key }
+  };
+};
 
 let cachedDb: Db;
 export const connectToDatabase = async () => {
@@ -103,4 +113,14 @@ export const getAll = async (
       data: []
     };
   }
+};
+
+export const badRequest = (response: Response, data = {}): void => {
+  const error: APIResponse = {
+    code: Status.BAD_REQUEST,
+    error: true,
+    message: 'Bad Request',
+    data
+  };
+  response.status(error.code).json(error);
 };

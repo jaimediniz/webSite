@@ -1,45 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const http_status_codes_1 = require("http-status-codes");
 const dbConnection_1 = require("./dbConnection");
-const get = async () => await dbConnection_1.getAll('Events');
-const post = async (request) => {
+const get = async (request, response) => {
+    const json = await dbConnection_1.getAll('Events');
+    response.status(json.code).json(json);
+};
+const post = async (request, response) => {
     const body = await dbConnection_1.getBody(request.method, request.body);
-    return await dbConnection_1.insertOne('Events', body);
+    if (!body) {
+        return dbConnection_1.badRequest(response);
+    }
+    const json = await dbConnection_1.insertOne('Events', body);
+    response.status(json.code).json(json);
 };
 exports.default = async (request, response) => {
-    let json;
-    try {
-        let result;
-        if (request.method === 'GET') {
-            result = await get();
-        }
-        else if (request.method === 'POST') {
-            result = await post(request);
-        }
-        else {
-            result = {
-                code: http_status_codes_1.default.BAD_REQUEST,
-                error: true,
-                message: 'Bad Request',
-                data: {}
-            };
-        }
-        json = {
-            code: result.code,
-            error: result.error,
-            message: result.message,
-            data: result.data
-        };
-        return response.status(result.code).json(json);
+    if (request.method === 'GET') {
+        return await get(request, response);
     }
-    catch (err) {
-        json = {
-            code: http_status_codes_1.default.INTERNAL_SERVER_ERROR,
-            error: true,
-            message: err.message,
-            data: {}
-        };
-        return response.status(http_status_codes_1.default.INTERNAL_SERVER_ERROR).json(json);
+    if (request.method === 'POST') {
+        return await post(request, response);
     }
+    return dbConnection_1.badRequest(response);
 };
