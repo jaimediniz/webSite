@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
     private api: APIService,
     private cookieService: CookieService
   ) {
-    if (this.cookieService.get('Admin')) {
+    if (this.cookieService.get('role') === 'admin') {
       this.adminButton = true;
       this.loginButton = false;
     }

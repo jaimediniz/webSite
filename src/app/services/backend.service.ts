@@ -53,16 +53,20 @@ export class APIService {
     );
     this.loading.stopLoading();
 
-    if (apiResponse.error) {
-      return false;
-    }
-
-    this.alert.toast('Logged!', 'success', 'You are now logged.');
     const expires = new Date();
     expires.setHours(23, 59, 59, 0);
-    this.cookieService.put('Admin', apiResponse.message, {
+    this.cookieService.put('Role', apiResponse.data.role, {
       expires
     });
+    this.cookieService.put('Key', apiResponse.data.key, {
+      expires
+    });
+
+    if (apiResponse.error) {
+      this.alert.toast('Something went wrong!', 'error', apiResponse.message);
+      return false;
+    }
+    this.alert.toast('Logged!', 'success', 'You are now logged.');
     return true;
   }
 
