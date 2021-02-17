@@ -19,7 +19,7 @@ export class SweetAlertService {
       footer,
       toast: true,
       position: 'top-end',
-      timer: 2000,
+      timer: 1000,
       showConfirmButton: false,
       timerProgressBar: true,
       showClass: {
