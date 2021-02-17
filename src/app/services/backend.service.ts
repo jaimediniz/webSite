@@ -18,13 +18,6 @@ export class APIService {
   public activeSession: Subject<string> = new Subject();
   public isAdmin = false;
 
-  private internalError: APIResponse<string> = {
-    code: 500,
-    error: true,
-    message: 'Something is wrong!',
-    data: ''
-  };
-
   constructor(
     private logger: LoggerService,
     private http: HttpClient,
@@ -107,6 +100,20 @@ export class APIService {
     return false;
   }
 
+  async get(route: string): Promise<APIResponse> {
+    try {
+      const response = await this.http
+        .get<Promise<APIResponse>>(route)
+        .toPromise();
+      this.logger.log('Response', response);
+      return response;
+    } catch (error) {
+      const response: APIResponse = error.error;
+      this.logger.error('BACKEND - GET - ERROR', response);
+      return response;
+    }
+  }
+
   async post(route: string, payLoad: any): Promise<APIResponse> {
     this.logger.log('Payload', payLoad);
     try {
@@ -116,21 +123,9 @@ export class APIService {
       this.logger.log('Response', response);
       return response;
     } catch (error) {
-      this.logger.error(error.message);
-      return this.internalError;
-    }
-  }
-
-  async get(route: string): Promise<APIResponse> {
-    try {
-      const response = await this.http
-        .get<Promise<APIResponse>>(route)
-        .toPromise();
-      this.logger.log('Response', response);
+      const response: APIResponse = error.error;
+      this.logger.error('BACKEND - POST - ERROR', error.error);
       return response;
-    } catch (error) {
-      this.logger.error(error.message);
-      return this.internalError;
     }
   }
 }
