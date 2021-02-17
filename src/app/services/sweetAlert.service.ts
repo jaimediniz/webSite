@@ -41,7 +41,11 @@ export class SweetAlertService {
     Swal.fire({
       title,
       text,
-      icon
+      icon,
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      }
     });
   }
 
@@ -60,7 +64,11 @@ export class SweetAlertService {
         username: (document.getElementById('swal-input1') as any).value,
         password: (document.getElementById('swal-input2') as any).value,
         code: (document.getElementById('swal-input3') as any).value
-      })
+      }),
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      }
     });
 
     if (
@@ -86,7 +94,11 @@ export class SweetAlertService {
       icon,
       showCancelButton: true,
       confirmButtonText: confirmButton,
-      cancelButtonText: cancelButton
+      cancelButtonText: cancelButton,
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      }
     });
 
     if (result.value) {
@@ -104,7 +116,11 @@ export class SweetAlertService {
     Swal.fire({
       title: event.name,
       html,
-      imageUrl: event.imageUrl
+      imageUrl: event.imageUrl,
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      }
     });
   }
 
