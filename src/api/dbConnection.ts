@@ -1,5 +1,6 @@
 import { Db, MongoClient } from 'mongodb';
 import Status from 'http-status-codes';
+import { APIResponse } from 'src/interfaces/backend';
 
 const url = require('url');
 
@@ -39,21 +40,24 @@ export const getBody = async (method: string, rawBody: string) => {
 export const insertOne = async (
   collection: string,
   body: any
-): Promise<{ code: number; error: boolean; message: any }> => {
+): Promise<APIResponse<any>> => {
   try {
     const db = await connectToDatabase();
     const result = await db.collection(collection).insertOne(body);
+    console.log(result);
     return {
       code: Status.CREATED,
       error: false,
-      message: result
+      message: '',
+      data: result
     };
   } catch (err) {
     console.log(err);
     return {
       code: Status.INTERNAL_SERVER_ERROR,
       error: true,
-      message: err.message
+      message: err.message,
+      data: []
     };
   }
 };
@@ -61,21 +65,23 @@ export const insertOne = async (
 export const getAll = async (
   collection: string,
   find: any = {}
-): Promise<{ code: number; error: boolean; message: any }> => {
+): Promise<APIResponse<Array<any>>> => {
   try {
     const db = await connectToDatabase();
     const result = await db.collection(collection).find(find).toArray();
     return {
       code: Status.ACCEPTED,
       error: false,
-      message: result
+      message: '',
+      data: result
     };
   } catch (err) {
     console.log(err);
     return {
       code: Status.INTERNAL_SERVER_ERROR,
       error: true,
-      message: err.message
+      message: err.message,
+      data: []
     };
   }
 };

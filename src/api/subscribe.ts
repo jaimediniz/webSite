@@ -12,7 +12,7 @@ const post = async (
 };
 
 export default async (request: Request, response: Response) => {
-  let json: APIResponse;
+  let json: APIResponse<any>;
   try {
     let result;
     if (request.method === 'POST') {
@@ -21,14 +21,25 @@ export default async (request: Request, response: Response) => {
       result = {
         code: Status.BAD_REQUEST,
         error: true,
-        message: 'Bad Request'
+        message: 'Bad Request',
+        data: {}
       };
     }
 
-    json = { error: result.error, message: result.message };
+    json = {
+      code: result.code,
+      error: result.error,
+      message: result.message,
+      data: {}
+    };
     return response.status(result.code).json(json);
   } catch (err) {
-    json = { error: true, message: err.message };
+    json = {
+      code: Status.INTERNAL_SERVER_ERROR,
+      error: true,
+      message: err.message,
+      data: {}
+    };
     return response.status(Status.INTERNAL_SERVER_ERROR).json(json);
   }
 };

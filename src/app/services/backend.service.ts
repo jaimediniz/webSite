@@ -3,7 +3,11 @@ import { HttpClient } from '@angular/common/http';
 
 import { Subject } from 'rxjs';
 import { LoggerService } from './logger.service';
-import { APILoginResponse, APIResponse } from '../../interfaces/backend';
+import {
+  APIEventsResponse,
+  APILoginResponse,
+  APIResponse
+} from '../../interfaces/backend';
 import { Event, Subscription } from '../../interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
@@ -14,14 +18,10 @@ export class APIService {
   public activeSession: Subject<string> = new Subject();
   public isAdmin = false;
 
-  private internalError: APIResponse = {
+  private internalError: APIResponse<string> = {
+    code: 500,
     error: true,
-    message: JSON.stringify({
-      code: 500,
-      data: {},
-      error: true,
-      message: 'Something is wrong!'
-    }),
+    message: 'Something is wrong!',
     data: ''
   };
 
@@ -88,9 +88,9 @@ export class APIService {
   }
 
   async getEvents(): Promise<Array<Event>> {
-    const apiResponse = (await this.get('/api/events')) as Array<Event>;
+    const apiResponse: APIEventsResponse = await this.get('/api/events');
     this.alert.toast('Updated!', 'success', 'The list was updated!');
-    return apiResponse;
+    return apiResponse.data;
   }
 
   async addEvent(payLoad: {
@@ -107,11 +107,11 @@ export class APIService {
     return false;
   }
 
-  async post(route: string, payLoad: any): Promise<any> {
+  async post(route: string, payLoad: any): Promise<APIResponse<any>> {
     this.logger.log('Payload', payLoad);
     try {
       const response = await this.http
-        .post<Promise<APIResponse>>(route, JSON.stringify(payLoad))
+        .post<Promise<APIResponse<any>>>(route, JSON.stringify(payLoad))
         .toPromise();
       this.logger.log('Response', response);
       return response;
@@ -121,16 +121,16 @@ export class APIService {
     }
   }
 
-  async get(route: string): Promise<any> {
+  async get(route: string): Promise<APIResponse<any>> {
     try {
       const response = await this.http
-        .get<Promise<APIResponse>>(route)
+        .get<Promise<APIResponse<any>>>(route)
         .toPromise();
       this.logger.log('Response', response);
       return response;
     } catch (error) {
       this.logger.error(error.message);
-      return [];
+      return this.internalError;
     }
   }
 }

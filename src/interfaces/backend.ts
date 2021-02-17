@@ -1,19 +1,15 @@
-export interface APIResponse {
+import { Event } from './database';
+
+export interface APIResponse<T> {
+  code: number;
   error: boolean;
   message: string;
-  data?: any;
+  data: T;
 }
 
-export interface APILoginResponse extends APIResponse {
-  data: {
-    role: string;
-    key: string;
-  };
-}
+export type APILoginResponse = APIResponse<{
+  role: string;
+  key: string;
+}>;
 
-export interface APIEventsResponse extends APIResponse {
-  data: {
-    role: string;
-    key: string;
-  };
-}
+export type APIEventsResponse = APIResponse<Array<Event>>;
