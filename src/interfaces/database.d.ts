@@ -24,3 +24,11 @@ export interface Event {
   imageUrl: string;
   location: string;
 }
+
+export interface Users {
+  _id?: ObjectId;
+  name: string;
+  username: string;
+  password: string;
+  role: string;
+}
