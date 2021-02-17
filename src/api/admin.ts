@@ -1,50 +1,40 @@
 import { Request, Response } from 'express';
-import Status from 'http-status-codes';
-import { APIResponse } from 'src/interfaces/backend';
+import { APIResponse, APIUsersResponse } from 'src/interfaces/backend';
 
-import { getAll, isUserAllowed } from './dbConnection';
+import {
+  getBody,
+  getAll,
+  insertOne,
+  isUserAllowed,
+  badRequest
+} from './dbConnection';
 
-const get = async (): Promise<APIResponse<Array<any>>> => await getAll('Users');
+const get = async (request: Request, response: Response): Promise<void> => {
+  const json: APIUsersResponse = await getAll('Users');
+  response.status(json.code).json(json);
+};
+
+const post = async (request: Request, response: Response): Promise<void> => {
+  const body = await getBody(request.method, request.body);
+  if (!body) {
+    return badRequest(response);
+  }
+  const json: APIResponse = await insertOne('Users', body);
+  response.status(json.code).json(json);
+};
 
 export default async (request: Request, response: Response) => {
-  let json: APIResponse<Array<any>>;
   if (!isUserAllowed(request, 'admin')) {
-    json = {
-      code: Status.BAD_REQUEST,
-      error: true,
-      message: 'Access denied.',
-      data: []
-    };
-    return response.status(json.code).json(json);
+    return badRequest(response);
   }
 
-  try {
-    let result;
-    if (request.method === 'GET') {
-      result = await get();
-    } else {
-      result = {
-        code: Status.BAD_REQUEST,
-        error: true,
-        message: 'Bad Request',
-        data: []
-      };
-    }
-
-    json = {
-      code: result.code,
-      error: result.error,
-      message: result.message,
-      data: result.data
-    };
-    return response.status(result.code).json(json);
-  } catch (err) {
-    json = {
-      code: Status.INTERNAL_SERVER_ERROR,
-      error: true,
-      message: err.message,
-      data: []
-    };
-    return response.status(Status.INTERNAL_SERVER_ERROR).json(json);
+  if (request.method === 'GET') {
+    return await get(request, response);
   }
+
+  if (request.method === 'POST') {
+    return await post(request, response);
+  }
+
+  return badRequest(response);
 };
