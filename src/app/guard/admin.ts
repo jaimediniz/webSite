@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (this.cookieService.get('Role') === 'admin') {
+    if (this.cookieService.get('Role') !== 'admin') {
       // redirect to login page
       return false;
     }
