@@ -87,7 +87,7 @@
         [routerLink]="['admin']"
         routerLinkActive="active"
       >
-        <mat-icon>feedback</mat-icon>
+        <mat-icon>admin_panel_settings</mat-icon>
         <span>Admin Panel</span>
       </button>
       <button
@@ -96,7 +96,7 @@
         class="nav-link"
         (click)="login()"
       >
-        <mat-icon>feedback</mat-icon>
+        <mat-icon>exit_to_app</mat-icon>
         <span>Login</span>
       </button>
       <button
@@ -105,7 +105,7 @@
         class="nav-link"
         (click)="logoff()"
       >
-        <mat-icon>feedback</mat-icon>
+        <mat-icon>power_settings_new</mat-icon>
         <span>Logoff</span>
       </button>
     </mat-menu>
@@ -157,13 +157,13 @@
       class="nav-link"
       [routerLink]="['admin']"
       routerLinkActive="active"
-      ><mat-icon>feedback</mat-icon><span>Admin Panel</span></a
+      ><mat-icon>admin_panel_settings</mat-icon><span>Admin Panel</span></a
     >
     <a [hidden]="!loginButton" class="nav-link" (click)="login()"
-      ><mat-icon>feedback</mat-icon><span>Login</span></a
+      ><mat-icon>exit_to_app</mat-icon><span>Login</span></a
     >
     <a [hidden]="!logoffButton" class="nav-link" (click)="logoff()"
-      ><mat-icon>feedback</mat-icon><span>Logoff</span></a
+      ><mat-icon>power_settings_new</mat-icon><span>Logoff</span></a
     >
   </div>
 </nav>
