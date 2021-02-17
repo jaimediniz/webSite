@@ -59,13 +59,14 @@ export const insertOne = async (
 };
 
 export const getAll = async (
-  collection: string
+  collection: string,
+  find: any = {}
 ): Promise<{ code: number; error: boolean; message: any }> => {
   try {
     const db = await connectToDatabase();
-    const result = await db.collection(collection).find({}).toArray();
+    const result = await db.collection(collection).find(find).toArray();
     return {
-      code: Status.CREATED,
+      code: Status.ACCEPTED,
       error: false,
       message: result
     };
