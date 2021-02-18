@@ -8,7 +8,7 @@ const roles = {
     5365032369: 'mod'
 };
 const post = async (request, response) => {
-    const body = await dbConnection_1.getBody(request.method, request.body);
+    const body = await dbConnection_1.getBody(request.body);
     if (!body) {
         return dbConnection_1.badRequest(response);
     }

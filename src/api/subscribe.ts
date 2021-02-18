@@ -4,7 +4,7 @@ import { APIResponse } from 'src/interfaces/backend';
 import { getBody, insertOne, badRequest } from './dbConnection';
 
 const post = async (request: Request, response: Response): Promise<void> => {
-  const body = await getBody(request.method, request.body);
+  const body = await getBody(request.body);
   if (!body) {
     return badRequest(response);
   }

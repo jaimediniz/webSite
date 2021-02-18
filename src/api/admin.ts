@@ -15,7 +15,7 @@ const get = async (request: Request, response: Response): Promise<void> => {
 };
 
 const post = async (request: Request, response: Response): Promise<void> => {
-  const body = await getBody(request.method, request.body);
+  const body = await getBody(request.body);
   if (!body) {
     return badRequest(response);
   }
