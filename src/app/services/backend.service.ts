@@ -52,7 +52,6 @@ export class APIService {
       '/api/login',
       payload
     );
-    console.log(apiResponse);
     this.loading.stopLoading();
 
     const expires = new Date();
