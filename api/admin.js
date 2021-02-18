@@ -6,7 +6,7 @@ const get = async (request, response) => {
     response.status(json.code).json(json);
 };
 const post = async (request, response) => {
-    const body = await dbConnection_1.getBody(request.method, request.body);
+    const body = await dbConnection_1.getBody(request.body);
     if (!body) {
         return dbConnection_1.badRequest(response);
     }
