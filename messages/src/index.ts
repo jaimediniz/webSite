@@ -17,8 +17,8 @@ setVapidDetails(`mailto:${email}`, vapidKeys.publicKey, vapidKeys.privateKey);
 /* cSpell:enable */
 
 let collection: Collection<Subscription>;
-let subscriptions: Array<Subscription>;
-const expired: Array<Subscription> = [];
+let subscriptions: Subscription[];
+const expired: Subscription[] = [];
 let itemsProcessed = 0;
 
 const done = () => {
@@ -84,7 +84,7 @@ const newPayload = (name?: string, title?: string, body?: string): string => {
     return globalPayload;
   }
 
-  let actions: Array<any> = [];
+  let actions: any[] = [];
   if (process.env.npm_config_url) {
     if ((process.env.npm_config_url as string).includes('skype')) {
       actions = [

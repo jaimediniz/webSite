@@ -100,7 +100,7 @@ export const insertOne = async (
 export const getAll = async (
   collection: string,
   find: any = {}
-): Promise<APIResponse<Array<any>>> => {
+): Promise<APIResponse<any[]>> => {
   try {
     const db = await connectToDatabase();
     const result = await db.collection(collection).find(find).toArray();

@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit {
     private cookieService: CookieService,
     private router: Router
   ) {
-    if (this.cookieService.get('role') === 'admin') {
+    if (this.cookieService.get('Role') === 'admin') {
       this.loginButton = false;
       this.adminButton = true;
       this.logoffButton = true;

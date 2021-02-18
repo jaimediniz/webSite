@@ -12,6 +12,6 @@ export type APILoginResponse = APIResponse<{
   key: string;
 }>;
 
-export type APIEventsResponse = APIResponse<Array<Event>>;
+export type APIEventsResponse = APIResponse<Event[]>;
 
-export type APIUsersResponse = APIResponse<Array<User>>;
+export type APIUsersResponse = APIResponse<User[]>;
