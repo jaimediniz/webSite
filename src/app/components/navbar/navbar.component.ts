@@ -50,25 +50,25 @@ export class NavbarComponent implements OnInit {
   }
 
   async register(bool: boolean): Promise<boolean> {
-    const payLoad = await this.alert.loginOrRegister(true);
+    const payload = await this.alert.loginOrRegister(true);
 
-    if (!payLoad) {
+    if (!payload) {
       return false;
     }
 
-    const apiResponse = await this.api.register(payLoad);
+    const apiResponse = await this.api.register(payload);
     return apiResponse;
   }
 
   ngOnInit(): void {}
 
   async login(): Promise<void> {
-    const payLoad = await this.alert.loginOrRegister();
-    if (!payLoad || !payLoad.username || !payLoad.password) {
+    const payload = await this.alert.loginOrRegister();
+    if (!payload || !payload.username || !payload.password) {
       return;
     }
 
-    const success = await this.api.login(payLoad);
+    const success = await this.api.login(payload);
 
     if (!success) {
       return;

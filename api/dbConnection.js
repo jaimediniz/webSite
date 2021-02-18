@@ -40,16 +40,20 @@ exports.connectToDatabase = async () => {
     cachedDb = db;
     return db;
 };
-exports.getBody = async (method, rawBody) => {
-    if (method !== 'POST' || !rawBody) {
-        throw new Error('Method not allowed.');
-    }
+exports.getBody = async (rawBody) => {
     let body;
     try {
         body = JSON.parse(rawBody);
     }
     catch (error) {
-        throw new Error('Body is corrupted!');
+        throw new Error(JSON.stringify({
+            error: {
+                code: 400,
+                error: true,
+                message: 'Body is corrupted!',
+                data: {}
+            }
+        }));
     }
     return body;
 };

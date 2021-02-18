@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt = require("bcrypt");
 const dbConnection_1 = require("./dbConnection");
 const post = async (request, response) => {
-    const body = await dbConnection_1.getBody(request.method, request.body);
+    const body = await dbConnection_1.getBody(request.body);
     if (!body) {
         return dbConnection_1.badRequest(response, { role: '', key: '' });
     }
