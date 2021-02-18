@@ -37,7 +37,7 @@ export class AdminComponent implements OnInit {
     }
   ];
   public selectedCollection: Collection = this.collections[0];
-  public table: Array<any>;
+  public table: any[];
 
   constructor(private api: APIService) {
     this.getTable(this.selectedCollection);

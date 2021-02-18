@@ -86,13 +86,13 @@ export class APIService {
     return false;
   }
 
-  async getEvents(): Promise<Array<Event>> {
+  async getEvents(): Promise<Event[]> {
     const apiResponse: APIEventsResponse = await this.get('/api/events');
     this.alert.toast('Updated!', 'success', 'The list was updated!');
     return apiResponse?.data;
   }
 
-  async getUsers(): Promise<Array<User>> {
+  async getUsers(): Promise<User[]> {
     const apiResponse: APIUsersResponse = await this.get('/api/admin');
     this.alert.toast('Updated!', 'success', 'The list was updated!');
     return apiResponse?.data;

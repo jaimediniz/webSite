@@ -125,7 +125,7 @@ export class LoggerService {
   }
 
   showStoredLogs(): void {
-    const values: Array<LogEntry> =
+    const values: LogEntry[] =
       JSON.parse(localStorage?.getItem(localStoreLocation) || 'null') || [];
 
     console.log(
