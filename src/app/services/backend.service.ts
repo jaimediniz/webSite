@@ -116,7 +116,7 @@ export class APIService {
     try {
       const requestOptions = {
         headers: new HttpHeaders({
-          authorization: this.cookieService.get('Key')
+          authorization: this.cookieService.get('Key') ?? ''
         }),
         withCredentials: true
       };
@@ -137,7 +137,7 @@ export class APIService {
     try {
       const requestOptions = {
         headers: new HttpHeaders({
-          authorization: this.cookieService.get('Key')
+          authorization: this.cookieService.get('Key') ?? ''
         }),
         withCredentials: true
       };
