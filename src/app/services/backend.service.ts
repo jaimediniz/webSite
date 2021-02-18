@@ -29,7 +29,7 @@ export class APIService {
 
   async addSubscription(sub: PushSubscription): Promise<boolean> {
     const jsonSub = sub.toJSON();
-    const payLoad: Subscription = {
+    const payload: Subscription = {
       name: '',
       expirationTime: 'null',
       endpoint: jsonSub?.endpoint ?? '',
@@ -39,45 +39,46 @@ export class APIService {
       topics: '*'
     };
 
-    const apiResponse = await this.post('/api/subscribe', payLoad);
+    const apiResponse = await this.post('/api/subscribe', payload);
     return !(apiResponse as any).error;
   }
 
-  async login(payLoad: {
+  async login(payload: {
     username: string;
     password: string;
   }): Promise<boolean> {
     this.loading.startLoading();
     const apiResponse: APILoginResponse = await this.post(
       '/api/login',
-      payLoad
+      payload
     );
+    console.log(apiResponse);
     this.loading.stopLoading();
 
     const expires = new Date();
     expires.setHours(23, 59, 59, 0);
-    this.cookieService.put('Role', apiResponse.data.role, {
+    this.cookieService.put('Role', apiResponse?.data?.role, {
       expires
     });
-    this.cookieService.put('Key', apiResponse.data.key, {
+    this.cookieService.put('Key', apiResponse?.data?.key, {
       expires
     });
 
-    if (apiResponse.error) {
-      this.alert.toast('Something went wrong!', 'error', apiResponse.message);
+    if (apiResponse?.error) {
+      this.alert.toast('Something went wrong!', 'error', apiResponse?.message);
       return false;
     }
     this.alert.toast('Logged!', 'success', 'You are now logged.');
     return true;
   }
 
-  async register(payLoad: {
+  async register(payload: {
     username: string;
     password: string;
     code: string;
   }): Promise<boolean> {
     this.loading.startLoading();
-    const apiResponse = await this.post('/api/register', payLoad);
+    const apiResponse = await this.post('/api/register', payload);
     this.loading.stopLoading();
     if (!apiResponse.error) {
       this.alert.toast('Registered!', 'success', '');
@@ -88,22 +89,22 @@ export class APIService {
   async getEvents(): Promise<Array<Event>> {
     const apiResponse: APIEventsResponse = await this.get('/api/events');
     this.alert.toast('Updated!', 'success', 'The list was updated!');
-    return apiResponse.data;
+    return apiResponse?.data;
   }
 
   async getUsers(): Promise<Array<User>> {
     const apiResponse: APIUsersResponse = await this.get('/api/admin');
     this.alert.toast('Updated!', 'success', 'The list was updated!');
-    return apiResponse.data;
+    return apiResponse?.data;
   }
 
-  async addEvent(payLoad: {
+  async addEvent(payload: {
     username: string;
     password: string;
     code: string;
   }): Promise<boolean> {
     this.loading.startLoading();
-    const apiResponse = await this.post('/api/events', payLoad);
+    const apiResponse = await this.post('/api/events', payload);
     this.loading.stopLoading();
     if (!apiResponse.error) {
       this.alert.toast('Add it!', 'success', '');
@@ -131,8 +132,8 @@ export class APIService {
     }
   }
 
-  async post(route: string, payLoad: any): Promise<APIResponse> {
-    this.logger.log('Payload', payLoad);
+  async post(route: string, payload: any): Promise<APIResponse> {
+    this.logger.log('Payload', payload);
     try {
       const requestOptions = {
         headers: new HttpHeaders({
@@ -143,7 +144,7 @@ export class APIService {
       const response = await this.http
         .post<Promise<APIResponse>>(
           route,
-          JSON.stringify(payLoad),
+          JSON.stringify(payload),
           requestOptions
         )
         .toPromise();

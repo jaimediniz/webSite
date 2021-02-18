@@ -18,10 +18,23 @@ interface Collection {
 export class AdminComponent implements OnInit {
   public editing: Editing = {};
   public collections: Collection[] = [
-    { name: 'Users', properties: ['name','username', 'role'] },
+    {
+      name: 'Users',
+      properties: ['name', 'username', 'role']
+    },
     //{ name: 'Subscriptions', properties: ['c', 'd'] },
-    { name: 'Events', properties: ['name','description','location','status','author','start','end',
-    'url','imageUrl'] }
+    {
+      name: 'Events',
+      properties: [
+        'name',
+        'description',
+        'location',
+        'status',
+        'author',
+        'start',
+        'end'
+      ]
+    }
   ];
   public selectedCollection: Collection = this.collections[0];
   public table: Array<any>;
