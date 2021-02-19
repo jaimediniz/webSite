@@ -122,7 +122,7 @@ export class SweetAlertService {
     });
   }
 
-  displayDbElement(element: Event | User): any {
+  async displayDbElement(element: Event | User): Promise<any> {
     const html = Object.entries(element)
       .map((el, index) =>
         el[0] === '_id'
@@ -130,7 +130,7 @@ export class SweetAlertService {
           : `${el[0]}: <input id="swal-input${index}" class="swal2-input" autocomplete="off" value="${el[1]}">`
       )
       .join('');
-    const result = Swal.fire({
+    const { value: formValues } = await Swal.fire({
       title: element.name,
       html,
       showCancelButton: true,
@@ -139,9 +139,23 @@ export class SweetAlertService {
       showClass: {
         popup: 'swal2-noanimation'
         //icon: 'swal2-noanimation'
+      },
+      preConfirm: () => {
+        const newValues = Object.keys(element).reduce(
+          (acc: any, curr: string, index: number) => (
+            (acc[curr] =
+              (document.getElementById(`swal-input${index}`) as any)?.value ??
+              ''),
+            acc
+          ),
+          {}
+        );
+        // eslint-disable-next-line no-underscore-dangle
+        newValues._id = element._id;
+        return newValues;
       }
     });
-    return result;
+    return formValues;
   }
 
   async uploadPicture(): Promise<boolean> {

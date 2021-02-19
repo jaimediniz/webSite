@@ -60,17 +60,21 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  isObjectEqual(obj1: any, obj2: any) {
+    return Object.keys(obj1).every((prop: string) => obj1[prop] === obj2[prop]);
+  }
+
   async displayInfoCard(element: User | Event) {
     const result = await this.alert.displayDbElement(element as Event);
-
-    if (result.isConfirmed) {
-      // TODO: Check if information has changed
-      // TODO: Update DB
+    if (result && !this.isObjectEqual(result, element)) {
+      console.log(result);
+      // TODO: Update object in DB
     }
   }
 
   deleteElement(element: User | Event) {
     // TODO: Remove from database
+    console.log(element);
     const index = this.table.indexOf(element as any);
     this.table.splice(index, 1);
   }
