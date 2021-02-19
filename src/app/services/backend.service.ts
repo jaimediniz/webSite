@@ -27,22 +27,6 @@ export class APIService {
     private cookieService: CookieService
   ) {}
 
-  async addSubscription(sub: PushSubscription): Promise<boolean> {
-    const jsonSub = sub.toJSON();
-    const payload: Subscription = {
-      name: '',
-      expirationTime: 'null',
-      endpoint: jsonSub?.endpoint ?? '',
-      p256dh: jsonSub.keys?.p256dh ?? '',
-      auth: jsonSub.keys?.auth ?? '',
-      paused: false,
-      topics: '*'
-    };
-
-    const apiResponse = await this.post('/api/subscribe', payload);
-    return !(apiResponse as any).error;
-  }
-
   async login(payload: {
     username: string;
     password: string;
@@ -85,32 +69,104 @@ export class APIService {
     return false;
   }
 
+  // Get Information from DB
+  async getData(type: string, endpoint: string, ...query: string[]) {
+    const now = new Date();
+    const previous = new Date(localStorage?.getItem(type + '_time') || '');
+    // milliseconds * seconds * minutes * hours
+    if (now.getTime() - previous.getTime() < 1000 * 60 * 60 * 1) {
+      return JSON.parse(localStorage?.getItem(type) || 'null');
+    }
+
+    const queryParams = query.length > 0 ? '?' + query.join('&') : '';
+    const apiResponse: APIEventsResponse = await this.get(
+      '/api/' + endpoint + queryParams
+    );
+
+    const data = apiResponse?.data;
+
+    if (data) {
+      localStorage.setItem(type, JSON.stringify(data));
+      localStorage.setItem(type + '_time', `${new Date()}`);
+      this.alert.toast('Updated!', 'success', 'The list was updated!');
+      return data;
+    }
+  }
+
+  async cacheThis(data: any, type: string) {
+    const localData = JSON.parse(localStorage?.getItem(type) || 'null');
+    localData.push(data);
+    localStorage.setItem(type, JSON.stringify(localData));
+  }
+
+  async removeFromCache(element: any, type: string) {
+    const localData = JSON.parse(localStorage?.getItem(type) || 'null');
+    // eslint-disable-next-line no-underscore-dangle
+    const index = localData.findIndex((x: any) => x._id === element._id);
+    localData.splice(index, 1);
+    localStorage.setItem(type, JSON.stringify(localData));
+  }
+
   async getEvents(): Promise<Event[]> {
-    const apiResponse: APIEventsResponse = await this.get('/api/events');
-    this.alert.toast('Updated!', 'success', 'The list was updated!');
-    return apiResponse?.data;
+    const data = await this.getData('Events', 'events');
+    return data;
   }
 
   async getUsers(): Promise<User[]> {
-    const apiResponse: APIUsersResponse = await this.get('/api/admin');
-    this.alert.toast('Updated!', 'success', 'The list was updated!');
-    return apiResponse?.data;
+    const data = await this.getData('Users', 'admin', 'collection=Users');
+    return data;
   }
 
-  async addEvent(payload: {
-    username: string;
-    password: string;
-    code: string;
-  }): Promise<boolean> {
+  // Modify DB
+  async addSubscription(sub: PushSubscription): Promise<boolean> {
+    const jsonSub = sub.toJSON();
+    const payload: Subscription = {
+      name: '',
+      expirationTime: 'null',
+      endpoint: jsonSub?.endpoint ?? '',
+      p256dh: jsonSub.keys?.p256dh ?? '',
+      auth: jsonSub.keys?.auth ?? '',
+      paused: false,
+      topics: '*'
+    };
+
+    const apiResponse = await this.post('/api/subscribe', payload);
+    return !(apiResponse as any).error;
+  }
+
+  async insertElement(element: any, collection: string): Promise<any> {
     this.loading.startLoading();
-    const apiResponse = await this.post('/api/events', payload);
+    const apiResponse = await this.post(
+      `/api/admin?collection=${collection}&action=insert`,
+      element
+    );
     this.loading.stopLoading();
+    console.log(apiResponse);
     if (!apiResponse.error) {
       this.alert.toast('Add it!', 'success', '');
+      return apiResponse.data;
     }
-    return false;
+    return;
   }
 
+  async deleteElement(element: any, collection: string): Promise<any> {
+    console.log(element);
+    this.loading.startLoading();
+    const apiResponse = await this.post(
+      `/api/admin?collection=${collection}&action=delete`,
+      // eslint-disable-next-line no-underscore-dangle
+      { _id: element._id }
+    );
+    this.loading.stopLoading();
+    console.log(apiResponse);
+    if (!apiResponse.error) {
+      this.alert.toast('Deleted!', 'success', '');
+      return apiResponse.data;
+    }
+    return;
+  }
+
+  // Low level functions
   async get(route: string): Promise<APIResponse> {
     try {
       const requestOptions = {
