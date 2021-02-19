@@ -36,7 +36,7 @@ export class AdminComponent implements OnInit {
       ]
     }
   ];
-  public selectedCollection: Collection = this.collections[0];
+  public selectedCollection = 0;
   public table: any[];
 
   constructor(private api: APIService, private alert: SweetAlertService) {
@@ -49,12 +49,12 @@ export class AdminComponent implements OnInit {
     this.table = [];
     this.editing = [];
 
-    if (this.selectedCollection.name === 'Users') {
+    if (this.collections[this.selectedCollection].name === 'Users') {
       this.table = await this.api.getUsers();
       return;
     }
 
-    if (this.selectedCollection.name === 'Events') {
+    if (this.collections[this.selectedCollection].name === 'Events') {
       this.table = await this.api.getEvents();
       return;
     }
@@ -73,10 +73,36 @@ export class AdminComponent implements OnInit {
   }
 
   deleteElement(element: User | Event) {
-    // TODO: Remove from database
-    console.log(element);
+    this.api.deleteElement(
+      element,
+      this.collections[this.selectedCollection].name
+    );
+    this.api.removeFromCache(
+      element,
+      this.collections[this.selectedCollection].name
+    );
     const index = this.table.indexOf(element as any);
     this.table.splice(index, 1);
+  }
+
+  async insertElement() {
+    const element = this.collections[this.selectedCollection].properties.reduce(
+      (acc: any, curr: string, index: number) => ((acc[curr] = ''), acc),
+      {}
+    );
+    const result = await this.alert.displayDbElement(element as Event);
+    const response = await this.api.insertElement(
+      result,
+      this.collections[this.selectedCollection].name
+    );
+    if (response) {
+      const newElement = { ...result, _id: response.insertedId };
+      this.api.cacheThis(
+        newElement,
+        this.collections[this.selectedCollection].name
+      );
+      this.table.push(newElement);
+    }
   }
 
   // startEditElement(id: number, element: User | Event) {
