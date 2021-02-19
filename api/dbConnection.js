@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.badRequest = exports.getAll = exports.insertOne = exports.getBody = exports.connectToDatabase = exports.login = exports.getKeyForRole = exports.isUserAllowed = void 0;
+exports.badRequest = exports.getAll = exports.deleteOne = exports.insertOne = exports.getBody = exports.connectToDatabase = exports.login = exports.getKeyForRole = exports.isUserAllowed = void 0;
 const mongodb_1 = require("mongodb");
 const http_status_codes_1 = require("http-status-codes");
 const bcrypt = require("bcrypt");
@@ -63,6 +63,26 @@ exports.insertOne = async (collection, body) => {
         const result = await db.collection(collection).insertOne(body);
         return {
             code: http_status_codes_1.default.CREATED,
+            error: false,
+            message: '',
+            data: result
+        };
+    }
+    catch (err) {
+        return {
+            code: http_status_codes_1.default.INTERNAL_SERVER_ERROR,
+            error: true,
+            message: err.message,
+            data: []
+        };
+    }
+};
+exports.deleteOne = async (collection, find) => {
+    try {
+        const db = await exports.connectToDatabase();
+        const result = await db.collection(collection).deleteOne(find);
+        return {
+            code: http_status_codes_1.default.ACCEPTED,
             error: false,
             message: '',
             data: result

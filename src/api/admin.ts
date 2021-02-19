@@ -1,3 +1,4 @@
+import { ObjectId } from 'bson';
 import { Request, Response } from 'express';
 import { APIResponse, APIUsersResponse } from 'src/interfaces/backend';
 
@@ -6,11 +7,16 @@ import {
   getAll,
   insertOne,
   isUserAllowed,
+  deleteOne,
   badRequest
 } from './dbConnection';
 
 const get = async (request: Request, response: Response): Promise<void> => {
-  const json: APIUsersResponse = await getAll('Users');
+  const collection = request.query.collection as string;
+  if (!collection) {
+    return badRequest(response);
+  }
+  const json: APIUsersResponse = await getAll(collection);
   response.status(json.code).json(json);
 };
 
@@ -19,8 +25,30 @@ const post = async (request: Request, response: Response): Promise<void> => {
   if (!body) {
     return badRequest(response);
   }
-  const json: APIResponse = await insertOne('Users', body);
-  response.status(json.code).json(json);
+
+  const collection = request.query.collection as string;
+  const action = request.query.action as string;
+
+  if (!collection || !action) {
+    return badRequest(response);
+  }
+
+  if (action === 'insert') {
+    const json: APIResponse = await insertOne(collection, body);
+    response.status(json.code).json(json);
+    return;
+  }
+
+  if (action === 'delete') {
+    const json: APIResponse = await deleteOne(collection, {
+      // eslint-disable-next-line no-underscore-dangle
+      _id: new ObjectId(body._id)
+    });
+    response.status(json.code).json(json);
+    return;
+  }
+
+  return badRequest(response);
 };
 
 export default async (request: Request, response: Response) => {

@@ -97,6 +97,29 @@ export const insertOne = async (
   }
 };
 
+export const deleteOne = async (
+  collection: string,
+  find: any
+): Promise<APIResponse> => {
+  try {
+    const db = await connectToDatabase();
+    const result = await db.collection(collection).deleteOne(find);
+    return {
+      code: Status.ACCEPTED,
+      error: false,
+      message: '',
+      data: result
+    };
+  } catch (err) {
+    return {
+      code: Status.INTERNAL_SERVER_ERROR,
+      error: true,
+      message: err.message,
+      data: []
+    };
+  }
+};
+
 export const getAll = async (
   collection: string,
   find: any = {}

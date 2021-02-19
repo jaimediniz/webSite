@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Event } from '../../interfaces/database';
+import { Event, User } from '../../interfaces/database';
 
 @Injectable({
   providedIn: 'root'
@@ -120,6 +120,42 @@ export class SweetAlertService {
         //icon: 'swal2-noanimation'
       }
     });
+  }
+
+  async displayDbElement(element: Event | User): Promise<any> {
+    const html = Object.entries(element)
+      .map((el, index) =>
+        el[0] === '_id'
+          ? ''
+          : `${el[0]}: <input id="swal-input${index}" class="swal2-input" autocomplete="off" value="${el[1]}">`
+      )
+      .join('');
+    const { value: formValues } = await Swal.fire({
+      title: element.name,
+      html,
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Modify',
+      showClass: {
+        popup: 'swal2-noanimation'
+        //icon: 'swal2-noanimation'
+      },
+      preConfirm: () => {
+        const newValues = Object.keys(element).reduce(
+          (acc: any, curr: string, index: number) => (
+            (acc[curr] =
+              (document.getElementById(`swal-input${index}`) as any)?.value ??
+              ''),
+            acc
+          ),
+          {}
+        );
+        // eslint-disable-next-line no-underscore-dangle
+        newValues._id = element._id;
+        return newValues;
+      }
+    });
+    return formValues;
   }
 
   async uploadPicture(): Promise<boolean> {

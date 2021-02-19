@@ -11,15 +11,33 @@ td {
 }
 
 .icons {
-  width: 75px;
+  //width: 75px;
+  width: 35px;
+}
+
+.add {
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
 }
 
 .iconsDiv {
   display: flex;
   a {
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
     padding: 0;
     cursor: pointer;
   }
+}
+
+.displayCard {
+  cursor: pointer;
+}
+
+.element-row:nth-child(even) {
+  background-color: aliceblue;
 }
 
 .delete {
