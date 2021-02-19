@@ -31,24 +31,23 @@ export class ScheduleComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  fetchEvents() {
-    this.api.getEvents().then((response: any) => {
-      this.events = response.map((event: Event) => {
-        // Preload images
-        const tmpImg = new Image();
-        tmpImg.src = event.imageUrl;
-        return {
-          title: event.name,
-          start: new Date(event.start),
-          color: '#fff',
-          allDay: true,
-          meta: {
-            event
-          }
-        };
-      });
-      this.hideExportButton = false;
+  async fetchEvents() {
+    const response = await this.api.getEvents();
+    this.events = (response as any).map((event: Event) => {
+      // Preload images
+      const tmpImg = new Image();
+      tmpImg.src = event.imageUrl;
+      return {
+        title: event.name,
+        start: new Date(event.start),
+        color: '#fff',
+        allDay: true,
+        meta: {
+          event
+        }
+      };
     });
+    this.hideExportButton = false;
   }
 
   closeOpenMonthViewDay() {
