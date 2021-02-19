@@ -1,10 +1,7 @@
 <div class="">
   <mat-form-field appearance="fill" color="accent">
     <mat-label>Collection</mat-label>
-    <mat-select
-      (selectionChange)="getTable($event.value)"
-      [(value)]="selectedCollection"
-    >
+    <mat-select (selectionChange)="getTable()" [(value)]="selectedCollection">
       <mat-option *ngFor="let collection of collections" [value]="collection">
         {{ collection.name }}
       </mat-option>
@@ -26,13 +23,17 @@
         {{ property }}
       </th>
     </tr>
-    <tr *ngFor="let row of table; let i = index">
+    <tr
+      *ngFor="let row of table; let i = index"
+      (click)="displayInfoCard(row)"
+      class="element-row"
+    >
       <td>
         <div class="iconsDiv">
           <a (click)="deleteElement(row)"
             ><mat-icon class="delete">delete_forever</mat-icon></a
           >
-          <a
+          <!-- <a
             [hidden]="editing.hasOwnProperty(i)"
             (click)="startEditElement(i, row)"
             ><mat-icon class="edit">mode_edit</mat-icon></a
@@ -46,11 +47,14 @@
             [hidden]="!editing.hasOwnProperty(i)"
             (click)="finishEditElement(i, row)"
             ><mat-icon class="done">done</mat-icon></a
-          >
+          > -->
         </div>
       </td>
-      <td>{{ i }}</td>
-      <td *ngFor="let property of selectedCollection.properties">
+      <td class="displayCard">{{ i }}</td>
+      <td
+        *ngFor="let property of selectedCollection.properties"
+        class="displayCard"
+      >
         {{ row[property] }}
       </td>
     </tr>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from 'src/app/services/backend.service';
+import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 import { Event, User } from 'src/interfaces/database';
 
 type Editing = {
@@ -38,24 +39,33 @@ export class AdminComponent implements OnInit {
   public selectedCollection: Collection = this.collections[0];
   public table: any[];
 
-  constructor(private api: APIService) {
-    this.getTable(this.selectedCollection);
+  constructor(private api: APIService, private alert: SweetAlertService) {
+    this.getTable();
   }
 
   ngOnInit(): void {}
 
-  async getTable(collection: Collection): Promise<void> {
+  async getTable(): Promise<void> {
     this.table = [];
     this.editing = [];
 
-    if (collection.name === 'Users') {
+    if (this.selectedCollection.name === 'Users') {
       this.table = await this.api.getUsers();
       return;
     }
 
-    if (collection.name === 'Events') {
+    if (this.selectedCollection.name === 'Events') {
       this.table = await this.api.getEvents();
       return;
+    }
+  }
+
+  async displayInfoCard(element: User | Event) {
+    const result = await this.alert.displayDbElement(element as Event);
+
+    if (result.isConfirmed) {
+      // TODO: Check if information has changed
+      // TODO: Update DB
     }
   }
 
@@ -65,17 +75,17 @@ export class AdminComponent implements OnInit {
     this.table.splice(index, 1);
   }
 
-  startEditElement(id: number, element: User | Event) {
-    this.editing[id] = true;
-  }
+  // startEditElement(id: number, element: User | Event) {
+  //   this.editing[id] = true;
+  // }
 
-  finishEditElement(id: number, element: User | Event) {
-    // TODO: Edit on database
-    delete this.editing[id];
-  }
+  // finishEditElement(id: number, element: User | Event) {
+  //   // TODO: Edit on database
+  //   delete this.editing[id];
+  // }
 
-  cancelEditElement(id: number, element: User | Event) {
-    // TODO: Edit on database
-    delete this.editing[id];
-  }
+  // cancelEditElement(id: number, element: User | Event) {
+  //   // TODO: Edit on database
+  //   delete this.editing[id];
+  // }
 }
