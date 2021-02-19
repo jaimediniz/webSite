@@ -85,14 +85,41 @@ export class APIService {
     return false;
   }
 
+  async getCached(type: string) {
+    const now = new Date();
+    const previous = new Date(localStorage?.getItem(type + '_time') || '');
+    // milliseconds * seconds * minutes * hours
+    if (now.getTime() - previous.getTime() < 1000 * 60 * 60 * 1) {
+      return JSON.parse(localStorage?.getItem(type) || 'null');
+    }
+  }
+
   async getEvents(): Promise<Event[]> {
+    const cached = await this.getCached('events');
+    if (cached) {
+      return cached;
+    }
     const apiResponse: APIEventsResponse = await this.get('/api/events');
+    const events = apiResponse?.data;
+
+    localStorage.setItem('events', JSON.stringify(events));
+    localStorage.setItem('events_time', `${new Date()}`);
+
     this.alert.toast('Updated!', 'success', 'The list was updated!');
-    return apiResponse?.data;
+    return events;
   }
 
   async getUsers(): Promise<User[]> {
+    const cached = await this.getCached('users');
+    if (cached) {
+      return cached;
+    }
     const apiResponse: APIUsersResponse = await this.get('/api/admin');
+    const events = apiResponse?.data;
+
+    localStorage.setItem('users', JSON.stringify(events));
+    localStorage.setItem('users_time', `${new Date()}`);
+
     this.alert.toast('Updated!', 'success', 'The list was updated!');
     return apiResponse?.data;
   }

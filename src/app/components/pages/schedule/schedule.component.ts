@@ -26,34 +26,10 @@ export class ScheduleComponent implements OnInit {
   location = 'schedule';
 
   constructor(private api: APIService, private alert: SweetAlertService) {
-    this.events = (
-      JSON.parse(localStorage?.getItem(this.location) || 'null') || []
-    ).map((event: any) => {
-      // Preload images
-      const tmpImg = new Image();
-      tmpImg.src = event.meta.event.imageUrl;
-      return {
-        title: event.title,
-        start: new Date(event.start),
-        color: event.color,
-        allDay: event.allDay,
-        meta: event.meta
-      };
-    });
-  }
-
-  ngOnInit(): void {
-    const now = new Date();
-    const previous = new Date(
-      localStorage?.getItem(this.location + '_time') || ''
-    );
-    // milliseconds * seconds * minutes * hours
-    if (now.getTime() - previous.getTime() < 1000 * 60 * 60 * 1) {
-      this.hideExportButton = false;
-      return;
-    }
     this.fetchEvents();
   }
+
+  ngOnInit(): void {}
 
   fetchEvents() {
     this.api.getEvents().then((response: any) => {
@@ -71,8 +47,6 @@ export class ScheduleComponent implements OnInit {
           }
         };
       });
-      localStorage.setItem(this.location, JSON.stringify(this.events));
-      localStorage.setItem(this.location + '_time', `${new Date()}`);
       this.hideExportButton = false;
     });
   }
