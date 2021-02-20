@@ -21,7 +21,7 @@ export class AdminComponent implements OnInit {
   public collections: Collection[] = [
     {
       name: 'Users',
-      properties: ['name', 'username', 'role']
+      properties: ['username', 'role']
     },
     {
       name: 'Events',
@@ -65,44 +65,68 @@ export class AdminComponent implements OnInit {
   }
 
   async displayInfoCard(element: User | Event) {
-    const result = await this.alert.displayDbElement(element as Event);
+    const result = await this.alert.displayDbElement(
+      element as Event,
+      'Modify'
+    );
     if (result && !this.isObjectEqual(result, element)) {
-      console.log(result);
-      // TODO: Update object in DB
+      const response = await this.api.modifyElement(
+        result,
+        this.collections[this.selectedCollection].name
+      );
+      if (!response) {
+        return;
+      }
+
+      this.table = await this.api.cacheUpdate(
+        result,
+        this.collections[this.selectedCollection].name
+      );
     }
   }
 
-  deleteElement(element: User | Event) {
-    this.api.deleteElement(
+  async deleteElement(element: User | Event) {
+    const result = await this.api.deleteElement(
       element,
       this.collections[this.selectedCollection].name
     );
-    this.api.removeFromCache(
+
+    if (!result) {
+      return;
+    }
+
+    this.table = await this.api.cacheRemove(
       element,
       this.collections[this.selectedCollection].name
     );
-    const index = this.table.indexOf(element as any);
-    this.table.splice(index, 1);
   }
 
   async insertElement() {
-    const element = this.collections[this.selectedCollection].properties.reduce(
+    const element = Object.keys(this.table[0]).reduce(
       (acc: any, curr: string, index: number) => ((acc[curr] = ''), acc),
       {}
     );
-    const result = await this.alert.displayDbElement(element as Event);
+    // eslint-disable-next-line no-underscore-dangle
+    delete element._id;
+
+    const result = await this.alert.displayDbElement(element as Event, 'Add');
+    if (!result) {
+      return;
+    }
+
     const response = await this.api.insertElement(
       result,
       this.collections[this.selectedCollection].name
     );
-    if (response) {
-      const newElement = { ...result, _id: response.insertedId };
-      this.api.cacheThis(
-        newElement,
-        this.collections[this.selectedCollection].name
-      );
-      this.table.push(newElement);
+    if (!response) {
+      return;
     }
+
+    const newElement = { ...result, _id: response.insertedId };
+    this.table = await this.api.cacheInsert(
+      newElement,
+      this.collections[this.selectedCollection].name
+    );
   }
 
   // startEditElement(id: number, element: User | Event) {

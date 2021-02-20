@@ -1,4 +1,4 @@
-[![Labeler](https://github.com/NICETHI/webSite/workflows/Labeler/badge.svg?branch=main)](https://github.com/NICETHI/webSite/actions?query=workflow%3ALabeler)
+[![Labeler](https://github.com/jaimediniz/webSite/actions/workflows/label.yml/badge.svg?branch=dev)](https://github.com/jaimediniz/webSite/actions/workflows/label.yml)
 
 # NICE
 

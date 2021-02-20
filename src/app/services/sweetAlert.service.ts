@@ -122,7 +122,7 @@ export class SweetAlertService {
     });
   }
 
-  async displayDbElement(element: Event | User): Promise<any> {
+  async displayDbElement(element: Event | User, action: string): Promise<any> {
     const html = Object.entries(element)
       .map((el, index) =>
         el[0] === '_id'
@@ -135,7 +135,7 @@ export class SweetAlertService {
       html,
       showCancelButton: true,
       cancelButtonText: 'Cancel',
-      confirmButtonText: 'Modify',
+      confirmButtonText: action,
       showClass: {
         popup: 'swal2-noanimation'
         //icon: 'swal2-noanimation'
