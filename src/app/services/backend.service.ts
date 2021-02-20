@@ -6,8 +6,7 @@ import { LoggerService } from './logger.service';
 import {
   APIEventsResponse,
   APILoginResponse,
-  APIResponse,
-  APIUsersResponse
+  APIResponse
 } from '../../interfaces/backend';
 import { Event, User, Subscription } from '../../interfaces/database';
 import { LoadingService } from './loading.service';
@@ -69,6 +68,33 @@ export class APIService {
     return false;
   }
 
+  // Local Storage
+  async cacheInsert(data: any, type: string) {
+    const localData = JSON.parse(localStorage?.getItem(type) || 'null');
+    localData.push(data);
+    localStorage.setItem(type, JSON.stringify(localData));
+    return localData;
+  }
+
+  async cacheUpdate(element: any, type: string) {
+    const localData = JSON.parse(localStorage?.getItem(type) || 'null');
+    // eslint-disable-next-line no-underscore-dangle
+    const index = localData.findIndex((x: any) => x._id === element._id);
+    localData.splice(index, 1);
+    localData.push(element);
+    localStorage.setItem(type, JSON.stringify(localData));
+    return localData;
+  }
+
+  async cacheRemove(element: any, type: string) {
+    const localData = JSON.parse(localStorage?.getItem(type) || 'null');
+    // eslint-disable-next-line no-underscore-dangle
+    const index = localData.findIndex((x: any) => x._id === element._id);
+    localData.splice(index, 1);
+    localStorage.setItem(type, JSON.stringify(localData));
+    return localData;
+  }
+
   // Get Information from DB
   async getData(type: string, endpoint: string, ...query: string[]) {
     const now = new Date();
@@ -91,20 +117,6 @@ export class APIService {
       this.alert.toast('Updated!', 'success', 'The list was updated!');
       return data;
     }
-  }
-
-  async cacheThis(data: any, type: string) {
-    const localData = JSON.parse(localStorage?.getItem(type) || 'null');
-    localData.push(data);
-    localStorage.setItem(type, JSON.stringify(localData));
-  }
-
-  async removeFromCache(element: any, type: string) {
-    const localData = JSON.parse(localStorage?.getItem(type) || 'null');
-    // eslint-disable-next-line no-underscore-dangle
-    const index = localData.findIndex((x: any) => x._id === element._id);
-    localData.splice(index, 1);
-    localStorage.setItem(type, JSON.stringify(localData));
   }
 
   async getEvents(): Promise<Event[]> {
@@ -137,57 +149,55 @@ export class APIService {
   async insertElement(element: any, collection: string): Promise<any> {
     this.loading.startLoading();
     const apiResponse = await this.post(
-      `/api/admin?collection=${collection}&action=insert`,
+      `/api/admin?collection=${collection}`,
       element
     );
     this.loading.stopLoading();
-    console.log(apiResponse);
     if (!apiResponse.error) {
-      this.alert.toast('Add it!', 'success', '');
-      return apiResponse.data;
+      this.alert.toast('Added!', 'success', '');
+      return apiResponse.data || true;
     }
     return;
   }
 
   async deleteElement(element: any, collection: string): Promise<any> {
-    console.log(element);
     this.loading.startLoading();
-    const apiResponse = await this.post(
-      `/api/admin?collection=${collection}&action=delete`,
+    const apiResponse = await this.del(
       // eslint-disable-next-line no-underscore-dangle
-      { _id: element._id }
+      `/api/admin?collection=${collection}&id=${element._id}`
     );
     this.loading.stopLoading();
-    console.log(apiResponse);
     if (!apiResponse.error) {
       this.alert.toast('Deleted!', 'success', '');
-      return apiResponse.data;
+      return apiResponse.data || true;
+    }
+    return;
+  }
+
+  async modifyElement(element: any, collection: string): Promise<any> {
+    this.loading.startLoading();
+    // eslint-disable-next-line no-underscore-dangle
+    const { _id: id, ...rest } = element;
+    const apiResponse = await this.put(
+      `/api/admin?collection=${collection}&id=${id}`,
+      rest
+    );
+    this.loading.stopLoading();
+    if (!apiResponse.error) {
+      this.alert.toast('Updated!', 'success', '');
+      return apiResponse.data || true;
     }
     return;
   }
 
   // Low level functions
-  async get(route: string): Promise<APIResponse> {
-    try {
-      const requestOptions = {
-        headers: new HttpHeaders({
-          authorization: this.cookieService.get('Key') ?? ''
-        }),
-        withCredentials: true
-      };
-      const response = await this.http
-        .get<Promise<APIResponse>>(route, requestOptions)
-        .toPromise();
-      this.logger.log('Response', response);
-      return response;
-    } catch (error) {
-      const response: APIResponse = error.error;
-      this.logger.error('BACKEND - GET - ERROR', response);
-      return response;
-    }
-  }
-
-  async post(route: string, payload: any): Promise<APIResponse> {
+  async requestEnvironment(
+    callback: any,
+    route: string,
+    payload: any,
+    method: string
+  ): Promise<any> {
+    this.logger.log('Route', route);
     this.logger.log('Payload', payload);
     try {
       const requestOptions = {
@@ -196,19 +206,59 @@ export class APIService {
         }),
         withCredentials: true
       };
-      const response = await this.http
+      const response = await callback(route, requestOptions, payload);
+      this.logger.log('Response', response);
+      return response;
+    } catch (error) {
+      const response: APIResponse = error.error;
+      this.logger.error(`BACKEND - ${method} - ERROR`, error.error);
+      return response;
+    }
+  }
+
+  async get(routeURL: string): Promise<APIResponse> {
+    const callback = (route: string, requestOptions: any, payload: any) =>
+      this.http.get<Promise<APIResponse>>(route, requestOptions).toPromise();
+    return await this.requestEnvironment(callback, routeURL, {}, 'GET');
+  }
+
+  async post(routeURL: string, payloadData: any): Promise<APIResponse> {
+    const callback = (route: string, requestOptions: any, payload: any) =>
+      this.http
         .post<Promise<APIResponse>>(
           route,
           JSON.stringify(payload),
           requestOptions
         )
         .toPromise();
-      this.logger.log('Response', response);
-      return response;
-    } catch (error) {
-      const response: APIResponse = error.error;
-      this.logger.error('BACKEND - POST - ERROR', error.error);
-      return response;
-    }
+    return await this.requestEnvironment(
+      callback,
+      routeURL,
+      payloadData,
+      'POST'
+    );
+  }
+
+  async put(routeURL: string, payloadData: any): Promise<APIResponse> {
+    const callback = (route: string, requestOptions: any, payload: any) =>
+      this.http
+        .put<Promise<APIResponse>>(
+          route,
+          JSON.stringify(payload),
+          requestOptions
+        )
+        .toPromise();
+    return await this.requestEnvironment(
+      callback,
+      routeURL,
+      payloadData,
+      'PUT'
+    );
+  }
+
+  async del(routeURL: string): Promise<APIResponse> {
+    const callback = (route: string, requestOptions: any, payload: any) =>
+      this.http.delete<Promise<APIResponse>>(route, requestOptions).toPromise();
+    return await this.requestEnvironment(callback, routeURL, {}, 'DELETE');
   }
 }
