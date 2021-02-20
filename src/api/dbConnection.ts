@@ -120,6 +120,32 @@ export const deleteOne = async (
   }
 };
 
+export const updateOne = async (
+  collection: string,
+  find: any,
+  body: any
+): Promise<APIResponse> => {
+  try {
+    const db = await connectToDatabase();
+    const result = await db
+      .collection(collection)
+      .updateOne(find, { $set: body });
+    return {
+      code: Status.ACCEPTED,
+      error: false,
+      message: '',
+      data: result
+    };
+  } catch (err) {
+    return {
+      code: Status.INTERNAL_SERVER_ERROR,
+      error: true,
+      message: err.message,
+      data: []
+    };
+  }
+};
+
 export const getAll = async (
   collection: string,
   find: any = {}
