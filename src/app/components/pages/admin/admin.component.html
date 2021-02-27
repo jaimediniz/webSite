@@ -1,18 +1,18 @@
-<div class="">
-  <mat-form-field appearance="fill" color="accent">
-    <mat-label>Collection</mat-label>
-    <mat-select (selectionChange)="getTable()" [(value)]="selectedCollection">
-      <mat-option
-        *ngFor="let collection of collections; let i = index"
-        [value]="i"
-      >
-        {{ collection.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+<div class="d-flex justify-content-between">
+  <mat-tab-group
+    backgroundColor="primary"
+    color="accent"
+    [(selectedIndex)]="selectedCollection"
+    (selectedIndexChange)="getTable()"
+  >
+    <mat-tab
+      *ngFor="let collection of collections; let i = index"
+      [label]="collection.name"
+    ></mat-tab>
+  </mat-tab-group>
 
   <button (click)="insertElement()" class="add">
-    <mat-icon class="delete">person_add</mat-icon>Add Instance
+    <mat-icon class="done">person_add</mat-icon>Add Instance
   </button>
 </div>
 
