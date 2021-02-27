@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CalendarView } from 'angular-calendar';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CalendarEventTitleFormatter, CalendarView } from 'angular-calendar';
 import { CalendarEvent } from 'calendar-utils';
 import * as ics from 'ics';
 import { isSameMonth, isSameDay } from 'date-fns';
@@ -8,13 +8,20 @@ import { APIService } from 'src/app/services/backend.service';
 import { SweetAlertService } from 'src/app/services/sweetAlert.service';
 
 import { Event } from '../../../../interfaces/database';
+import { CustomEventFormatter } from './custom-event-formatter.provider';
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.scss']
+  styleUrls: ['./schedule.component.scss'],
+  providers: [
+    {
+      provide: CalendarEventTitleFormatter,
+      useClass: CustomEventFormatter
+    }
+  ]
 })
-export class ScheduleComponent implements OnInit {
+export class ScheduleComponent implements OnInit, OnDestroy {
   viewDate: Date = new Date();
   events: CalendarEvent<any>[];
   view: CalendarView = CalendarView.Month;
@@ -30,6 +37,8 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {}
 
   async fetchEvents() {
     const response = await this.api.getEvents();
