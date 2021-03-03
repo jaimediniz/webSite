@@ -111,6 +111,23 @@ export class AdminComponent implements OnInit {
   }
 
   async insertElement() {
+    if (this.collections[this.selectedCollection].name === 'Users') {
+      const payload = await this.alert.register();
+
+      if (!payload) {
+        return;
+      }
+
+      const apiResponse = await this.api.register(payload);
+
+      if (!apiResponse) {
+        return;
+      }
+
+      this.addElementToTable(apiResponse.ops[0], apiResponse.ops[0]);
+      return;
+    }
+
     const element = Object.keys(this.table[0]).reduce(
       (acc: any, curr: string, index: number) => ((acc[curr] = ''), acc),
       {}
@@ -130,8 +147,11 @@ export class AdminComponent implements OnInit {
     if (!response) {
       return;
     }
+    this.addElementToTable(result, response);
+  }
 
-    const newElement = { ...result, _id: response.insertedId };
+  async addElementToTable(element: any, response: any) {
+    const newElement = { ...element, _id: response.insertedId };
     this.table = await this.api.cacheInsert(
       newElement,
       this.collections[this.selectedCollection].name

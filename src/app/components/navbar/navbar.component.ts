@@ -50,7 +50,7 @@ export class NavbarComponent implements OnInit {
   }
 
   async register(bool: boolean): Promise<boolean> {
-    const payload = await this.alert.loginOrRegister(true);
+    const payload = await this.alert.register();
 
     if (!payload) {
       return false;
@@ -63,7 +63,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {}
 
   async login(): Promise<void> {
-    const payload = await this.alert.loginOrRegister();
+    const payload = await this.alert.login();
     if (!payload || !payload.username || !payload.password) {
       return;
     }
