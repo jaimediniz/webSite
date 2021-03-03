@@ -92,14 +92,11 @@ export class SweetAlertService {
         5365032369: 'mod'
       },
       confirmButtonText: 'Register',
-      preConfirm: (value) => {
-        console.log(value);
-        return {
-          username: (document.getElementById('swal-input1') as any).value,
-          password: (document.getElementById('swal-input2') as any).value,
-          code: value ?? ''
-        };
-      },
+      preConfirm: (value) => ({
+        username: (document.getElementById('swal-input1') as any).value,
+        password: (document.getElementById('swal-input2') as any).value,
+        code: value ?? ''
+      }),
       showClass: {
         popup: 'swal2-noanimation'
         //icon: 'swal2-noanimation'
