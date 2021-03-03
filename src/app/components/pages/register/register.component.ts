@@ -21,7 +21,6 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {}
 
   updateSrc(url: string) {
-    console.log(url);
     this.currentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }

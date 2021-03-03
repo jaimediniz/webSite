@@ -9,7 +9,6 @@ export class CustomEventFormatter extends CalendarEventTitleFormatter {
   }
 
   monthTooltip(event: CalendarEvent): string {
-    console.log(event);
     return `A <b>${Math.ceil(
       (new Date(event.meta.event.end).getTime() -
         new Date(event.meta.event.start).getTime()) /
