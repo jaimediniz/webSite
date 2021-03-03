@@ -58,14 +58,15 @@ export class APIService {
     username: string;
     password: string;
     code: string;
-  }): Promise<boolean> {
+  }): Promise<any> {
     this.loading.startLoading();
     const apiResponse = await this.post('/api/register', payload);
     this.loading.stopLoading();
     if (!apiResponse.error) {
       this.alert.toast('Registered!', 'success', '');
+      return apiResponse.data || true;
     }
-    return false;
+    return;
   }
 
   // Local Storage

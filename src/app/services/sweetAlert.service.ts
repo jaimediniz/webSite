@@ -49,27 +49,57 @@ export class SweetAlertService {
     });
   }
 
-  async loginOrRegister(isRegister?: boolean): Promise<any> {
+  async login(): Promise<any> {
     let html =
       'username: <input id="swal-input1" class="swal2-input" autocomplete="off">';
     html +=
       'password: <input type="password" id="swal-input2" class="swal2-input" autocomplete="off">';
-    if (isRegister) {
-      html +=
-        'code: <input id="swal-input3" class="swal2-input" autocomplete="off">';
-    }
 
     const { value: formValues } = await Swal.fire({
       html,
       focusConfirm: true,
       allowEnterKey: true,
       allowEscapeKey: true,
-      confirmButtonText: `${isRegister ? 'Register' : 'Login'}`,
+      confirmButtonText: 'Login',
       preConfirm: () => ({
         username: (document.getElementById('swal-input1') as any).value,
-        password: (document.getElementById('swal-input2') as any).value,
-        code: (document.getElementById('swal-input3') as any)?.value ?? ''
+        password: (document.getElementById('swal-input2') as any).value
       }),
+      showClass: {
+        popup: 'swal2-noanimation'
+      }
+    });
+
+    return formValues;
+  }
+
+  async register(): Promise<any> {
+    let html =
+      'username: <input id="swal-input1" class="swal2-input" autocomplete="off">';
+    html +=
+      'password: <input type="password" id="swal-input2" class="swal2-input" autocomplete="off">';
+    html += 'role:';
+
+    const { value: formValues } = await Swal.fire({
+      html,
+      focusConfirm: true,
+      allowEnterKey: true,
+      allowEscapeKey: true,
+      input: 'select',
+      inputOptions: {
+        6955037335: 'admin',
+        3901821888: 'user',
+        5365032369: 'mod'
+      },
+      confirmButtonText: 'Register',
+      preConfirm: (value) => {
+        console.log(value);
+        return {
+          username: (document.getElementById('swal-input1') as any).value,
+          password: (document.getElementById('swal-input2') as any).value,
+          code: value ?? ''
+        };
+      },
       showClass: {
         popup: 'swal2-noanimation'
         //icon: 'swal2-noanimation'
