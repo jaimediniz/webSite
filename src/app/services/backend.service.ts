@@ -8,7 +8,7 @@ import {
   APILoginResponse,
   APIResponse
 } from '../../interfaces/backend';
-import { Event, User, Subscription } from '../../interfaces/database';
+import { Event, User, Subscription, External } from '../../interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
 import { CookieService } from 'ngx-cookie';
@@ -126,6 +126,15 @@ export class APIService {
 
   async getUsers(): Promise<User[]> {
     const data = await this.getData('Users', 'admin', 'collection=Users');
+    return data;
+  }
+
+  async getExternal(key: string = ''): Promise<External[]> {
+    if (key) {
+      return await this.getData(`External_${key}`, 'external', `key=${key}`);
+    }
+
+    const data = await this.getData('External', 'admin', 'collection=External');
     return data;
   }
 

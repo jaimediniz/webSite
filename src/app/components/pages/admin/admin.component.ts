@@ -34,6 +34,10 @@ export class AdminComponent implements OnInit {
         'start',
         'end'
       ]
+    },
+    {
+      name: 'External',
+      properties: ['key', 'value']
     }
   ];
   public selectedCollection = 0;
@@ -56,6 +60,11 @@ export class AdminComponent implements OnInit {
 
     if (this.collections[this.selectedCollection].name === 'Events') {
       this.table = await this.api.getEvents();
+      return;
+    }
+
+    if (this.collections[this.selectedCollection].name === 'External') {
+      this.table = await this.api.getExternal();
       return;
     }
   }

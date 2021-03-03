@@ -46,7 +46,8 @@
         mat-menu-item
         [hidden]="!registerButton"
         class="nav-link"
-        (click)="register(true)"
+        [routerLink]="['register']"
+        routerLinkActive="active"
       >
         <mat-icon>person_add</mat-icon>
         <span>Register</span>
@@ -132,7 +133,11 @@
       routerLinkActive="active"
       ><mat-icon>calendar_today</mat-icon><span>Current Activities</span></a
     >
-    <a [hidden]="!registerButton" class="nav-link" (click)="register(true)"
+    <a
+      [hidden]="!registerButton"
+      class="nav-link"
+      [routerLink]="['register']"
+      routerLinkActive="active"
       ><mat-icon>person_add</mat-icon><span>Register</span></a
     >
     <a

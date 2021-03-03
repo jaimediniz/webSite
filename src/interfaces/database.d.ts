@@ -32,3 +32,9 @@ export interface User {
   password: string;
   role: string;
 }
+
+export interface External {
+  _id: ObjectId;
+  key: string;
+  value: string;
+}
