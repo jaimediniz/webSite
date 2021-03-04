@@ -1,4 +1,23 @@
-<div class="w-100 h-100">
+<div [hidden]="showInfo" class="h-100 w-100 info">
+  <div class="d-flex m-5 wrapper" (click)="changeUrl('participant')">
+    <button>Participant</button>
+    <p class="m-2">
+      Participant: Students who are interested in learning a new language or a
+      new culture. You take part in activities.
+    </p>
+  </div>
+  <div class="d-flex m-5 wrapper" (click)="changeUrl('volunteer')">
+    <button>Volunteer</button>
+    <p class="m-2">
+      Volunteer: Volunteers are people who are helping in organizing, planning
+      and developing the Language Tandem programme itself. You can propose new
+      activities, plan meeting for other volunteers, develop our website or
+      support our social media….
+    </p>
+  </div>
+</div>
+
+<div [hidden]="!showInfo" class="w-100 h-100">
   <iframe
     class="w-100 h-100"
     [src]="currentUrl"

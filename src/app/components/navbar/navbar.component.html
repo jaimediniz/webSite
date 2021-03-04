@@ -36,20 +36,30 @@
         mat-menu-item
         [hidden]="!activitiesButton"
         class="nav-link"
+        [routerLink]="['activities']"
+        routerLinkActive="active"
+      >
+        <mat-icon>update</mat-icon>
+        <span>Current Activities</span>
+      </button>
+      <button
+        mat-menu-item
+        [hidden]="!scheduleButton"
+        class="nav-link"
         [routerLink]="['schedule']"
         routerLinkActive="active"
       >
         <mat-icon>calendar_today</mat-icon>
-        <span>Current Activities</span>
+        <span>Schedule</span>
       </button>
       <button
         mat-menu-item
         [hidden]="!registerButton"
         class="nav-link"
-        [routerLink]="['register']"
+        [routerLink]="['register', '']"
         routerLinkActive="active"
       >
-        <mat-icon>person_add</mat-icon>
+        <mat-icon>app_registration</mat-icon>
         <span>Register</span>
       </button>
       <button
@@ -129,16 +139,23 @@
     <a
       [hidden]="!activitiesButton"
       class="nav-link"
+      [routerLink]="['activities']"
+      routerLinkActive="active"
+      ><mat-icon>update</mat-icon><span>Current Activities</span></a
+    >
+    <a
+      [hidden]="!scheduleButton"
+      class="nav-link"
       [routerLink]="['schedule']"
       routerLinkActive="active"
-      ><mat-icon>calendar_today</mat-icon><span>Current Activities</span></a
+      ><mat-icon>calendar_today</mat-icon><span>Schedule</span></a
     >
     <a
       [hidden]="!registerButton"
       class="nav-link"
-      [routerLink]="['register']"
+      [routerLink]="['register', '']"
       routerLinkActive="active"
-      ><mat-icon>person_add</mat-icon><span>Register</span></a
+      ><mat-icon>app_registration</mat-icon><span>Register</span></a
     >
     <a
       [hidden]="!chatButton"

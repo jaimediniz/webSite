@@ -10,12 +10,18 @@ import { AdminComponent } from './components/pages/admin/admin.component';
 import { RegisterComponent } from './components/pages/register/register.component';
 
 import { AdminGuard } from 'src/app/guard/admin';
+import { ActivitiesComponent } from './components/pages/activities/activities.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   { path: 'schedule', component: ScheduleComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'activities', component: ActivitiesComponent },
+  {
+    path: 'register/:form',
+    component: RegisterComponent,
+    pathMatch: 'full'
+  },
   { path: 'chat', component: ChatComponent },
   { path: 'feedback', component: FeedbackComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
@@ -26,8 +32,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      onSameUrlNavigation: 'reload',
-      useHash: true
+      onSameUrlNavigation: 'reload'
     })
   ],
   exports: [RouterModule],
