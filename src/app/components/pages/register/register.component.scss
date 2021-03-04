@@ -1,0 +1,13 @@
+.info {
+  max-width: 800px;
+  overflow-x: scroll;
+  .wrapper {
+    cursor: pointer;
+    place-items: center;
+    min-height: 100px;
+    button {
+      min-width: 100px;
+      min-height: 50px;
+    }
+  }
+}

@@ -20,10 +20,11 @@ export class NavbarComponent implements OnInit {
   public activitiesButton = true;
   public loginButton = true;
   public registerButton = true;
+  public scheduleButton = true;
+  public aboutButton = true;
 
   public adminButton = false;
   public logoffButton = false;
-  public aboutButton = false;
   public chatButton = false;
   public feedbackButton = false;
 
