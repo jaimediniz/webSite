@@ -15,6 +15,10 @@ body {
   --schedule-color: 97, 76, 175;
 }
 
+.swal2-shown {
+  display: inline;
+}
+
 button:focus {
   outline: none !important;
 }
