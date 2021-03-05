@@ -1,20 +1,40 @@
-<div [hidden]="showInfo" class="h-100 w-100 info">
-  <div class="d-flex m-5 wrapper" (click)="changeUrl('participant')">
-    <button>Participant</button>
-    <p class="m-2">
-      Participant: Students who are interested in learning a new language or a
-      new culture. You take part in activities.
-    </p>
-  </div>
-  <div class="d-flex m-5 wrapper" (click)="changeUrl('volunteer')">
-    <button>Volunteer</button>
-    <p class="m-2">
-      Volunteer: Volunteers are people who are helping in organizing, planning
-      and developing the Language Tandem programme itself. You can propose new
-      activities, plan meeting for other volunteers, develop our website or
-      support our social media….
-    </p>
-  </div>
+<div
+  [hidden]="showInfo"
+  class="h-100 w-100 d-flex flex-wrap info"
+  (resized)="onResized($event)"
+>
+  <mat-card
+    class="wrapper mat-elevation-z4"
+    [ngClass]="width > 1150 ? 'm-5 col-4' : 'w-100 row'"
+    (click)="changeUrl('participant')"
+  >
+    <mat-card-header>
+      <mat-card-title>Participant</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="m-2">
+        Students who are interested in learning a new language or a new culture.
+        You take part in activities.
+      </p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card
+    class="wrapper mat-elevation-z4"
+    [ngClass]="width > 1150 ? 'm-5 col-4' : 'mt-5 w-100 row'"
+    (click)="changeUrl('volunteer')"
+  >
+    <mat-card-header>
+      <mat-card-title>Volunteer</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="m-2">
+        Volunteers are people who are helping in organizing, planning and
+        developing the Language Tandem programme itself. You can propose new
+        activities, plan meeting for other volunteers, develop our website or
+        support our social media….
+      </p>
+    </mat-card-content>
+  </mat-card>
 </div>
 
 <div [hidden]="!showInfo" class="w-100 h-100">
