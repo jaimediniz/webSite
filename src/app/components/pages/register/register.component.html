@@ -1,8 +1,4 @@
-<div
-  [hidden]="showInfo"
-  class="h-100 w-100 d-flex flex-wrap info"
-  (resized)="onResized($event)"
->
+<div [hidden]="showInfo" class="h-100 w-100 info" (resized)="onResized($event)">
   <mat-card
     class="wrapper mat-elevation-z4"
     [ngClass]="width > 1150 ? 'm-5 col-4' : 'w-100 row'"

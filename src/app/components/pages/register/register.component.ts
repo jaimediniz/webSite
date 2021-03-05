@@ -6,7 +6,6 @@ import { APIService } from 'src/app/services/backend.service';
 import { External } from 'src/interfaces/database';
 
 import { ResizedEvent } from 'angular-resize-event';
-import { WindowService } from 'src/app/services/window.service';
 
 @Component({
   selector: 'app-register',
@@ -54,13 +53,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   updateSrc(url: string) {
-    console.log(this.currentUrl);
-    console.log(url);
-    if (
-      (this.currentUrl as any)?.changingThisBreaksApplicationSecurity ??
-      '' === url
-    ) {
-      console.log('OK');
+    const oldUrl = (this.currentUrl as any)
+      ?.changingThisBreaksApplicationSecurity;
+    if (oldUrl !== '' && oldUrl === url) {
       return;
     }
     this.currentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
