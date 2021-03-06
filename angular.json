@@ -33,10 +33,10 @@
               "src/custom-service-worker.js"
             ],
             "styles": [
-              "node_modules/angular-calendar/css/angular-calendar.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss",
-              "src/customTheme.scss"
+              "src/customTheme.scss",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/angular-calendar/css/angular-calendar.css"
             ],
             "scripts": []
           },
