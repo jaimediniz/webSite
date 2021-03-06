@@ -24,25 +24,15 @@ button:focus {
 }
 
 .backgroundImage {
-  background-image: url('./assets/imgs/bg.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
+  background: url('./assets/imgs/bg.jpg') no-repeat center center fixed;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  -o-background-size: contain;
+  background-size: contain;
 }
 
 .mat-tab-label-content {
   color: darkslategray;
-}
-
-@media all and (max-width: 769px) {
-  .backgroundImage {
-    background-size: 500px 500px;
-  }
-}
-
-@media all and (max-width: 520px) {
-  .backgroundImage {
-    background-size: 300px 300px;
-  }
 }
 
 // Schedule Dark Theme
