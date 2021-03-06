@@ -146,8 +146,8 @@ export class APIService {
       name: '',
       expirationTime: 'null',
       endpoint: jsonSub?.endpoint ?? '',
-      p256dh: jsonSub.keys?.p256dh ?? '',
-      auth: jsonSub.keys?.auth ?? '',
+      p256dh: jsonSub?.keys?.p256dh ?? '',
+      auth: jsonSub?.keys?.auth ?? '',
       paused: false,
       topics: '*'
     };

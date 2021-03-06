@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { APIEventsResponse, APIResponse } from 'src/interfaces/backend';
+import { APIEventsResponse } from 'src/interfaces/backend';
 
-import { getBody, insertOne, getAll, badRequest } from './dbConnection';
+import { getAll, badRequest } from './dbConnection';
 
-const get = async (request: Request, response: Response): Promise<void> => {
+const get = async (response: Response): Promise<void> => {
   const json: APIEventsResponse = await getAll('Events');
   response.status(json.code).json(json);
 };
@@ -19,7 +19,7 @@ const get = async (request: Request, response: Response): Promise<void> => {
 
 export default async (request: Request, response: Response) => {
   if (request.method === 'GET') {
-    return await get(request, response);
+    return await get(response);
   }
 
   // if (request.method === 'POST') {

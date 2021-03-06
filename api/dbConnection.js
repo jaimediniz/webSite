@@ -17,7 +17,7 @@ exports.isUserAllowed = async (request, role) => {
 };
 exports.getKeyForRole = async (role) => await bcrypt.hash(expires() + role + RANDOM_KEY, 10);
 exports.login = async (role) => {
-    const key = exports.getKeyForRole(role);
+    const key = await exports.getKeyForRole(role);
     return {
         code: http_status_codes_1.default.ACCEPTED,
         error: false,
