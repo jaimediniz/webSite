@@ -13,7 +13,8 @@ import {
 } from './dbConnection';
 
 export default async (request: Request, response: Response) => {
-  if (!isUserAllowed(request, 'admin')) {
+  const isAllowed = await isUserAllowed(request, 'admin');
+  if (!isAllowed) {
     return badRequest(response);
   }
 

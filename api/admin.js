@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongodb_1 = require("mongodb");
 const dbConnection_1 = require("./dbConnection");
 exports.default = async (request, response) => {
-    if (!dbConnection_1.isUserAllowed(request, 'admin')) {
+    const isAllowed = await dbConnection_1.isUserAllowed(request, 'admin');
+    if (!isAllowed) {
         return dbConnection_1.badRequest(response);
     }
     if (request.method === 'GET') {

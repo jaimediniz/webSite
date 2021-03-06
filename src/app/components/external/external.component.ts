@@ -29,9 +29,9 @@ export class AppInstallComponent implements OnInit {
     }
 
     if (!this.winRef.isInStandaloneMode) {
-      this.installButton = this.winRef.deferredPromptSubject.value
-        ? false // hide button
-        : false;
+      // this.installButton = this.winRef.deferredPromptSubject.value
+      //   ? false // hide button
+      //   : true;
       this.winRef.deferredPromptSubject.subscribe((e: any) => {
         if (e) {
           this.installButton = true;

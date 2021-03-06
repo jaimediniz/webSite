@@ -27,7 +27,7 @@ export const getKeyForRole = async (role: string) =>
   await bcrypt.hash(expires() + role + RANDOM_KEY, 10);
 
 export const login = async (role: string) => {
-  const key = getKeyForRole(role);
+  const key = await getKeyForRole(role);
   return {
     code: Status.ACCEPTED,
     error: false,
