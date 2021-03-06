@@ -79,7 +79,7 @@ const log = (message: string, content: any) => {
 };
 
 let globalPayload: string;
-const newPayload = (name?: string, title?: string, body?: string): string => {
+const newPayload = (title?: string, body?: string): string => {
   if (globalPayload) {
     return globalPayload;
   }
@@ -139,15 +139,11 @@ const sendPushNotification = (subscription: Subscription): void => {
     }
   };
 
-  const notificationPayload = newPayload(
-    subscription.name,
-    'Title 1',
-    'Body 1'
-  );
+  const notificationPayload = newPayload('Title 1', 'Body 1');
 
   sendNotification(pushSubscription, notificationPayload)
-    .then((response) => log('sendNotification Response:', response))
-    .catch((err) => {
+    .then((response: any) => log('sendNotification Response:', response))
+    .catch((err: any) => {
       log('sendNotification Error:', err.body);
       if (err.body.includes('expired')) {
         expired.push(subscription);
