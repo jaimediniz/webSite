@@ -1,6 +1,6 @@
 [![Labeler](https://github.com/jaimediniz/webSite/actions/workflows/label.yml/badge.svg?branch=dev)](https://github.com/jaimediniz/webSite/actions/workflows/label.yml)
 
-[![DeepScan grade](https://deepscan.io/api/teams/13136/projects/16143/branches/340195/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13136&pid=16143&bid=340195)
+[![BCH compliance](https://bettercodehub.com/edge/badge/jaimediniz/webSite?branch=main)](https://bettercodehub.com/)
 
 [![DeepScan grade](https://deepscan.io/api/teams/13136/projects/16143/branches/340195/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13136&pid=16143&bid=340195)
 
