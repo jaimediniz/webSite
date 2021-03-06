@@ -77,84 +77,58 @@ export const getBody = async (rawBody: string) => {
 export const insertOne = async (
   collection: string,
   body: any
-): Promise<APIResponse> => {
-  try {
-    const db = await connectToDatabase();
-    const result = await db.collection(collection).insertOne(body);
-    return {
-      code: Status.CREATED,
-      error: false,
-      message: '',
-      data: result
-    };
-  } catch (err) {
-    return {
-      code: Status.INTERNAL_SERVER_ERROR,
-      error: true,
-      message: err.message,
-      data: []
-    };
-  }
-};
+): Promise<APIResponse> =>
+  doDbAction(collection, '', 'insertOne', Status.CREATED, body);
 
 export const deleteOne = async (
   collection: string,
   find: any
-): Promise<APIResponse> => {
-  try {
-    const db = await connectToDatabase();
-    const result = await db.collection(collection).deleteOne(find);
-    return {
-      code: Status.ACCEPTED,
-      error: false,
-      message: '',
-      data: result
-    };
-  } catch (err) {
-    return {
-      code: Status.INTERNAL_SERVER_ERROR,
-      error: true,
-      message: err.message,
-      data: []
-    };
-  }
-};
+): Promise<APIResponse> =>
+  doDbAction(collection, find, 'deleteOne', Status.ACCEPTED);
 
 export const updateOne = async (
   collection: string,
   find: any,
   body: any
-): Promise<APIResponse> => {
-  try {
-    const db = await connectToDatabase();
-    const result = await db
-      .collection(collection)
-      .updateOne(find, { $set: body });
-    return {
-      code: Status.ACCEPTED,
-      error: false,
-      message: '',
-      data: result
-    };
-  } catch (err) {
-    return {
-      code: Status.INTERNAL_SERVER_ERROR,
-      error: true,
-      message: err.message,
-      data: []
-    };
-  }
-};
+): Promise<APIResponse> =>
+  doDbAction(collection, find, 'updateOne', Status.ACCEPTED, body);
 
 export const getAll = async (
   collection: string,
   find: any = {}
+): Promise<APIResponse<any[]>> =>
+  doDbAction(collection, find, 'getAll', Status.ACCEPTED);
+
+const doDbAction = async (
+  collection: string,
+  find: any = {},
+  type: string,
+  successCode: number,
+  body?: any
 ): Promise<APIResponse<any[]>> => {
+  let result: any;
   try {
     const db = await connectToDatabase();
-    const result = await db.collection(collection).find(find).toArray();
+    switch (type) {
+      case 'insertOne':
+        result = await db.collection(collection).insertOne(body);
+        break;
+      case 'deleteOne':
+        result = await db.collection(collection).deleteOne(find);
+        break;
+      case 'updateOne':
+        result = await db
+          .collection(collection)
+          .updateOne(find, { $set: body });
+        break;
+      case 'getAll':
+        result = await db.collection(collection).find(find).toArray();
+        break;
+      default:
+        throw new Error('Method not allowed!');
+    }
     return {
-      code: Status.ACCEPTED,
+      code: successCode,
       error: false,
       message: '',
       data: result

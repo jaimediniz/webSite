@@ -57,74 +57,34 @@ exports.getBody = async (rawBody) => {
     }
     return body;
 };
-exports.insertOne = async (collection, body) => {
+exports.insertOne = async (collection, body) => doDbAction(collection, '', 'insertOne', http_status_codes_1.default.CREATED, body);
+exports.deleteOne = async (collection, find) => doDbAction(collection, find, 'deleteOne', http_status_codes_1.default.ACCEPTED);
+exports.updateOne = async (collection, find, body) => doDbAction(collection, find, 'updateOne', http_status_codes_1.default.ACCEPTED, body);
+exports.getAll = async (collection, find = {}) => doDbAction(collection, find, 'getAll', http_status_codes_1.default.ACCEPTED);
+const doDbAction = async (collection, find = {}, type, successCode, body) => {
+    let result;
     try {
         const db = await exports.connectToDatabase();
-        const result = await db.collection(collection).insertOne(body);
+        switch (type) {
+            case 'insertOne':
+                result = await db.collection(collection).insertOne(body);
+                break;
+            case 'deleteOne':
+                result = await db.collection(collection).deleteOne(find);
+                break;
+            case 'updateOne':
+                result = await db
+                    .collection(collection)
+                    .updateOne(find, { $set: body });
+                break;
+            case 'getAll':
+                result = await db.collection(collection).find(find).toArray();
+                break;
+            default:
+                throw new Error('Method not allowed!');
+        }
         return {
-            code: http_status_codes_1.default.CREATED,
-            error: false,
-            message: '',
-            data: result
-        };
-    }
-    catch (err) {
-        return {
-            code: http_status_codes_1.default.INTERNAL_SERVER_ERROR,
-            error: true,
-            message: err.message,
-            data: []
-        };
-    }
-};
-exports.deleteOne = async (collection, find) => {
-    try {
-        const db = await exports.connectToDatabase();
-        const result = await db.collection(collection).deleteOne(find);
-        return {
-            code: http_status_codes_1.default.ACCEPTED,
-            error: false,
-            message: '',
-            data: result
-        };
-    }
-    catch (err) {
-        return {
-            code: http_status_codes_1.default.INTERNAL_SERVER_ERROR,
-            error: true,
-            message: err.message,
-            data: []
-        };
-    }
-};
-exports.updateOne = async (collection, find, body) => {
-    try {
-        const db = await exports.connectToDatabase();
-        const result = await db
-            .collection(collection)
-            .updateOne(find, { $set: body });
-        return {
-            code: http_status_codes_1.default.ACCEPTED,
-            error: false,
-            message: '',
-            data: result
-        };
-    }
-    catch (err) {
-        return {
-            code: http_status_codes_1.default.INTERNAL_SERVER_ERROR,
-            error: true,
-            message: err.message,
-            data: []
-        };
-    }
-};
-exports.getAll = async (collection, find = {}) => {
-    try {
-        const db = await exports.connectToDatabase();
-        const result = await db.collection(collection).find(find).toArray();
-        return {
-            code: http_status_codes_1.default.ACCEPTED,
+            code: successCode,
             error: false,
             message: '',
             data: result
