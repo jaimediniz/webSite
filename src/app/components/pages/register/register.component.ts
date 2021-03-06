@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';  // Importing libraries
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -7,19 +7,19 @@ import { External } from 'src/interfaces/database';
 
 import { ResizedEvent } from 'angular-resize-event';
 
-@Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+@Component({                                              // Angular stuff: Needs to be declared for every components
+  selector: 'app-register',         // How we are going to use this component inside HTML(<app-register></app-register>)
+  templateUrl: './register.component.html',   // Linking this .ts file with HTML file
+  styleUrls: ['./register.component.scss']    // Linking this .ts file with CSS file
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit, OnDestroy {  //To act as JS from the page
   width: any;
   height: any;
 
-  public currentUrl: SafeResourceUrl;
+  public currentUrl: SafeResourceUrl; // This is just the syntax, declaring the variables and assigning it 
   public showInfo = '';
 
-  private routeSubscription: Subscription;
+  private routeSubscription: Subscription;  // This is variable that can be subscribed by the others and pass information
 
   constructor(
     private route: ActivatedRoute,
