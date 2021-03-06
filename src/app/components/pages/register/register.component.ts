@@ -41,18 +41,18 @@ export class RegisterComponent implements OnInit, OnDestroy {  //To act as JS fr
     this.height = event.newHeight;
   }
 
-  updateState() {
+  updateState() {     // Collect the information from the DB
     const form = this.showInfo.charAt(0).toUpperCase() + this.showInfo.slice(1);
     this.api
-      .getExternal(`registration${form}Form`)
+      .getExternal(`registration${form}Form`) //registration${form}Form: variable linked to the DB
       .then((result: External[]) => this.updateSrc(result[0].value));
   }
 
-  changeUrl(param: string) {
+  changeUrl(param: string) { //to update the URL for the page without completely navigation to a new page
     this.router.navigate(['/register', param]);
   }
 
-  updateSrc(url: string) {
+  updateSrc(url: string) {//chnages the source in the iframe effectively changing the form
     const oldUrl = (this.currentUrl as any)
       ?.changingThisBreaksApplicationSecurity;
     if (oldUrl !== '' && oldUrl === url) {
