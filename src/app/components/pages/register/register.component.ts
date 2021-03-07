@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';  // Importing libraries
+import { Component, OnDestroy, OnInit } from '@angular/core'; // Importing libraries
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -7,19 +7,23 @@ import { External } from 'src/interfaces/database';
 
 import { ResizedEvent } from 'angular-resize-event';
 
-@Component({                                              // Angular stuff: Needs to be declared for every components
-  selector: 'app-register',         // How we are going to use this component inside HTML(<app-register></app-register>)
-  templateUrl: './register.component.html',   // Linking this .ts file with HTML file
-  styleUrls: ['./register.component.scss']    // Linking this .ts file with CSS file
+@Component({
+  // Angular stuff: Needs to be declared for every components
+  selector: 'app-register', // How we are going to use this component inside HTML(<app-register></app-register>)
+  templateUrl: './register.component.html', // Linking this .ts file with HTML file
+  styleUrls: ['./register.component.scss'] // Linking this .ts file with CSS file
 })
-export class RegisterComponent implements OnInit, OnDestroy {  //To act as JS from the page
+export class RegisterComponent implements OnInit, OnDestroy {
+  //To act as JS from the page
   width: any;
   height: any;
 
-  public currentUrl: SafeResourceUrl; // This is just the syntax, declaring the variables and assigning it 
+  // This is just the syntax, declaring the variables and assigning it
+  public currentUrl: SafeResourceUrl;
   public showInfo = '';
 
-  private routeSubscription: Subscription;  // This is variable that can be subscribed by the others and pass information
+  // This is variable that can be subscribed by the others and pass information
+  private routeSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,18 +45,21 @@ export class RegisterComponent implements OnInit, OnDestroy {  //To act as JS fr
     this.height = event.newHeight;
   }
 
-  updateState() {     // Collect the information from the DB
+  updateState() {
+    // Collect the information from the DB
     const form = this.showInfo.charAt(0).toUpperCase() + this.showInfo.slice(1);
     this.api
       .getExternal(`registration${form}Form`) //registration${form}Form: variable linked to the DB
       .then((result: External[]) => this.updateSrc(result[0].value));
   }
 
-  changeUrl(param: string) { //to update the URL for the page without completely navigation to a new page
+  changeUrl(param: string) {
+    //to update the URL for the page without completely navigation to a new page
     this.router.navigate(['/register', param]);
   }
 
-  updateSrc(url: string) {//chnages the source in the iframe effectively changing the form
+  updateSrc(url: string) {
+    //changes the source in the iframe effectively changing the form
     const oldUrl = (this.currentUrl as any)
       ?.changingThisBreaksApplicationSecurity;
     if (oldUrl !== '' && oldUrl === url) {
