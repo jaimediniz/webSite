@@ -1,9 +1,11 @@
 .panel {
   display: flex;
+  flex-flow: wrap;
   margin: 5px;
-  .title {
-    margin: auto;
-  }
+}
+
+.title {
+  margin: auto;
 }
 
 .schedule {
