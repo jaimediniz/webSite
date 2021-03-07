@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -27,7 +26,7 @@ export class NavLinksComponent implements OnInit {
   // Test button is only showed in dev
   public testButton = !environment.production;
 
-  constructor(public router: Router) {}
+  constructor() {}
 
   ngOnInit(): void {}
 

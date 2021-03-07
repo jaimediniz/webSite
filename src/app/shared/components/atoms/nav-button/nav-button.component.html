@@ -1,4 +1,5 @@
 <button
+  *ngIf="link; else withoutLink"
   mat-menu-item
   class="nav-link customize"
   [routerLink]="link"
@@ -8,3 +9,15 @@
   <mat-icon>{{ icon }}</mat-icon>
   <span>{{ text }}</span>
 </button>
+
+<ng-template #withoutLink>
+  <button
+    mat-menu-item
+    class="nav-link customize"
+    routerLinkActive="active"
+    tabindex="0"
+  >
+    <mat-icon>{{ icon }}</mat-icon>
+    <span>{{ text }}</span>
+  </button>
+</ng-template>
