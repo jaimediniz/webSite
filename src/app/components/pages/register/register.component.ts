@@ -18,6 +18,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   width: any;
   height: any;
 
+  isSmallScreen = false;
+  minWidth = 769;
+
   // This is just the syntax, declaring the variables and assigning it
   public currentUrl: SafeResourceUrl;
   public showInfo = '';
@@ -43,6 +46,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   onResized(event: ResizedEvent) {
     this.width = event.newWidth;
     this.height = event.newHeight;
+    this.isSmallScreen = this.width > this.minWidth;
   }
 
   updateState() {
