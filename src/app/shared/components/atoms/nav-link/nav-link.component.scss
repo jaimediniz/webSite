@@ -1,0 +1,18 @@
+a {
+  cursor: pointer;
+  color: black !important;
+  span {
+    vertical-align: super;
+  }
+}
+
+a:active,
+a:focus {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+}
+
+a:hover {
+  background-color: rgb(66, 66, 66, 0.2);
+}

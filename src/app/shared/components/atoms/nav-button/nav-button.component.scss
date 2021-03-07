@@ -1,0 +1,12 @@
+.mat-menu-item,
+mat-icon {
+  color: black !important;
+}
+
+button.mat-menu-content:hover {
+  background-color: rgba($color: black, $alpha: 0.2) !important;
+}
+
+.customize:hover {
+  background-color: rgb(66, 66, 66, 0.2);
+}
