@@ -1,10 +1,4 @@
 .pageContent {
   height: calc(100% - var(--navSize) - var(--footerSize)) !important;
-  overflow-y: hidden;
-}
-
-@media all and (display-mode: standalone) {
-  .testBackground {
-    background-color: yellow;
-  }
+  overflow-y: scroll;
 }
