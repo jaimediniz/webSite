@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CookieModule } from 'ngx-cookie';
 
+import { SharedAppModule } from './shared/shared.module';
 import { MaterialModule } from './material.module';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,29 +21,27 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { environment } from '../environments/environment';
 
-import { LoggerService } from './services/logger.service';
+import { LoggerService } from './shared/services/logger.service';
 
 import { AppComponent } from './app.component';
-import { LoadingComponent } from './components/loading/loading.component';
-import { AppInstallComponent } from './components/external/external.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { LoadingComponent } from './shared/components/organisms/loading/loading.component';
+import { AppInstallComponent } from './shared/components/organisms/external/external.component';
+import { FooterComponent } from './shared/components/organisms/footer/footer.component';
 
-import { HomeComponent } from './components/pages/home/home.component';
-import { AboutComponent } from './components/pages/about/about.component';
-import { ScheduleComponent } from './components/pages/schedule/schedule.component';
-import { ChatComponent } from './components/pages/chat/chat.component';
-import { FeedbackComponent } from './components/pages/feedback/feedback.component';
-import { RegisterComponent } from './components/pages/register/register.component';
-import { ActivitiesComponent } from './components/pages/activities/activities.component';
-import { AdminComponent } from './components/pages/admin/admin.component';
+import { HomeComponent } from './pages/home/home.component';
+import { AboutComponent } from './pages/about/about.component';
+import { ScheduleComponent } from './pages/schedule/schedule.component';
+import { ChatComponent } from './pages/chat/chat.component';
+import { FeedbackComponent } from './pages/feedback/feedback.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { ActivitiesComponent } from './pages/activities/activities.component';
+import { AdminComponent } from './pages/admin/admin.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
 
 @NgModule({
   declarations: [
     HomeComponent,
     AboutComponent,
-    NavbarComponent,
     AppComponent,
     FooterComponent,
     AppInstallComponent,
@@ -58,6 +57,7 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     MaterialModule,
     BrowserModule,
     CommonModule,
+    SharedAppModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
