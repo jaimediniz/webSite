@@ -1,0 +1,17 @@
+<a
+  *ngIf="link; else withoutLink"
+  class="nav-link"
+  [routerLink]="link"
+  routerLinkActive="active"
+  tabindex="0"
+>
+  <mat-icon>{{ icon }}</mat-icon>
+  <span>{{ text }}</span>
+</a>
+
+<ng-template #withoutLink>
+  <a class="nav-link" routerLinkActive="active" tabindex="0">
+    <mat-icon>{{ icon }}</mat-icon>
+    <span>{{ text }}</span>
+  </a>
+</ng-template>

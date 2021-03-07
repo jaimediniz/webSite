@@ -1,0 +1,25 @@
+.--navSize {
+  height: var(--navSize) !important;
+  max-height: var(--navSize) !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.links {
+  display: flex;
+}
+
+.side-menu {
+  display: none;
+}
+
+@media (max-width: 930px) {
+  .links {
+    display: none;
+  }
+  .side-menu {
+    display: block;
+  }
+}

@@ -1,0 +1,69 @@
+<app-nav-link
+  [hidden]="!homeButton"
+  [link]="['home']"
+  [icon]="'home'"
+  [text]="'Home'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!aboutButton"
+  [link]="['about']"
+  [icon]="'info'"
+  [text]="'About'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!activitiesButton"
+  [link]="['activities']"
+  [icon]="'update'"
+  [text]="'Current Activities'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!scheduleButton"
+  [link]="['schedule']"
+  [icon]="'calendar_today'"
+  [text]="'Schedule'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!registerButton"
+  [link]="['register', '']"
+  [icon]="'app_registration'"
+  [text]="'Register'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!chatButton"
+  [link]="['chat']"
+  [icon]="'chat'"
+  [text]="'Chat Room'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!feedbackButton"
+  [link]="['feedback']"
+  [icon]="'feedback'"
+  [text]="'Feedback'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!adminButton"
+  [link]="['admin']"
+  [icon]="'admin_panel_settings'"
+  [text]="'Admin Panel'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!loginButton"
+  (click)="login()"
+  [link]="[]"
+  [icon]="'exit_to_app'"
+  [text]="'Login'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!logoffButton"
+  (click)="logoff()"
+  [link]="[]"
+  [icon]="'power_settings_new'"
+  [text]="'Logoff'"
+></app-nav-link>
+<app-nav-link
+  [hidden]="!testButton"
+  (click)="test()"
+  [link]="[]"
+  [icon]="'warning'"
+  [text]="'Test'"
+></app-nav-link>

@@ -1,0 +1,39 @@
+<nav
+  class="navbar --navSize navbar-fixed-top d-flex justify-content-between"
+  [ngClass]="{ 'bg-light': !darkMode, 'bg-dark': darkMode }"
+>
+  <app-nav-brand></app-nav-brand>
+  <app-nav-buttons
+    class="side-menu"
+    [homeButton]="homeButton"
+    [activitiesButton]="activitiesButton"
+    [loginButton]="loginButton"
+    [registerButton]="registerButton"
+    [scheduleButton]="scheduleButton"
+    [aboutButton]="aboutButton"
+    [adminButton]="adminButton"
+    [logoffButton]="logoffButton"
+    [chatButton]="chatButton"
+    [feedbackButton]="feedbackButton"
+    (emitLogin)="login()"
+    (emitLogoff)="logoff()"
+    (emitTest)="test($event)"
+  ></app-nav-buttons>
+
+  <app-nav-links
+    class="links"
+    [homeButton]="homeButton"
+    [activitiesButton]="activitiesButton"
+    [loginButton]="loginButton"
+    [registerButton]="registerButton"
+    [scheduleButton]="scheduleButton"
+    [aboutButton]="aboutButton"
+    [adminButton]="adminButton"
+    [logoffButton]="logoffButton"
+    [chatButton]="chatButton"
+    [feedbackButton]="feedbackButton"
+    (emitLogin)="login()"
+    (emitLogoff)="logoff()"
+    (emitTest)="test($event)"
+  ></app-nav-links>
+</nav>

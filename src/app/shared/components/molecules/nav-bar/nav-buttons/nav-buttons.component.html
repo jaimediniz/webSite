@@ -1,0 +1,74 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>menu</mat-icon>
+</button>
+<mat-menu class="bgColor" #menu="matMenu" xPosition="before">
+  <app-nav-button
+    [hidden]="!homeButton"
+    [link]="['home']"
+    [icon]="'home'"
+    [text]="'Home'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!aboutButton"
+    [link]="['about']"
+    [icon]="'info'"
+    [text]="'About'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!activitiesButton"
+    [link]="['activities']"
+    [icon]="'update'"
+    [text]="'Current Activities'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!scheduleButton"
+    [link]="['schedule']"
+    [icon]="'calendar_today'"
+    [text]="'Schedule'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!registerButton"
+    [link]="['register']"
+    [icon]="'app_registration'"
+    [text]="'Register'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!chatButton"
+    [link]="['chat']"
+    [icon]="'chat'"
+    [text]="'Chat Room'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!feedbackButton"
+    [link]="['feedback']"
+    [icon]="'feedback'"
+    [text]="'Feedback'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!adminButton"
+    [link]="['admin']"
+    [icon]="'admin_panel_settings'"
+    [text]="'Admin Panel'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!loginButton"
+    (click)="login()"
+    [link]="[]"
+    [icon]="'exit_to_app'"
+    [text]="'Login'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!logoffButton"
+    (click)="logoff()"
+    [link]="[]"
+    [icon]="'power_settings_new'"
+    [text]="'Logoff'"
+  ></app-nav-button>
+  <app-nav-button
+    [hidden]="!testButton"
+    (click)="test()"
+    [link]="[]"
+    [icon]="'warning'"
+    [text]="'Test'"
+  ></app-nav-button>
+</mat-menu>
