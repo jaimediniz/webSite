@@ -18,7 +18,7 @@ import { NavButtonComponent } from './components/atoms/nav-button/nav-button.com
 import { NavLinkComponent } from './components/atoms/nav-link/nav-link.component';
 
 // Molecules
-import { NavBrandComponent } from './components/molecules/nav-bar/nav-brand/nav-brand.component';
+import { NavBrandComponent } from './components/atoms/nav-brand/nav-brand.component';
 import { NavButtonsComponent } from './components/molecules/nav-bar/nav-buttons/nav-buttons.component';
 import { NavLinksComponent } from './components/molecules/nav-bar/nav-links/nav-links.component';
 import { NavBarComponent } from './components/organisms/nav-bar/nav-bar.component';
