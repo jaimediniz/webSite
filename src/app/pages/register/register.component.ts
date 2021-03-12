@@ -35,8 +35,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     this.routeSubscription = this.route.paramMap.subscribe((paramMap) => {
-      this.showInfo = paramMap.get('form') ?? '';
-      this.updateState();
+      if (paramMap.get('form')) {
+        this.showInfo = paramMap.get('form') ?? '';
+        this.updateState();
+      } else {
+        this.showInfo = '';
+      }
     });
     this.currentUrl = this.sanitizer.bypassSecurityTrustResourceUrl('');
   }
