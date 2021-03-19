@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "run-p --print-label dev:*",
-    "build": "npm run build:static && npm run build:css",
+    "build": "ng build --configuration=production",
+    "build2": "npm run build:static && npm run build:css",
     "test-prod": "run-p --print-label test-prod:*",
     "dev:vercel": "vercel dev",
     "dev:functions": "tsc -p tsconfig.functions.json -w",
