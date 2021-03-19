@@ -58,17 +58,17 @@ export class AppInstallComponent implements OnInit {
   }
 
   async askToSubscribe(): Promise<void> {
-    const subscribe = await this.alert.fireQuestion(
-      'Subscribe to Notifications',
-      'This way you can keep updated!',
-      'question',
-      'Subscribe',
-      'Cancel'
-    );
+    // const subscribe = await this.alert.fireQuestion(
+    //   'Subscribe to Notifications',
+    //   'This way you can keep updated!',
+    //   'question',
+    //   'Subscribe',
+    //   'Cancel'
+    // );
 
-    if (!subscribe) {
-      return;
-    }
+    // if (!subscribe) {
+    //   return;
+    // }
 
     try {
       const sub: PushSubscription = await this.swPush.requestSubscription({
