@@ -80,7 +80,7 @@ export class AppInstallComponent implements OnInit {
         this.alert.toast('Subscribed!', 'success', '');
       }
     } catch (err) {
-      this.alert.fire('Error!', err.message, 'error');
+      // this.alert.fire('Error!', err.message, 'error');
       this.logger.error(err.message);
     }
   }
