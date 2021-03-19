@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "run-p --print-label dev:*",
-    "build": "ng build --configuration=production",
+    "build": "ng build --configuration=production --build-optimizer",
     "build2": "npm run build:static && npm run build:css",
     "test-prod": "run-p --print-label test-prod:*",
     "dev:vercel": "vercel dev",
