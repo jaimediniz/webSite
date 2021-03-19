@@ -15,7 +15,17 @@ import { ActivitiesComponent } from './pages/activities/activities.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'schedule', component: ScheduleComponent },
+  {
+    path: 'schedule',
+    component: ScheduleComponent,
+    data: {
+      meta: {
+        title: 'THI - Tandem Schedule',
+        description: 'All Activities',
+        'og:image': 'https://thinice.vercel.app/assets/bg_resized.jpg'
+      }
+    }
+  },
   { path: 'activities', component: ActivitiesComponent },
   {
     path: 'register/:form',
