@@ -36,7 +36,6 @@ import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ActivitiesComponent } from './pages/activities/activities.component';
 import { AdminComponent } from './pages/admin/admin.component';
-import { AngularResizedEventModule } from 'angular-resize-event';
 
 @NgModule({
   declarations: [
@@ -67,7 +66,6 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
-    AngularResizedEventModule,
     ServiceWorkerModule.register('custom-service-worker.js', {
       enabled: environment.production
     }),
