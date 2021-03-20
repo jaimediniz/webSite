@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CalendarEventTitleFormatter, CalendarView } from 'angular-calendar';
 import { CalendarEvent } from 'calendar-utils';
-import * as ics from 'ics';
 import { isSameMonth, isSameDay } from 'date-fns';
 
 import { APIService } from 'src/app/shared/services/backend.service';
 import { SweetAlertService } from 'src/app/shared/services/sweetAlert.service';
 
-import { Event } from '../../../interfaces/database';
+import { Event, ICSEvent } from '../../../interfaces/database';
 import { CustomEventFormatter } from './custom-event-formatter.provider';
 
 @Component({
@@ -90,55 +89,75 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.alert.displayEvent(event.meta.event);
   }
 
-  exportSchedule() {
-    const exportEvents: any = [];
-    let processedItems = 0;
-    this.events.forEach((fullEvent) => {
+  async exportSchedule() {
+    const exportEvents: ICSEvent[] = [];
+
+    for (const fullEvent of this.events) {
       const event = fullEvent.meta.event;
-      const newEvent = {
+      const newEvent: ICSEvent = {
         calName: 'NICE Events',
         title: event.name,
         description: event.description,
         status: event.status,
         organizer: { name: event.author },
-        start: new Date(event.start)
-          .toISOString()
-          .split('.')[0]
-          .split(/(?:-| |T|:)+/)
-          .map((x) => +x),
-        end: new Date(event.end)
-          .toISOString()
-          .split('.')[0]
-          .split(/(?:-| |T|:)+/)
-          .map((x) => +x),
+        start: new Date(event.start).toISOString().split(/(?:-| |T|:|\.)+/),
+        end: new Date(event.end).toISOString().split(/(?:-| |T|:|\.)+/),
         location: event.location,
         url: event.url
       };
       exportEvents.push(newEvent);
-      processedItems += 1;
+    }
+    const calendar = await createEvents(exportEvents);
+    if (!calendar) {
+      return;
+    }
 
-      if (processedItems === this.events.length) {
-        const { error, value } = ics.createEvents(exportEvents);
+    const blob = new Blob([calendar], { type: 'application/octet-stream' });
+    const url = window.URL.createObjectURL(blob);
+    const date = new Date().toISOString().split('T')[0].split('-');
 
-        if (error) {
-          console.error(error);
-          return;
-        }
-
-        if (!value) {
-          return;
-        }
-
-        const blob = new Blob([value], { type: 'application/octet-stream' });
-        const url = window.URL.createObjectURL(blob);
-        const date = new Date().toISOString().split('T')[0].split('-');
-
-        const a = document.createElement('a');
-        document.body.appendChild(a);
-        a.href = url;
-        a.download = `NICE_EVENTS_${date[2]}_${date[1]}_${date[0]}.ics`;
-        a.click();
-      }
-    });
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.href = url;
+    a.download = `NICE_EVENTS_${date[2]}_${date[1]}_${date[0]}.ics`;
+    a.click();
   }
 }
+
+const formatDate = (dt: string[]) =>
+  `${dt[0]}${dt[1]}${dt[2]}T${dt[3]}${dt[4]}${dt[5]}`;
+
+const createEvents = async (exportEvents: ICSEvent[]): Promise<string> => {
+  /* cSpell:disable */
+  const calendarName = 'NICE Events';
+  const dt = new Date().toISOString().split(/(?:-| |T|:|\.)+/);
+  const dtStamp = formatDate(dt);
+
+  let finalString = 'BEGIN:VCALENDAR\n';
+  finalString += 'VERSION:2.0\n';
+  finalString += 'CALSCALE:GREGORIAN\n';
+  finalString += 'PRODID:adamgibbons/ics\n';
+  finalString += `X-WR-CALNAME:${calendarName}\n`;
+  finalString += 'X-PUBLISHED-TTL:PT1H\n';
+
+  for (const element of exportEvents) {
+    const dtStart = formatDate(element.start);
+    const dtEnd = formatDate(element.end);
+
+    finalString += 'BEGIN:VEVENT\n';
+    finalString += `SUMMARY:${element.title}\n`;
+    finalString += `DTSTAMP:${dtStamp}\n`;
+    finalString += `DTSTART:${dtStart}\n`;
+    finalString += `DTEND:${dtEnd}\n`;
+    finalString += `DESCRIPTION:${element.description}\n`;
+    finalString += `URL:${element.url}\n`;
+    finalString += `LOCATION:${element.location}\n`;
+    finalString += `STATUS:${element.status}\n`;
+    finalString += `ORGANIZER;CN=${element.organizer.name}\n`;
+    finalString += 'END:VEVENT\n';
+  }
+
+  finalString += '\nEND:VCALENDAR';
+  /* cSpell:enable */
+  return finalString;
+};

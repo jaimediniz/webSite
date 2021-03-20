@@ -12,18 +12,33 @@ export interface Subscription {
   topics: string;
 }
 
-export interface Event {
-  _id?: ObjectId;
-  name: string;
+export interface BaseEvent {
   description: string;
   status: 'TENTATIVE' | 'CONFIRMED' | 'CANCELLED';
+  start: string | string[];
+  end: string | string[];
+  url: string;
+  location: string;
+}
+
+export interface Event extends BaseEvent {
+  _id?: ObjectId;
+  name: string;
   author: string;
   start: string;
   end: string;
-  url: string;
   imageUrl: string;
-  location: string;
 }
+
+export type ICSEvent = BaseEvent & {
+  title: string;
+  organizer: {
+    name: string;
+  };
+  calName: string;
+  start: string[];
+  end: string[];
+};
 
 export interface User {
   _id: ObjectId;
