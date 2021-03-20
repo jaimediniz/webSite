@@ -1,15 +1,7 @@
-<div
-  *ngIf="!showInfo; else form"
-  class="h-100 w-100 info"
-  (resized)="onResized($event)"
->
+<div *ngIf="!showInfo; else form" class="h-100 w-100 info">
   <!--
     ngIf: This is a component of Angular2 that allows if tags to be 
     render only when the condition is true
-  -->
-  <!--
-    (resized): To read the the changing layout of the screen and adapt 
-    the page accordingly
   -->
   <mat-card class="wrapper mat-elevation-z4" (click)="changeUrl('participant')">
     <!--

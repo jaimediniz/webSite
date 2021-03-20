@@ -5,8 +5,6 @@ import { Subscription } from 'rxjs';
 import { APIService } from 'src/app/shared/services/backend.service';
 import { External } from 'src/interfaces/database';
 
-import { ResizedEvent } from 'angular-resize-event';
-
 @Component({
   // Angular stuff: Needs to be declared for every components
   selector: 'app-register', // How we are going to use this component inside HTML(<app-register></app-register>)
@@ -14,10 +12,6 @@ import { ResizedEvent } from 'angular-resize-event';
   styleUrls: ['./register.component.scss'] // Linking this .ts file with CSS file
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  //To act as JS from the page
-  width: any;
-  height: any;
-
   isSmallScreen = false;
   minWidth = 769;
 
@@ -46,12 +40,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
-
-  onResized(event: ResizedEvent) {
-    this.width = event.newWidth;
-    this.height = event.newHeight;
-    this.isSmallScreen = this.width > this.minWidth;
-  }
 
   updateState() {
     // Collect the information from the DB
