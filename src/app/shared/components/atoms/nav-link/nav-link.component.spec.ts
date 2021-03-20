@@ -8,9 +8,8 @@ describe('NavLinkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NavLinkComponent ]
-    })
-    .compileComponents();
+      declarations: [NavLinkComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {
