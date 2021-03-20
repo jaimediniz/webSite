@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Db, MongoClient } from 'mongodb';
 import Status from 'http-status-codes';
 import * as bcrypt from 'bcrypt';
-import { APIResponse } from 'src/interfaces/backend';
+import { APIResponse } from '@interfaces/backend';
 
 const url = require('url');
 

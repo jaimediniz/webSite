@@ -19,7 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
-import { environment } from '../environments/environment';
+import { environment } from '@environments/environment';
 
 import { LoggerService } from './shared/services/logger.service';
 

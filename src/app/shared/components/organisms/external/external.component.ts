@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
-import { APIService } from 'src/app/shared/services/backend.service';
-import { LoggerService } from 'src/app/shared/services/logger.service';
-import { SweetAlertService } from 'src/app/shared/services/sweetAlert.service';
-import { WindowService } from 'src/app/shared/services/window.service';
-import { environment } from 'src/environments/environment';
+import { APIService } from '@services/backend.service';
+import { LoggerService } from '@services/logger.service';
+import { SweetAlertService } from '@services/sweetAlert.service';
+import { WindowService } from '@services/window.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-external',

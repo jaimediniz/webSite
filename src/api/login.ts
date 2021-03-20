@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import * as bcrypt from 'bcrypt';
 
 import { getBody, getAll, login, badRequest } from './dbConnection';
-import { User } from 'src/interfaces/database';
+import { User } from '@interfaces/database';
 
 const post = async (request: Request, response: Response): Promise<void> => {
   const body = await getBody(request.body);

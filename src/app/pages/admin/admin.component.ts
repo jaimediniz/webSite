@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService } from 'src/app/shared/services/backend.service';
-import { SweetAlertService } from 'src/app/shared/services/sweetAlert.service';
-import { Event, User } from 'src/interfaces/database';
+import { APIService } from '@services/backend.service';
+import { SweetAlertService } from '@services/sweetAlert.service';
+import { Event, User } from '@interfaces/database';
 
 type Editing = {
   [key: number]: boolean;

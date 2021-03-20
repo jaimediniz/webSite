@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Event, User } from '../../../interfaces/database';
+import { Event, User } from '@interfaces/database';
 
 @Injectable({
   providedIn: 'root'

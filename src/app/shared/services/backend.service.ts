@@ -7,13 +7,8 @@ import {
   APIEventsResponse,
   APILoginResponse,
   APIResponse
-} from '../../../interfaces/backend';
-import {
-  Event,
-  User,
-  Subscription,
-  External
-} from '../../../interfaces/database';
+} from '@interfaces/backend';
+import { Event, User, Subscription, External } from '@interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
 import { CookieService } from 'ngx-cookie';
