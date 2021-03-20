@@ -3,10 +3,10 @@ import { CalendarEventTitleFormatter, CalendarView } from 'angular-calendar';
 import { CalendarEvent } from 'calendar-utils';
 import { isSameMonth, isSameDay } from 'date-fns';
 
-import { APIService } from 'src/app/shared/services/backend.service';
-import { SweetAlertService } from 'src/app/shared/services/sweetAlert.service';
+import { APIService } from '@services/backend.service';
+import { SweetAlertService } from '@services/sweetAlert.service';
 
-import { Event, ICSEvent } from '../../../interfaces/database';
+import { Event, ICSEvent } from '@interfaces/database';
 import { CustomEventFormatter } from './custom-event-formatter.provider';
 
 @Component({

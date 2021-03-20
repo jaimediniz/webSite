@@ -1,6 +1,6 @@
 import { ObjectID } from 'mongodb';
 import { Request, Response } from 'express';
-import { APIResponse, APIUsersResponse } from 'src/interfaces/backend';
+import { APIResponse, APIUsersResponse } from '@interfaces/backend';
 
 import {
   getBody,

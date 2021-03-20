@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { APIResponse } from 'src/interfaces/backend';
+import { APIResponse } from '@interfaces/backend';
 
 import { getBody, insertOne, badRequest } from './dbConnection';
 

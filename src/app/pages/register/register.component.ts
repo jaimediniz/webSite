@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core'; // Importing libra
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { APIService } from 'src/app/shared/services/backend.service';
-import { External } from 'src/interfaces/database';
+import { APIService } from '@services/backend.service';
+import { External } from '@interfaces/database';
 
 @Component({
   // Angular stuff: Needs to be declared for every components

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
-import { APIService } from 'src/app/shared/services/backend.service';
-import { logIO } from 'src/app/shared/services/logger.service';
-import { SweetAlertService } from 'src/app/shared/services/sweetAlert.service';
+import { APIService } from '@services/backend.service';
+import { logIO } from '@services/logger.service';
+import { SweetAlertService } from '@services/sweetAlert.service';
 
 @Component({
   selector: 'app-nav-bar',
