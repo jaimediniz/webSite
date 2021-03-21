@@ -97,7 +97,12 @@ export class APIService {
   }
 
   // Get Information from DB
-  async getData(type: string, endpoint: string, ...query: string[]) {
+  async getData(
+    type: string,
+    endpoint: string,
+    shouldAlert: boolean,
+    ...query: string[]
+  ) {
     const now = new Date();
     const previous = new Date(localStorage?.getItem(type + '_time') || '');
     // milliseconds * seconds * minutes * hours
@@ -115,27 +120,40 @@ export class APIService {
     if (data) {
       localStorage.setItem(type, JSON.stringify(data));
       localStorage.setItem(type + '_time', `${new Date()}`);
-      this.alert.toast('Updated!', 'success', 'The list was updated!');
+      if (shouldAlert) {
+        this.alert.toast('Updated!', 'success', 'The list was updated!');
+      }
+
       return data;
     }
   }
 
   async getEvents(): Promise<Event[]> {
-    const data = await this.getData('Events', 'events');
+    const data = await this.getData('Events', 'events', true);
     return data;
   }
 
   async getUsers(): Promise<User[]> {
-    const data = await this.getData('Users', 'admin', 'collection=Users');
+    const data = await this.getData('Users', 'admin', true, 'collection=Users');
     return data;
   }
 
   async getExternal(key: string = ''): Promise<External[]> {
     if (key) {
-      return await this.getData(`External_${key}`, 'external', `key=${key}`);
+      return await this.getData(
+        `External_${key}`,
+        'external',
+        false,
+        `key=${key}`
+      );
     }
 
-    const data = await this.getData('External', 'admin', 'collection=External');
+    const data = await this.getData(
+      'External',
+      'admin',
+      false,
+      'collection=External'
+    );
     return data;
   }
 
