@@ -1,3 +1,19 @@
+.tabs {
+  background-color: #f8f9fa;
+  height: 50px;
+}
+
+::ng-deep .mat-tab-label-content,
+::ng-deep .mat-tab-label {
+  color: black;
+  opacity: 1 !important;
+}
+
+::ng-deep .mat-tab-label.mat-tab-label-active {
+  background-color: #b3b3b371;
+  font-weight: 700;
+}
+
 td {
   word-break: break-word;
 }
