@@ -6,6 +6,7 @@
     "esbenp.prettier-vscode",
     "2gua.rainbow-brackets",
     "humao.rest-client",
-    "visualstudioexptteam.vscodeintellicode"
+    "visualstudioexptteam.vscodeintellicode",
+    "adam-bender.commit-message-editor"
   ]
 }
