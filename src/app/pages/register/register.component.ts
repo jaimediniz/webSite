@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { APIService } from '@services/backend.service';
 import { External } from '@interfaces/database';
+import { LoadingService } from '@app/shared/services/loading.service';
 
 @Component({
   // Angular stuff: Needs to be declared for every components
@@ -12,12 +13,10 @@ import { External } from '@interfaces/database';
   styleUrls: ['./register.component.scss'] // Linking this .ts file with CSS file
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  isSmallScreen = false;
-  minWidth = 769;
-
   // This is just the syntax, declaring the variables and assigning it
   public currentUrl: SafeResourceUrl;
-  public showInfo = '';
+  public showInfo = true;
+  public form = '';
 
   // This is variable that can be subscribed by the others and pass information
   private routeSubscription: Subscription;
@@ -26,24 +25,27 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private api: APIService,
     private sanitizer: DomSanitizer,
-    private router: Router
+    private router: Router,
+    private loading: LoadingService
   ) {
     this.routeSubscription = this.route.paramMap.subscribe((paramMap) => {
       if (paramMap.get('form')) {
-        this.showInfo = paramMap.get('form') ?? '';
+        this.form = paramMap.get('form') ?? '';
         this.updateState();
       } else {
-        this.showInfo = '';
+        this.showInfo = true;
+        this.form = '';
+        this.currentUrl = this.sanitizer.bypassSecurityTrustResourceUrl('');
       }
     });
-    this.currentUrl = this.sanitizer.bypassSecurityTrustResourceUrl('');
   }
 
   ngOnInit(): void {}
 
   updateState() {
     // Collect the information from the DB
-    const form = this.showInfo.charAt(0).toUpperCase() + this.showInfo.slice(1);
+    const form = this.form.charAt(0).toUpperCase() + this.form.slice(1);
+    this.loading.startLoading();
     this.api
       .getExternal(`registration${form}Form`) //registration${form}Form: variable linked to the DB
       .then((result: External[]) => this.updateSrc(result[0].value));
@@ -51,10 +53,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   changeUrl(param: string) {
     //to update the URL for the page without completely navigation to a new page
+    this.form = param;
     this.router.navigate(['/register', param]);
   }
 
   updateSrc(url: string) {
+    this.showInfo = false;
     //changes the source in the iframe effectively changing the form
     const oldUrl = (this.currentUrl as any)
       ?.changingThisBreaksApplicationSecurity;
@@ -62,6 +66,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       return;
     }
     this.currentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.loading.stopLoading();
   }
 
   ngOnDestroy() {
