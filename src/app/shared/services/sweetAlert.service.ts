@@ -58,13 +58,30 @@ export class SweetAlertService {
     const { value: formValues } = await Swal.fire({
       html,
       focusConfirm: true,
-      allowEnterKey: true,
       allowEscapeKey: true,
       confirmButtonText: 'Login',
       preConfirm: () => ({
         username: (document.getElementById('swal-input1') as any).value,
         password: (document.getElementById('swal-input2') as any).value
       }),
+      didOpen: () => {
+        (document.getElementById('swal-input1') as any).addEventListener(
+          'keyup',
+          (e: any) => {
+            if (e.key === 'Enter') {
+              Swal.clickConfirm();
+            }
+          }
+        );
+        (document.getElementById('swal-input2') as any).addEventListener(
+          'keyup',
+          (e: any) => {
+            if (e.key === 'Enter') {
+              Swal.clickConfirm();
+            }
+          }
+        );
+      },
       showClass: {
         popup: 'swal2-noanimation'
       }
@@ -83,7 +100,6 @@ export class SweetAlertService {
     const { value: formValues } = await Swal.fire({
       html,
       focusConfirm: true,
-      allowEnterKey: true,
       allowEscapeKey: true,
       input: 'select',
       inputOptions: {
@@ -97,6 +113,24 @@ export class SweetAlertService {
         password: (document.getElementById('swal-input2') as any).value,
         code: value ?? ''
       }),
+      didOpen: () => {
+        (document.getElementById('swal-input1') as any).addEventListener(
+          'keyup',
+          (e: any) => {
+            if (e.key === 'Enter') {
+              Swal.clickConfirm();
+            }
+          }
+        );
+        (document.getElementById('swal-input2') as any).addEventListener(
+          'keyup',
+          (e: any) => {
+            if (e.key === 'Enter') {
+              Swal.clickConfirm();
+            }
+          }
+        );
+      },
       showClass: {
         popup: 'swal2-noanimation'
         //icon: 'swal2-noanimation'
