@@ -13,7 +13,7 @@ import { AdminGuard } from 'src/app/shared/guard/admin';
 import { ActivitiesComponent } from './pages/activities/activities.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   {
     path: 'schedule',
@@ -35,8 +35,8 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent },
   { path: 'feedback', component: FeedbackComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', redirectTo: '/home', pathMatch: 'full' }
+  { path: '', redirectTo: '/', pathMatch: 'full' },
+  { path: '**', redirectTo: '/', pathMatch: 'full' }
 ];
 
 @NgModule({
