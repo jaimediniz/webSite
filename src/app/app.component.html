@@ -1,11 +1,22 @@
-<app-loading *ngIf="!fullScreen" class="h-100 w-100"></app-loading>
-<app-nav-bar *ngIf="!fullScreen" class="w-100"></app-nav-bar>
-<app-external *ngIf="!fullScreen"></app-external>
+<div>
+  <app-loading *ngIf="!fullScreen" class="h-100 w-100"></app-loading>
+  <app-external *ngIf="!fullScreen"></app-external>
+</div>
 
-<main id="main" class="w-100 px-0 container-fluid pageContent">
+<div class="w-100" [ngClass]="darkTheme ? 'bg-dark nav-dark' : 'bg-light'">
+  <app-nav-bar *ngIf="!fullScreen"></app-nav-bar>
+</div>
+
+<main
+  id="main"
+  class="bg-color w-100 px-0 container-fluid pageContent"
+  [ngClass]="{ 'dark-theme': darkTheme }"
+>
   <div class="h-100 w-100 testBackground" [ngClass]="{ 'col-6': showOutlet }">
     <router-outlet></router-outlet>
   </div>
 </main>
 
-<app-footer *ngIf="!fullScreen"></app-footer>
+<div [ngClass]="{ 'dark-theme': darkTheme }">
+  <app-footer *ngIf="!fullScreen"></app-footer>
+</div>

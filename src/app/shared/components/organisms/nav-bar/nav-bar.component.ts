@@ -11,8 +11,6 @@ import { SweetAlertService } from '@services/sweetAlert.service';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
-  public darkMode = false;
-
   // Control buttons
   public homeButton = true;
   public activitiesButton = true;

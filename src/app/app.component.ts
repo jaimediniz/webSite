@@ -7,10 +7,12 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @ViewChild('popupRouterOutlet', { read: ViewContainerRef })
-  private popupRouterOutlet: ViewContainerRef;
-  @ViewChild('popupContainer', { read: ViewContainerRef })
-  private popupContainer: ViewContainerRef;
+  // @ViewChild('popupRouterOutlet', { read: ViewContainerRef })
+  // private popupRouterOutlet: ViewContainerRef;
+  // @ViewChild('popupContainer', { read: ViewContainerRef })
+  // private popupContainer: ViewContainerRef;
+
+  public darkTheme = false;
 
   public fullScreen = false;
   public showOutlet = false;
