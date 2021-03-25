@@ -1,4 +1,4 @@
 .pageContent {
   height: calc(100% - var(--navSize) - var(--footerSize)) !important;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
