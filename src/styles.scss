@@ -12,6 +12,7 @@ body {
 :root {
   --navSize: 50px;
   --footerSize: 20px;
+  --pageContent: calc(100% - var(--navSize) - var(--footerSize)) !important;
   --schedule-color: 97, 76, 175;
   --background-color: 97, 76, 175;
 }

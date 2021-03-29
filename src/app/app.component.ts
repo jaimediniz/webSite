@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { ActivatedRoute } from '@angular/router';
 import { DarkService } from './shared/services/dark.service';
+import { LoadingService } from './shared/services/loading.service';
 
 @Component({
   selector: 'app-app',
@@ -18,14 +21,28 @@ export class AppComponent implements OnInit {
   public fullScreen = false;
   public showOutlet = false;
 
-  constructor(private route: ActivatedRoute, private darkService: DarkService) {
+  public loader = true;
+  loadingSubscription: Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+    private darkService: DarkService,
+    private loadingScreenService: LoadingService
+  ) {
     this.route.queryParams.subscribe((params) => {
       this.fullScreen = params.fullScreen || false;
     });
+
     this.darkTheme = this.darkService.darkTheme;
     this.darkService.darkThemeEmitter.subscribe((darkTheme: boolean) => {
       this.darkTheme = darkTheme;
     });
+
+    this.loadingSubscription = this.loadingScreenService.loading$
+      .pipe()
+      .subscribe((status: boolean) => {
+        this.loader = status ? false : true;
+      });
   }
 
   ngOnInit(): void {}
