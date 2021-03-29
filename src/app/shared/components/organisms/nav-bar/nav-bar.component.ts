@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 import { APIService } from '@services/backend.service';
@@ -11,8 +11,6 @@ import { SweetAlertService } from '@services/sweetAlert.service';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
-  public darkMode = false;
-
   // Control buttons
   public homeButton = true;
   public activitiesButton = true;

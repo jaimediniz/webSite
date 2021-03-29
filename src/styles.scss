@@ -13,6 +13,22 @@ body {
   --navSize: 50px;
   --footerSize: 20px;
   --schedule-color: 97, 76, 175;
+  --background-color: 97, 76, 175;
+}
+
+.nav-dark {
+  span {
+    color: white;
+  }
+
+  .mat-menu-item,
+  mat-icon {
+    color: white !important;
+  }
+
+  button.mat-menu-content:hover {
+    background-color: rgba($color: white, $alpha: 0.2) !important;
+  }
 }
 
 .swal2-shown {
@@ -24,7 +40,7 @@ button:focus {
 }
 
 .backgroundImage {
-  background: url('./assets/imgs/bg.jpg') no-repeat center center fixed;
+  background: url('./assets/imgs/bg.jpg') no-repeat center center fixed !important;
   -webkit-background-size: contain;
   -moz-background-size: contain;
   -o-background-size: contain;
@@ -70,6 +86,11 @@ button:focus {
   // Everything else below is just themes the demo, it's probably not relevant to your app
   background-color: $bg-dark-primary;
   color: $text-color;
+
+  button {
+    background-color: $bg-dark-primary;
+    color: $text-color;
+  }
 
   .card {
     border-color: $border-color;
