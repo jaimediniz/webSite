@@ -45,7 +45,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   updateState() {
     // Collect the information from the DB
     const form = this.form.charAt(0).toUpperCase() + this.form.slice(1);
-    this.loading.startLoading();
+    if (document.getElementById('loader')) {
+      (document.getElementById('loader') as any).style.display = 'flex';
+    }
     this.api
       .getExternal(`registration${form}Form`) //registration${form}Form: variable linked to the DB
       .then((result: External[]) => this.updateSrc(result[0].value));
@@ -66,7 +68,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       return;
     }
     this.currentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-    this.loading.stopLoading();
   }
 
   ngOnDestroy() {

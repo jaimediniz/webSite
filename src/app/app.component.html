@@ -1,5 +1,9 @@
 <div>
-  <app-loading *ngIf="!fullScreen" class="h-100 w-100"></app-loading>
+  <app-loading
+    *ngIf="!fullScreen"
+    class="h-100 w-100"
+    [hidden]="loader"
+  ></app-loading>
   <app-external *ngIf="!fullScreen"></app-external>
 </div>
 
