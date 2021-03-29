@@ -1,0 +1,12 @@
+.link {
+  cursor: pointer;
+}
+
+.hoverBrand {
+  transition: transform 1s ease-out, filter 0.5s ease-out;
+}
+
+.dark {
+  transform: rotate(360deg);
+  filter: invert(50%);
+}
