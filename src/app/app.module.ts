@@ -24,7 +24,6 @@ import { environment } from '@environments/environment';
 import { LoggerService } from './shared/services/logger.service';
 
 import { AppComponent } from './app.component';
-import { LoadingComponent } from './shared/components/organisms/loading/loading.component';
 import { AppInstallComponent } from './shared/components/organisms/external/external.component';
 import { FooterComponent } from './shared/components/organisms/footer/footer.component';
 
