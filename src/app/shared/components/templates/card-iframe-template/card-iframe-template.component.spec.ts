@@ -8,9 +8,8 @@ describe('CardIframeTemplateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CardIframeTemplateComponent ]
-    })
-    .compileComponents();
+      declarations: [CardIframeTemplateComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {
