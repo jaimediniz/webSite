@@ -1,0 +1,28 @@
+#loader {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.info {
+  display: block;
+  overflow: visible;
+}
+
+.wrapper {
+  width: 100%;
+  min-height: 100px;
+  margin: 5px;
+}
+
+@media (min-width: 769px) {
+  .info {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .wrapper {
+    width: 40%;
+    margin: auto;
+  }
+}

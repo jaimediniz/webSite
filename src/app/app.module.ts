@@ -44,7 +44,6 @@ import { AdminComponent } from './pages/admin/admin.component';
     AppComponent,
     FooterComponent,
     AppInstallComponent,
-    LoadingComponent,
     ScheduleComponent,
     ChatComponent,
     FeedbackComponent,

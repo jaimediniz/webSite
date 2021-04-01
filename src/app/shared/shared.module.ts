@@ -22,6 +22,9 @@ import { NavBrandComponent } from './components/atoms/nav-brand/nav-brand.compon
 import { NavButtonsComponent } from './components/molecules/nav-bar/nav-buttons/nav-buttons.component';
 import { NavLinksComponent } from './components/molecules/nav-bar/nav-links/nav-links.component';
 import { NavBarComponent } from './components/organisms/nav-bar/nav-bar.component';
+import { CardComponent } from './components/atoms/card/card.component';
+import { CardIframeTemplateComponent } from './components/templates/card-iframe-template/card-iframe-template.component';
+import { LoadingComponent } from './components/organisms/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { NavBarComponent } from './components/organisms/nav-bar/nav-bar.componen
     NavBrandComponent,
     NavButtonsComponent,
     NavLinksComponent,
-    NavBarComponent
+    NavBarComponent,
+    CardComponent,
+    CardIframeTemplateComponent,
+    LoadingComponent
   ],
   imports: [
     MaterialModule,
@@ -45,7 +51,7 @@ import { NavBarComponent } from './components/organisms/nav-bar/nav-bar.componen
     MatIconModule,
     MatCardModule
   ],
-  exports: [NavBarComponent],
+  exports: [NavBarComponent, CardIframeTemplateComponent, LoadingComponent],
   providers: [],
   bootstrap: []
 })
