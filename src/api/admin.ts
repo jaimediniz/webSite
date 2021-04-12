@@ -9,7 +9,8 @@ import {
   isUserAllowed,
   deleteOne,
   updateOne,
-  badRequest
+  badRequest,
+  getCollections
 } from './dbConnection';
 
 export default async (request: Request, response: Response) => {
@@ -39,10 +40,18 @@ export default async (request: Request, response: Response) => {
 
 const get = async (request: Request, response: Response): Promise<void> => {
   const collection = request.query.collection as string;
+  let json: APIUsersResponse;
+
   if (!collection) {
     return badRequest(response);
   }
-  const json: APIUsersResponse = await getAll(collection);
+
+  if (collection === 'UI') {
+    json = await getCollections(collection, {}, 'UI');
+    response.status(json.code).json(json);
+  }
+
+  json = await getAll(collection);
   response.status(json.code).json(json);
 };
 

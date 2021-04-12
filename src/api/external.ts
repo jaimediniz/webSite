@@ -9,9 +9,7 @@ const get = async (request: Request, response: Response): Promise<void> => {
     return badRequest(response);
   }
 
-  const json: APIEventsResponse = await getAll('External', {
-    key
-  });
+  const json: APIEventsResponse = await getAll(key, {}, 'UI');
   response.status(json.code).json(json);
 };
 

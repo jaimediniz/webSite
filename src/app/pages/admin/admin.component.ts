@@ -36,8 +36,8 @@ export class AdminComponent implements OnInit {
       ]
     },
     {
-      name: 'External',
-      properties: ['key', 'value']
+      name: 'UI',
+      properties: ['name']
     }
   ];
   public selectedCollection = 0;
@@ -63,8 +63,8 @@ export class AdminComponent implements OnInit {
       return;
     }
 
-    if (this.collections[this.selectedCollection].name === 'External') {
-      this.table = await this.api.getExternal();
+    if (this.collections[this.selectedCollection].name === 'UI') {
+      this.table = await this.api.getUI();
       return;
     }
   }

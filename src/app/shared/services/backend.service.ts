@@ -8,7 +8,7 @@ import {
   APILoginResponse,
   APIResponse
 } from '@interfaces/backend';
-import { Event, User, Subscription, External } from '@interfaces/database';
+import { Event, User, Subscription, Registration } from '@interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
 import { CookieService } from 'ngx-cookie';
@@ -138,22 +138,12 @@ export class APIService {
     return data;
   }
 
-  async getExternal(key: string = ''): Promise<External[]> {
+  async getUI(key: string = ''): Promise<Registration[]> {
     if (key) {
-      return await this.getData(
-        `External_${key}`,
-        'external',
-        false,
-        `key=${key}`
-      );
+      return await this.getData(`UI_${key}`, 'external', false, `key=${key}`);
     }
 
-    const data = await this.getData(
-      'External',
-      'admin',
-      false,
-      'collection=External'
-    );
+    const data = await this.getData('UI', 'admin', false, 'collection=UI');
     return data;
   }
 

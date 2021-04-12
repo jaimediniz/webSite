@@ -44,6 +44,8 @@ export class LoggerService {
   publishers: LogPublisher[] = [];
   public logWithDate = true;
 
+  private timers: { [key: string]: number } = {};
+
   constructor() {
     // Set publishers
     this.buildPublishers();
@@ -81,13 +83,37 @@ export class LoggerService {
   }
 
   debugFunction(msg: string, ...optionalParams: any[]) {
+    let params;
+    if (optionalParams[0]) {
+      params = optionalParams;
+    } else {
+      params = [
+        ...optionalParams,
+        new Date().getTime() - this.timers[optionalParams[2]]
+      ];
+    }
+
     this.writeToLog(
       msg,
       'color:OliveDrab;font-weight:bold;',
       LogLevel.displayDebug,
-      optionalParams,
+      params,
       true
     );
+
+    if (optionalParams[0]) {
+      this.startTimer(optionalParams[2]);
+    } else {
+      this.stopTimer(optionalParams[2]);
+    }
+  }
+
+  startTimer(uniqueId: string) {
+    this.timers[uniqueId] = new Date().getTime();
+  }
+
+  stopTimer(uniqueId: string) {
+    delete this.timers[uniqueId];
   }
 
   debug(msg: string, ...optionalParams: any[]) {
@@ -218,9 +244,12 @@ export class LogEntry {
   static function(entry: LogEntry, ret: string) {
     ret += '- Function: ' + entry.message;
     ret += '\n- Call ID:  ' + entry.extraInfo[1];
-    ret += `\n    ${
-      entry.extraInfo[0] ? 'The method args are' : 'The return value is'
-    }: ${JSON.stringify(entry.extraInfo[2])}`;
+    if (!entry.extraInfo[0]) {
+      ret += `\n    Time: ${entry.extraInfo[3]} ms`;
+      ret += `\n    The return value is: ${JSON.stringify(entry.extraInfo[2])}`;
+    } else {
+      ret += `\n    The method args are: ${JSON.stringify(entry.extraInfo[2])}`;
+    }
     return ret;
   }
 

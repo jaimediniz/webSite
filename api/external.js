@@ -6,9 +6,7 @@ const get = async (request, response) => {
     if (!key) {
         return dbConnection_1.badRequest(response);
     }
-    const json = await dbConnection_1.getAll('External', {
-        key
-    });
+    const json = await dbConnection_1.getAll(key, {}, 'UI');
     response.status(json.code).json(json);
 };
 exports.default = async (request, response) => {
