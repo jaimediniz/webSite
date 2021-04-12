@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { APIService } from '@app/shared/services/backend.service';
+import { Registration } from '@interfaces/database';
 
 @Component({
   // Angular stuff: Needs to be declared for every components
@@ -9,31 +11,17 @@ import { Component, OnInit } from '@angular/core';
 export class RegisterComponent implements OnInit {
   public basicRoute = '/register';
   public formName = 'registration'; // Lowercase
-  public cards = [
-    {
-      route: 'participant', // Lowercase, no spaces
-      title: 'Participant',
-      content:
-        'Students who are interested in learning a new language or a new culture. You take part in activities.'
-    },
-    {
-      route: 'volunteer',
-      title: 'Volunteer',
-      content: `Volunteers are people who are helping in organizing, 
-        planning and developing the Language Tandem programme itself. 
-        You can propose new activities, plan meeting for other volunteers, 
-        develop our website or support our social media….`
-    }
-    // {
-    //   route: 'newElement',
-    //   title: 'New',
-    //   content: `Multiple
-    //     Lines`
-    // },
-  ];
-  // To add new cards just add new elements to "cards", like the example above.
+  public cards: Registration[];
 
-  constructor() {}
+  constructor(private api: APIService) {
+    this.getCards();
+  }
 
   ngOnInit(): void {}
+
+  async getCards(): Promise<void> {
+    const result = await this.api.getUI('Registration');
+    console.log(result);
+    this.cards = result;
+  }
 }

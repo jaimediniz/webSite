@@ -2,8 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core'; // Importin
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { APIService } from '@services/backend.service';
-import { External } from '@interfaces/database';
 
 @Component({
   selector: 'app-card-iframe-template',
@@ -13,7 +11,12 @@ import { External } from '@interfaces/database';
 export class CardIframeTemplateComponent implements OnInit, OnDestroy {
   @Input() basicRoute: string;
   @Input() formName: string;
-  @Input() cards: { route: string; title: string; content: string }[];
+  @Input() cards: {
+    route: string;
+    title: string;
+    content: string;
+    url: string;
+  }[];
 
   // This is just the syntax, declaring the variables and assigning it
   public currentUrl: SafeResourceUrl;
@@ -25,10 +28,11 @@ export class CardIframeTemplateComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private api: APIService,
     private sanitizer: DomSanitizer,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.routeSubscription = this.route.paramMap.subscribe((paramMap) => {
       if (paramMap.get('form')) {
         this.form = paramMap.get('form') ?? '';
@@ -41,28 +45,33 @@ export class CardIframeTemplateComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
-
-  updateState(form: string) {
-    // Collect the information from the DB
-    if (document.getElementById('loader')) {
-      (document.getElementById('loader') as any).style.display = 'flex';
+  async startLoader(): Promise<void> {
+    const loader = document.getElementById('loader');
+    if (loader) {
+      (loader as any).style.display = 'flex';
     }
-    this.api
-      .getExternal(`${this.formName}Form_${this.form}`) // ${this.formName}Form_${form}: variable linked to the DB
-      .then((result: External[]) => this.updateSrc(result[0].value))
-      .catch((error: any) => {
-        this.router.navigate([this.basicRoute, '']);
-      });
   }
 
-  changeUrl(param: string) {
+  async stopLoader(): Promise<void> {
+    const loader = document.getElementById('loader');
+    if (loader) {
+      (loader as any).style.display = 'none';
+    }
+  }
+
+  async updateState(form: string): Promise<void> {
+    await this.startLoader();
+    const url = this.cards.filter((el) => el.route === form) ?? [{ url: '' }];
+    this.updateSrc(url[0].url);
+  }
+
+  changeUrl(param: string): void {
     //to update the URL for the page without completely navigation to a new page
     this.form = param;
     this.router.navigate([this.basicRoute, param]);
   }
 
-  updateSrc(url: string) {
+  updateSrc(url: string): void {
     this.showInfo = false;
     //changes the source in the iframe effectively changing the form
     const oldUrl = (this.currentUrl as any)
@@ -73,7 +82,7 @@ export class CardIframeTemplateComponent implements OnInit, OnDestroy {
     this.currentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routeSubscription.unsubscribe();
   }
 }

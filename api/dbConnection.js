@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.badRequest = exports.getAll = exports.updateOne = exports.deleteOne = exports.insertOne = exports.getBody = exports.connectToDatabase = exports.login = exports.getKeyForRole = exports.isUserAllowed = void 0;
+exports.badRequest = exports.getCollections = exports.getAll = exports.updateOne = exports.deleteOne = exports.insertOne = exports.getBody = exports.connectToDatabase = exports.login = exports.getKeyForRole = exports.isUserAllowed = void 0;
 const mongodb_1 = require("mongodb");
 const http_status_codes_1 = require("http-status-codes");
 const bcrypt = require("bcrypt");
@@ -26,12 +26,12 @@ exports.login = async (role) => {
     };
 };
 let cachedDb;
-exports.connectToDatabase = async () => {
-    var _a;
+exports.connectToDatabase = async (database = 'Tandem') => {
+    var _a, _b;
     if (cachedDb) {
         return cachedDb;
     }
-    const uri = (_a = process.env.MONGODB_URI) !== null && _a !== void 0 ? _a : '';
+    const uri = (_b = (_a = process.env.MONGODB_URI) === null || _a === void 0 ? void 0 : _a.replace('Tandem', database)) !== null && _b !== void 0 ? _b : '';
     const client = await mongodb_1.MongoClient.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -60,11 +60,12 @@ exports.getBody = async (rawBody) => {
 exports.insertOne = async (collection, body) => doDbAction(collection, '', 'insertOne', http_status_codes_1.default.CREATED, body);
 exports.deleteOne = async (collection, find) => doDbAction(collection, find, 'deleteOne', http_status_codes_1.default.ACCEPTED);
 exports.updateOne = async (collection, find, body) => doDbAction(collection, find, 'updateOne', http_status_codes_1.default.ACCEPTED, body);
-exports.getAll = async (collection, find = {}) => doDbAction(collection, find, 'getAll', http_status_codes_1.default.ACCEPTED);
-const doDbAction = async (collection, find = {}, type, successCode, body) => {
+exports.getAll = async (collection, find = {}, database = 'Tandem') => doDbAction(collection, find, 'getAll', http_status_codes_1.default.ACCEPTED, '', database);
+exports.getCollections = async (collection, find = {}, database = 'Tandem') => doDbAction(collection, find, 'getCollections', http_status_codes_1.default.ACCEPTED, '', database);
+const doDbAction = async (collection, find = {}, type, successCode, body, database = 'Tandem') => {
     let result;
     try {
-        const db = await exports.connectToDatabase();
+        const db = await exports.connectToDatabase(database);
         switch (type) {
             case 'insertOne':
                 result = await db.collection(collection).insertOne(body);
@@ -79,6 +80,9 @@ const doDbAction = async (collection, find = {}, type, successCode, body) => {
                 break;
             case 'getAll':
                 result = await db.collection(collection).find(find).toArray();
+                break;
+            case 'getCollections':
+                result = await db.listCollections().toArray();
                 break;
             default:
                 throw new Error('Method not allowed!');

@@ -53,3 +53,11 @@ export interface External {
   key: string;
   value: string;
 }
+
+export interface Registration {
+  _id?: ObjectId;
+  route: string;
+  title: string;
+  content: string;
+  url: string;
+}

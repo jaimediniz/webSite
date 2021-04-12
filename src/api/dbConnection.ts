@@ -37,11 +37,11 @@ export const login = async (role: string) => {
 };
 
 let cachedDb: Db;
-export const connectToDatabase = async () => {
+export const connectToDatabase = async (database = 'Tandem') => {
   if (cachedDb) {
     return cachedDb;
   }
-  const uri = process.env.MONGODB_URI ?? '';
+  const uri = process.env.MONGODB_URI?.replace('Tandem', database) ?? '';
 
   const client = await MongoClient.connect(uri, {
     useNewUrlParser: true,
@@ -95,20 +95,29 @@ export const updateOne = async (
 
 export const getAll = async (
   collection: string,
-  find: any = {}
+  find: any = {},
+  database = 'Tandem'
 ): Promise<APIResponse<any[]>> =>
-  doDbAction(collection, find, 'getAll', Status.ACCEPTED);
+  doDbAction(collection, find, 'getAll', Status.ACCEPTED, '', database);
+
+export const getCollections = async (
+  collection: string,
+  find: any = {},
+  database = 'Tandem'
+): Promise<APIResponse<any[]>> =>
+  doDbAction(collection, find, 'getCollections', Status.ACCEPTED, '', database);
 
 const doDbAction = async (
   collection: string,
   find: any = {},
   type: string,
   successCode: number,
-  body?: any
+  body?: any,
+  database = 'Tandem'
 ): Promise<APIResponse<any[]>> => {
   let result: any;
   try {
-    const db = await connectToDatabase();
+    const db = await connectToDatabase(database);
     switch (type) {
       case 'insertOne':
         result = await db.collection(collection).insertOne(body);
@@ -123,6 +132,9 @@ const doDbAction = async (
         break;
       case 'getAll':
         result = await db.collection(collection).find(find).toArray();
+        break;
+      case 'getCollections':
+        result = await db.listCollections().toArray();
         break;
       default:
         throw new Error('Method not allowed!');
