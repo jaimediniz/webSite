@@ -42,6 +42,7 @@ button:focus {
 
 .backgroundImage {
   background: url('./assets/imgs/bg.jpg') no-repeat center center fixed !important;
+  mix-blend-mode: multiply !important;
   -webkit-background-size: contain;
   -moz-background-size: contain;
   -o-background-size: contain;
@@ -84,7 +85,6 @@ button:focus {
     opacity: 0.15;
   }
 
-  // Everything else below is just themes the demo, it's probably not relevant to your app
   background-color: $bg-dark-primary;
   color: $text-color;
 

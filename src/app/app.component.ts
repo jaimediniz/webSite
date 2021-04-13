@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DarkService } from './shared/services/dark.service';
 import { LoadingService } from './shared/services/loading.service';
+import { APIService } from './shared/services/backend.service';
 
 @Component({
   selector: 'app-app',
@@ -27,8 +28,10 @@ export class AppComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private darkService: DarkService,
-    private loadingScreenService: LoadingService
+    private loadingScreenService: LoadingService,
+    private api: APIService
   ) {
+    this.api.cacheUIElements();
     this.route.queryParams.subscribe((params) => {
       this.fullScreen = params.fullScreen || false;
     });

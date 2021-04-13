@@ -7,7 +7,7 @@
   <app-external *ngIf="!fullScreen"></app-external>
 </div>
 
-<div class="w-100" [ngClass]="darkTheme ? 'bg-dark nav-dark' : 'bg-light'">
+<div class="w-100 bg-light" [class.inverted]="darkTheme">
   <app-nav-bar *ngIf="!fullScreen"></app-nav-bar>
 </div>
 
@@ -16,7 +16,7 @@
   class="bg-color w-100 px-0 container-fluid pageContent"
   [ngClass]="{ 'dark-theme': darkTheme }"
 >
-  <div class="h-100 w-100 testBackground" [ngClass]="{ 'col-6': showOutlet }">
+  <div class="h-100 w-100" [ngClass]="{ 'col-6': showOutlet }">
     <router-outlet></router-outlet>
   </div>
 </main>
