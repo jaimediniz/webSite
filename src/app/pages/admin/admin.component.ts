@@ -64,7 +64,7 @@ export class AdminComponent implements OnInit {
     }
 
     if (this.collections[this.selectedCollection].name === 'UI') {
-      this.table = await this.api.getUI();
+      this.table = await this.api.getUIList();
       return;
     }
   }

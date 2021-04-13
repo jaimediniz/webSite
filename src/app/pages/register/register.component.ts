@@ -21,7 +21,6 @@ export class RegisterComponent implements OnInit {
 
   async getCards(): Promise<void> {
     const result = await this.api.getUI('Registration');
-    console.log(result);
     this.cards = result;
   }
 }

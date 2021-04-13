@@ -8,7 +8,13 @@ import {
   APILoginResponse,
   APIResponse
 } from '@interfaces/backend';
-import { Event, User, Subscription, Registration } from '@interfaces/database';
+import {
+  Event,
+  User,
+  Subscription,
+  Registration,
+  Collections
+} from '@interfaces/database';
 import { LoadingService } from './loading.service';
 import { SweetAlertService } from './sweetAlert.service';
 import { CookieService } from 'ngx-cookie';
@@ -139,12 +145,18 @@ export class APIService {
   }
 
   async getUI(key: string = ''): Promise<Registration[]> {
-    if (key) {
-      return await this.getData(`UI_${key}`, 'external', false, `key=${key}`);
-    }
-
-    const data = await this.getData('UI', 'admin', false, 'collection=UI');
+    const data = await this.getData(`UI_${key}`, 'ui', false, `key=${key}`);
     return data;
+  }
+
+  async getUIList(): Promise<Collections[]> {
+    const data = await this.getData('UI', 'ui', false, 'key=UI');
+    return data;
+  }
+
+  async cacheUIElements(): Promise<void> {
+    const uiList = await this.getUIList();
+    uiList.forEach((el) => this.getUI(el.name));
   }
 
   // Modify DB

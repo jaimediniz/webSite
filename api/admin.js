@@ -23,15 +23,10 @@ exports.default = async (request, response) => {
 };
 const get = async (request, response) => {
     const collection = request.query.collection;
-    let json;
     if (!collection) {
         return dbConnection_1.badRequest(response);
     }
-    if (collection === 'UI') {
-        json = await dbConnection_1.getCollections(collection, {}, 'UI');
-        response.status(json.code).json(json);
-    }
-    json = await dbConnection_1.getAll(collection);
+    const json = await dbConnection_1.getAll(collection);
     response.status(json.code).json(json);
 };
 const post = async (request, response) => {

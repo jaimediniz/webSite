@@ -61,3 +61,11 @@ export interface Registration {
   content: string;
   url: string;
 }
+
+export interface Collections {
+  name: string;
+  type: string;
+  options: any;
+  info: { readOnly: boolean; uuid: string };
+  idIndex: { v: number; key: { _id: number }; name: string };
+}
