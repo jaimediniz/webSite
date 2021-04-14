@@ -41,8 +41,11 @@ button:focus {
 }
 
 .backgroundImage {
+  -moz-mix-blend-mode: multiply;
+  -o-mix-blend-mode: multiply;
+  -ms-mix-blend-mode: multiply;
+  mix-blend-mode: multiply;
   background: url('./assets/imgs/bg.jpg') no-repeat center center fixed !important;
-  mix-blend-mode: multiply !important;
   -webkit-background-size: contain;
   -moz-background-size: contain;
   -o-background-size: contain;
@@ -63,6 +66,7 @@ button:focus {
   $bg-active: #2c343a;
   $text-color: #d5d6d7;
   $border-color: rgba(0, 0, 0, 0.6);
+  transition: background-color 0.778s;
 
   // Call the calendar mixin with a sass color map of your theme. Every property is optional.
   // For a list of all variables and how they are used,
