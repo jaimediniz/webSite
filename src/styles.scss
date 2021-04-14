@@ -41,10 +41,6 @@ button:focus {
 }
 
 .backgroundImage {
-  -moz-mix-blend-mode: multiply;
-  -o-mix-blend-mode: multiply;
-  -ms-mix-blend-mode: multiply;
-  mix-blend-mode: multiply;
   background: url('./assets/imgs/bg.jpg') no-repeat center center fixed !important;
   -webkit-background-size: contain;
   -moz-background-size: contain;
@@ -91,6 +87,14 @@ button:focus {
 
   background-color: $bg-dark-primary;
   color: $text-color;
+
+  // TODO: Make background image blend with dark-theme, this solution introduces an impact to sweet alert
+  &.backgroundImage {
+    -moz-mix-blend-mode: multiply;
+    -o-mix-blend-mode: multiply;
+    -ms-mix-blend-mode: multiply;
+    mix-blend-mode: multiply !important;
+  }
 
   button {
     background-color: $bg-dark-primary;
