@@ -9,10 +9,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit(): void {
-    document.body.classList.add('backgroundImage');
+    document.getElementById('bg-home')?.classList.add('backgroundImage');
   }
 
   ngOnDestroy() {
-    document.body.classList.remove('backgroundImage');
+    document.getElementById('bg-home')?.classList.remove('backgroundImage');
   }
 }
