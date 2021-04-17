@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="showInfo; else form" class="h-100 w-100 info">
-  <div class="wrapper" *ngFor="let card of cards">
+  <div class="wrapper card" *ngFor="let card of cards">
     <app-card
       (click)="changeUrl(card.route)"
       [title]="card.title"

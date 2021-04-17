@@ -17,8 +17,6 @@ export class AppComponent implements OnInit {
   // @ViewChild('popupContainer', { read: ViewContainerRef })
   // private popupContainer: ViewContainerRef;
 
-  public darkTheme = false;
-
   public fullScreen = false;
   public showOutlet = false;
 
@@ -36,9 +34,15 @@ export class AppComponent implements OnInit {
       this.fullScreen = params.fullScreen || false;
     });
 
-    this.darkTheme = this.darkService.darkTheme;
+    if (this.darkService.darkTheme) {
+      document.body.classList.add('dark-theme');
+    }
     this.darkService.darkThemeEmitter.subscribe((darkTheme: boolean) => {
-      this.darkTheme = darkTheme;
+      if (darkTheme) {
+        document.body.classList.add('dark-theme');
+      } else {
+        document.body.classList.remove('dark-theme');
+      }
     });
 
     this.loadingSubscription = this.loadingScreenService.loading$

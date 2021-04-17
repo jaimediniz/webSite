@@ -62,7 +62,8 @@ button:focus {
   $bg-active: #2c343a;
   $text-color: #d5d6d7;
   $border-color: rgba(0, 0, 0, 0.6);
-  transition: background-color 0.778s;
+  transition: background-color 778ms;
+  transition-delay: 455ms;
 
   // Call the calendar mixin with a sass color map of your theme. Every property is optional.
   // For a list of all variables and how they are used,
@@ -88,7 +89,7 @@ button:focus {
   background-color: $bg-dark-primary;
   color: $text-color;
 
-  > * > * > .backgroundImage {
+  .backgroundImage {
     -moz-mix-blend-mode: multiply;
     -o-mix-blend-mode: multiply;
     -ms-mix-blend-mode: multiply;
@@ -100,8 +101,16 @@ button:focus {
     color: $text-color;
   }
 
-  .card {
+  .inverted {
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+  }
+
+  .card,
+  .swal2-popup,
+  .swal2-image {
     border-color: $border-color;
+    filter: invert(1);
   }
 
   .card-header {
